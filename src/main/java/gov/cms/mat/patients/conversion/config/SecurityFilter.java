@@ -1,4 +1,4 @@
-package gov.cms.mat.patients.conversion;
+package gov.cms.mat.patients.conversion.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
