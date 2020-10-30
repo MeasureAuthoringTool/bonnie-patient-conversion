@@ -1,0 +1,47 @@
+server:
+  port: 5050
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+
+json:
+  data:
+    code-system-entry-url: https://spreadsheets.google.com/feeds/list/1_heoWR09X3UnyEvyyHLzVXT_D1Hhdt3OPztpgr1hW_k/od6/public/values?alt=json
+
+
+swagger-server:
+
+bonnie-thread-pools:
+  thread-pool-configurations:
+    - name: threadPoolConversion
+      core-pool-size: 50
+      max-pool-size: 100
+      queue-capacity: 150
+
+mat-api-key: ${MAT_API_KEY}
+
+logging:
+  level:
+    root: WARN
+    gov.cms.mat: WARN
+    org.hl7.fhir.r4.hapi.ctx: WARN
+    org.hl7.fhir.r4.hapi.validation: WARN
+  pattern:
+    console: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %mdc %-5level %logger{36}.%M - %msg%n"
+    file: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %mdc %logger{36}.%M - %msg%n"
+  file:
+    name: mat-fhir-services.log
+    clean-history-on-start: true
+    max-history: 1
+
+cache-names: codeSystemEntries

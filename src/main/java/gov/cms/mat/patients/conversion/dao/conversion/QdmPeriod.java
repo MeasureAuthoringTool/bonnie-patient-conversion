@@ -1,0 +1,16 @@
+package gov.cms.mat.patients.conversion.dao.conversion;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+public class QdmPeriod {
+    Date low;
+    Date high;
+    Boolean lowClosed;
+    Boolean highClosed;
+    String _type;
+}
