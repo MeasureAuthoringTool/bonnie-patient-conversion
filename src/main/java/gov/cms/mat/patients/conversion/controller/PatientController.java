@@ -1,7 +1,7 @@
 package gov.cms.mat.patients.conversion.controller;
 
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.data.ConversionResult;
+import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import gov.cms.mat.patients.conversion.service.PatientService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

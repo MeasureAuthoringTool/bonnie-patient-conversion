@@ -1,4 +1,4 @@
-package gov.cms.mat.patients.conversion.data;
+package gov.cms.mat.patients.conversion.dao.results;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;

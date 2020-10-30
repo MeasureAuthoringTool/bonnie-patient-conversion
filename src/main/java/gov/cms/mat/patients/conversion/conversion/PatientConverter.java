@@ -8,7 +8,7 @@ import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirPatientResult
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.data.ConversionOutcome;
+import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;

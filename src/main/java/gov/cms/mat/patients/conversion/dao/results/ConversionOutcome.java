@@ -1,4 +1,4 @@
-package gov.cms.mat.patients.conversion.data;
+package gov.cms.mat.patients.conversion.dao.results;
 
 import ca.uhn.fhir.validation.SingleValidationMessage;
 import lombok.Builder;
