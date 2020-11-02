@@ -1,6 +1,5 @@
 package gov.cms.mat.patients.conversion.conversion;
 
-
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
@@ -40,22 +39,44 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         List<String> conversionMessages = new ArrayList<>();
 
         MedicationAdministration medicationAdministration = new MedicationAdministration();
-        medicationAdministration.setId(qdmDataElement.get_id());
         medicationAdministration.setSubject(createReference(fhirPatient));
 
         medicationAdministration.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+
+        medicationAdministration.setId(qdmDataElement.get_id());
+
+        if (qdmDataElement.getDosage() != null) {
+            medicationAdministration.getDosage().setDose(convertQuantity(qdmDataElement.getDosage()));
+        }
+
+        if (qdmDataElement.getRoute() != null) {
+            medicationAdministration.getDosage().setRoute(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getRoute()));
+        }
+
+        // This object if not null then all the elements in the object is null
+//        if (qdmDataElement.getFrequency() != null) {
+//            //medicationAdministration.getDosage().setRate() should go hera
+//        }
+
+        if (qdmDataElement.getReason() != null) {
+            medicationAdministration.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
+        }
+
+        if (qdmDataElement.getRelevantDatetime() != null) {
+            medicationAdministration.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+        }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             medicationAdministration.setEffective(convertPeriod(qdmDataElement.getRelevantPeriod()));
         }
 
+//        if( qdmDataElement.getPerformer() != null) {
+//            log.debug("HI");
+//        }
+
         if (!processNegation(qdmDataElement, medicationAdministration)) {
             medicationAdministration.setStatus("unknown");
             conversionMessages.add(NO_STATUS_MAPPING);
-        }
-
-        if( qdmDataElement.getRelevantDatetime() != null) {
-            medicationAdministration.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
         }
 
         return QdmToFhirConversionResult.<MedicationAdministration>builder()
