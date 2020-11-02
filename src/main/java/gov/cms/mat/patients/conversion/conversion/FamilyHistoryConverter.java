@@ -37,16 +37,19 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         List<String> conversionMessages = new ArrayList<>();
 
         FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
-        familyMemberHistory.setId(qdmDataElement.get_id());
         familyMemberHistory.setPatient(createReference(fhirPatient));
+
+        FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
+        familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+
+        familyMemberHistory.setId(qdmDataElement.get_id());
+
         familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
 
         //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#812-family-history
         //Constrain to Completed, entered-in-error, not-done
         familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
-
-        processNegation(qdmDataElement, familyMemberHistory); // should never have any
 
         if (qdmDataElement.getRelationship() != null) {
             //https://terminology.hl7.org/1.0.0/CodeSystem-v3-RoleCode.html
@@ -58,8 +61,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
             }
         }
 
-        FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
-        familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        processNegation(qdmDataElement, familyMemberHistory); // should never have any
 
         return QdmToFhirConversionResult.<FamilyMemberHistory>builder()
                 .fhirResource(familyMemberHistory)
