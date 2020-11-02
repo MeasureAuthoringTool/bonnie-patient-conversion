@@ -10,18 +10,18 @@
   <tbody>
     <tr>
       <td><strong>Symptom</strong></td>
-      <td><a href="StructureDefinition-qicore-observation.html">Observation</a></td>
+      <td>Observation</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.status">Observation.status</a></td>
+      <td>Observation.status</td>
       <td>restrict to preliminary, final, amended, corrected</td>
       <td>Observation.ObservationStatus.UNKNOWN</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.category">Observation.category</a></td>
+      <td>Observation.category</td>
       <td>add symptom concept</td>
     </tr>
     <tr>
@@ -31,31 +31,31 @@
     </tr>
     <tr>
       <td>Code</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.value[x]">Observation.value[x]</a></td>
+      <td>Observation.value[x]</td>
       <td>Use codable concept</td>
       <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>id</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.id">Observation.id</a></td>
+      <td>Observation.id</td>
       <td>&nbsp;</td>
       <td>qdmDataElement.get_id()</td>
     </tr>
     <tr>
       <td>severity</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.interpretation">Observation.interpretation</a></td>
+      <td>Observation.interpretation</td>
       <td>Definition suggests high, low, normal - perhaps consider severe, moderate, mild.</td>
       <td>No data for qdmDataElement.getSeverity()</td>
     </tr>
     <tr>
       <td>prevalence period</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.effective[x]">Observation.effective[x]</a></td>
+      <td>Observation.effective[x]</td>
       <td>dateTime, period, timing, instant</td>
       <td>qdmDataElement.getPrevalencePeriod()</td>
     </tr>
     <tr>
       <td>recorder</td>
-      <td><a href="StructureDefinition-qicore-observation-definitions.html#Observation.performer">Observation.performer</a></td>
+      <td>Observation.performer</td>
       <td>&nbsp;</td>
     </tr>
   </tbody>
