@@ -25,10 +25,12 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
+        log.debug("Init SecurityFilter");
     }
 
     @Override
     public void destroy() {
+        log.debug("Destroy SecurityFilter");
     }
 
     @Override

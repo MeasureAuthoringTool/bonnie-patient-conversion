@@ -32,6 +32,9 @@ public class AssessmentOrderConverter extends ConverterBase<ServiceRequest> impl
 
     @Override
     public QdmToFhirConversionResult<ServiceRequest> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
+        //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#841-assessment-order
+        //Status : Constrain to one or more of active, on-hold, completed
+        //Intent : Constrain only to “order” (include children: original-order, reflex-order, filler-order, instance-order)
         return convertToFhirServiceRequest(fhirPatient,
                 qdmDataElement,
                 this,

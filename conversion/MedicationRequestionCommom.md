@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><strong>* (list all that use)</strong></td>
+      <td><strong>Used By Many</strong></td>
       <td>MedicationRequest</td>
       <td>&nbsp;</td>
     </tr>
@@ -64,7 +64,7 @@
       <td>days supplied</td>
       <td>MedicationRequest.dispenseRequest.expectedSupplyDuration</td>
       <td>Duration</td>
-      <td>qdmDataElement.getDaysSupplied()  </td>
+      <td>qdmDataElement.getDaysSupplied()</td>
     </tr>
     <tr>
       <td>frequency</td>
@@ -98,13 +98,13 @@
     </tr>
     <tr>
       <td>relevant dateTime</td>
-      <td>MedicationRequest.dosageInstruction.timing with <a href="http://hl7.org/fhir/R4/datatypes-definitions.html#Timing.event">Timing.event dateTime</td>
+      <td>MedicationRequest.dosageInstruction.timing with Timing.event dateTime</td>
       <td>&nbsp;</td>
      <td> qdmDataElement.getRelevantDatetime()</td>
     </tr>
     <tr>
       <td>relevant Period</td>
-      <td>MedicationRequest.dosageInstruction.timing with <a href="http://hl7.org/fhir/R4/datatypes-definitions.html#Timing.repeat.bounds_x_">Timing.repeat.bounds[x] Period</td>
+      <td>MedicationRequest.dosageInstruction.timing with Timing.repeat.bounds[x] Period</td>
       <td>The anticipated time from starting to stopping an ordered or dispensed medication can also be computed in an expression and derived from the duration attribute</td>
        <td>qdmDataElement.getRelevantPeriod() </td>
     </tr>
@@ -127,7 +127,7 @@
     </tr>
     <tr>
       <td>Requester</td>
-      <td><a href="StructureDefinition-qicore-medicationrequest-definitions.html#MedicationRequest.requester">MedicationRequest.requester</a></td>
+      <td>MedicationRequest.requester</td>
       <td>Note - MedicationRequest.performer indicates the performer expected to administer the medication</td>
        <td>**No** value in qdmDataElement for Requester </td>
     </tr>

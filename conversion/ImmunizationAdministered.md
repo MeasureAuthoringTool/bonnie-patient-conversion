@@ -28,8 +28,7 @@
       <td>code</td>
       <td>Immunization.vaccineCode</td>
       <td>&nbsp;</td>
-        <td>qdmDataElement.getDataElementCodes())</td>
-       
+        <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>id</td>

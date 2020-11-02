@@ -21,7 +21,6 @@ public class MappingDataService {
     private static final String LOG_MESSAGE = "Received {} records from the spreadsheet's JSON, URL: {}";
     private final RestTemplate restTemplate;
 
-
     @Value("${json.data.code-system-entry-url}")
     private String codeSystemEntryUrl;
 

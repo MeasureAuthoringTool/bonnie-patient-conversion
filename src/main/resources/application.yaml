@@ -18,7 +18,6 @@ json:
   data:
     code-system-entry-url: https://spreadsheets.google.com/feeds/list/1_heoWR09X3UnyEvyyHLzVXT_D1Hhdt3OPztpgr1hW_k/od6/public/values?alt=json
 
-
 swagger-server:
 
 bonnie-thread-pools:

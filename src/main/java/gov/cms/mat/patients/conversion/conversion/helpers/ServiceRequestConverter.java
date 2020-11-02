@@ -15,19 +15,24 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
                                                                                   QdmDataElement qdmDataElement,
                                                                                   ConverterBase<ServiceRequest> converterBase,
                                                                                   ServiceRequest.ServiceRequestIntent intent) {
-        ServiceRequest serviceRequest = new ServiceRequest();
-        serviceRequest.setIntent(intent);
-
         List<String> conversionMessages = new ArrayList<>();
 
-        serviceRequest.setId(qdmDataElement.get_id());
+        ServiceRequest serviceRequest = new ServiceRequest();
         serviceRequest.setSubject(createReference(fhirPatient));
-        serviceRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
+
+        serviceRequest.setIntent(intent);
+
         serviceRequest.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        serviceRequest.setId(qdmDataElement.get_id());
+
+        if (qdmDataElement.getReason() != null) {
+            serviceRequest.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(),
+                    qdmDataElement.getReason())));
+        }
+
+        serviceRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
 
         if (!converterBase.processNegation(qdmDataElement, serviceRequest)) {
-            //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#892-device-order--non-patient-use-devices
-            //Constrain to one or more of active, on-hold, completed
             serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.UNKNOWN);
             conversionMessages.add(ConverterBase.NO_STATUS_MAPPING);
         }
