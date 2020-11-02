@@ -38,18 +38,20 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
         List<String> conversionMessages = new ArrayList<>();
 
         Condition condition = new Condition();
-        condition.setId(qdmDataElement.get_id());
         condition.setSubject(createReference(fhirPatient));
 
         condition.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 
+        condition.setId(qdmDataElement.get_id());
+
+        if (qdmDataElement.getPrevalencePeriod() != null) {
+            condition.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
+        }
+
         condition.setRecordedDate(qdmDataElement.getAuthorDatetime()); // usually comes in as null
 
-        condition.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
-
-        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
-            log.debug("We have FacilityLocations");
-            // condition.setBodySite() ??
+        if (qdmDataElement.getSeverity() != null) {
+            condition.setSeverity(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
         }
 
         processNegation(qdmDataElement, condition);

@@ -16,7 +16,7 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td>Immunization.status<</td>
+      <td>Immunization.status</td>
       <td>Constrain to Completed, entered-in-error, not-done</td>
     </tr>
     <tr>

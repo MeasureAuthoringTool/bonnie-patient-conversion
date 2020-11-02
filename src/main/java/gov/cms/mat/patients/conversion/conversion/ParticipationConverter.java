@@ -55,5 +55,4 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
         coverage.getPeriod().setStart(qdmInterval.getLow());
         coverage.getPeriod().setEnd(qdmInterval.getHigh());
     }
-
 }
