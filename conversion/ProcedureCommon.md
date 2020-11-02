@@ -55,16 +55,19 @@
       <td>Rank</td>
       <td>Encounter.extension.extension:rank.value[x]:valuePositiveInt</td>
       <td>Referenced as attributes of Encounter (Encounter.extension.extension:rank.value[x]:valuePositiveInt).</td>
+      <td>Need stan ? How to add rank in a Encounter Extension?</td>
     </tr>
     <tr>
       <td>Priority</td>
       <td>qicore-encounter-procedure</td>
       <td>This QDM attribute is intended to reference elective from non-elective procedures.<br><br>QI-Core references procedure.priority based on the relationship of the procedure to the Encounter; hence, Encounter.procedure (which is an extension). <br><br>The elective nature of a procedure can also be referenced based on the elective nature of an Encounter (Encounter.priority) for which the respective procedure is a principal procedure.<br><br>The concept may also be addressed as an Encounter, Order or Procedure, Order (both using ServiceRequest) and ServiceRequest.priority.</td>
+      <td>Need stan ? Comments make little sense to non expert?</td>
     </tr>
     <tr>
       <td>Anatomical Location Site</td>
       <td>Procedure.bodySite</td>
       <td>&nbsp;</td>
+      <td>Not mapped</td>
     </tr>
     <tr>
       <td>Reason</td>
@@ -76,6 +79,7 @@
       <td>Result</td>
       <td>Observation that includes the element Observation.partOf to reference the procedure to which it applies.</td>
       <td>Procedure.report references DiagnosticReport-note, DocumentReference, Composition (histology result, pathology report, surgical report, etc.); the latter two are not QI-Core resources. However, based on feedback regarding the use of the Observation resource, a procedure result might be better referenced as an Observation that includes the element Observation.partOf to reference the procedure to which it applies.</td>
+       <td>Need stan ? We have results not sure how to map comments confusing?</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -91,17 +95,19 @@
       <td>Relevant dateTime</td>
       <td>Procedure.performed[x] dateTime</td>
       <td>&nbsp;</td>
+     <td>   qdmDataElement.getRelevantDatetime() </td>
     </tr>
     <tr>
       <td>Relevant Period</td>
       <td>Procedure.performed[x] Period</td>
       <td>&nbsp;</td>
-      <td>qdmDataElement.getRelevantPeriod()</td>
+      <td>qdmDataElement.getRelevantPeriod() -- ****Relevant dateTime< and Relevant Period map to the same Type object in java hapi fhir, If we have both we take period since it has more data****  </td>
     </tr>
     <tr>
       <td>Incision dateTime</td>
       <td>Procedure.extension:incisionDateTime</td>
       <td>&nbsp;</td>
+      <td>Map to extension</td>
     </tr>
     <tr>
       <td>Author dateTime</td>
@@ -112,6 +118,7 @@
       <td>Components</td>
       <td>N/A</td>
       <td>Procedure does not include components and the concept of components references a observation that is a result of the procedure (Observation.partOf) for which that observation has components consistent with the Observation component modeling recommendation in FHIR.</td>
+      <td>Need stan ? We have components not sure how to map comments confusing?</td>
     </tr>
     <tr>
       <td>Component code</td>

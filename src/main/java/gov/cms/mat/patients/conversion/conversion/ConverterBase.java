@@ -38,6 +38,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class ConverterBase<T extends IBaseResource> implements FhirCreator, DataElementFinder {
     public static final String NO_STATUS_MAPPING = "No mapping for status";
+
+    public static final String INCISION_DATE_TIME_URL = "http://hl7.org/fhir/StructureDefinition/procedure-incisionDateTime";
+
     static final String QICORE_NOT_DONE = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDone";
     static final String QICORE_DO_NOT_PERFORM_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-doNotPerformReason";
     static final String QICORE_NOT_DONE_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDoneReason";

@@ -3,11 +3,15 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.INCISION_DATE_TIME_URL;
 
 public interface ProcedureConverter extends DataElementFinder, FhirCreator {
 
@@ -16,53 +20,59 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
                                                                         ConverterBase<Procedure> converterBase) {
         List<String> conversionMessages = new ArrayList<>();
         Procedure procedure = new Procedure();
-
-        procedure.setId(qdmDataElement.get_id());
-        procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
         procedure.setSubject(createReference(fhirPatient));
 
-        //Todo qdmDataElement.getRank() is available, How can we map it to Encounter.extension.extension:rank.value[x]:valuePositiveInt
+        procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        procedure.setId(qdmDataElement.get_id());
 
-        if (qdmDataElement.getPriority() != null) {
-            //If available, How do we map it to qicore-encounter-procedure?
-        }
+//        if (qdmDataElement.getRank() != null) {
+//            //todo stan
+//        }
 
-        if (qdmDataElement.getRelevantDatetime() != null) {
-            //ask Michael on what is Type?
-//            procedure.setPerformed(qdmDataElement.getRelevantDatetime());
-        }
-
-        if (qdmDataElement.getIncisionDatetime() != null) {
-//           ask Michael. Should be mapped to Procedure.extension:incisionDateTime
-        }
-
-        procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
-        /**
-         * {
-         * "dataTypeDescription": "Intervention, Performed",
-         * "matAttributeName": "authorDatetime",
-         * "fhirQicoreMapping": "ServiceRequest.authoredOn",
-         * "fhirResource": "Procedure",
-         * "fhirType": "dateTime",
-         * "fhirElement": "authoredOn",
-         * "helpWording": "Definition: When the request transitioned to being actionable.\n",
-         * "dropDown": []
-         * },
-         */
-        //todo stan
-        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8152-intervention-performed
-        // procedure.setAuthoredOn todo how to map this see negataion
-
+//        if (qdmDataElement.getPriority() != null) {
+//            //todo stan
+//        }
 
         if (qdmDataElement.getReason() != null) {
             procedure.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getReason())));
         }
+
+//        if (qdmDataElement.getResult() != null) {
+//            //todo stan
+//        }
 
         if (!converterBase.processNegation(qdmDataElement, procedure)) {
             // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8152-intervention-performed
             // constrain to “completed”
             procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
         }
+
+        // Relevant getRelevantPeriod() and getRelevantDatetime() bot map to fhir as setPerformed(Type value)
+        // since period has more data we can let that win if we have both
+        boolean havePeriod = false;
+
+        if (qdmDataElement.getRelevantPeriod() != null) {
+            procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
+            havePeriod = true;
+        }
+
+        if (!havePeriod && qdmDataElement.getRelevantDatetime() != null) {
+            procedure.setPerformed(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+        }
+
+        if (qdmDataElement.getIncisionDatetime() != null) {
+            procedure.setExtension(List.of(new Extension(INCISION_DATE_TIME_URL)));
+            Extension extension = procedure.getExtension().get(0);
+            extension.setValue(new DateTimeType(qdmDataElement.getIncisionDatetime()));
+        }
+
+//        if (CollectionUtils.isNotEmpty(qdmDataElement.getComponents())) {
+//            //todo stan
+//        }
+
+//        if (qdmDataElement.getPerformer() != null) {
+//            // No data
+//        }
 
         return QdmToFhirConversionResult.<Procedure>builder()
                 .fhirResource(procedure)

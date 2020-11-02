@@ -7,6 +7,7 @@ import org.hl7.fhir.r4.hapi.validation.FhirInstanceValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.INCISION_DATE_TIME_URL;
 import static gov.cms.mat.patients.conversion.conversion.PatientConverter.DETAILED_RACE_URL;
 import static gov.cms.mat.patients.conversion.conversion.PatientConverter.US_CORE_RACE_URL;
 
@@ -28,7 +29,7 @@ public class ValidationConfig {
         instanceValidator.setValidationSupport((IValidationSupport) fhirContext.getValidationSupport());
         instanceValidator.setNoTerminologyChecks(true);
 
-        instanceValidator.setCustomExtensionDomains(US_CORE_RACE_URL, DETAILED_RACE_URL);
+        instanceValidator.setCustomExtensionDomains(US_CORE_RACE_URL, DETAILED_RACE_URL, INCISION_DATE_TIME_URL);
 
         validator.registerValidatorModule(instanceValidator);
 
