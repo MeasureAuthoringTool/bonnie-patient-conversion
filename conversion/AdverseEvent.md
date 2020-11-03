@@ -12,7 +12,7 @@
       <td>Adverse Event</td>
       <td>AdverseEvent</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
+      <td>QDM::AdverseEvent</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -72,7 +72,7 @@
       <td>recorder</td>
       <td>AdverseEvent.recorder</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
+      <td>Not Mapped</td>
     </tr>
   </tbody>
 </table>

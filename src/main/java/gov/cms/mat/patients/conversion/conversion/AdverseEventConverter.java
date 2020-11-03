@@ -34,36 +34,34 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
 
     @Override
     public QdmToFhirConversionResult<AdverseEvent> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
-        log.info("patient has  AdverseEvent: {}", fhirPatient.getId());
-
         AdverseEvent adverseEvent = new AdverseEvent();
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             adverseEvent.setEvent(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         }
 
-        if (qdmDataElement.getType() != null) {
+//        if (qdmDataElement.getType() != null) {
 //            adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType())));
 //            log.info("We have category"); //todo no data
-        }
+//        }
 
-        if (qdmDataElement.getSeverity() != null) {
+//        if (qdmDataElement.getSeverity() != null) {//
             //todo no data
 //            adverseEvent.setSeverity(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
-        }
+//        }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             adverseEvent.setDate(qdmDataElement.getRelevantDatetime());
         }
 
-        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
+//        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
 //            log.info("We have Locations"); //todo no data
-        }
+//        }
 
-        if (qdmDataElement.getAuthorDatetime() != null) {
+//        if (qdmDataElement.getAuthorDatetime() != null) {
 //            todo no data
 //            adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
-        }
+//        }
 
         adverseEvent.setId(qdmDataElement.get_id());
 

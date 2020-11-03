@@ -49,15 +49,15 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
             allergyIntolerance.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
         }
 
-        if (qdmDataElement.getAuthorDatetime() != null) {
-            allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
-        }
+        allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
+
 
         if (qdmDataElement.getSeverity() != null) {
-            //todo Mike Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
+          AllergyIntolerance.AllergyIntoleranceReactionComponent  component = allergyIntolerance.getReactionFirstRep();
+            //todo Stan/Ashok Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
+            // How do we map code to enum
         }
 
-        // todo There is no Recorder attribute in qdmDataelements
 
         if (qdmDataElement.getType() != null) {
             List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();

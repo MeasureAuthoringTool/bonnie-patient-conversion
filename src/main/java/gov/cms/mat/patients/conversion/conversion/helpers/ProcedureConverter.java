@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
@@ -25,21 +26,21 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
         procedure.setId(qdmDataElement.get_id());
 
-//        if (qdmDataElement.getRank() != null) {
-//            //todo stan
-//        }
+        if (qdmDataElement.getRank() != null) {
+            conversionMessages.add("Cannot convert QDM attribute rank");
+        }
 
-//        if (qdmDataElement.getPriority() != null) {
-//            //todo stan
-//        }
+        if (qdmDataElement.getPriority() != null) {
+            conversionMessages.add("Cannot convert QDM attribute priority");
+        }
 
         if (qdmDataElement.getReason() != null) {
             procedure.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getReason())));
         }
 
-//        if (qdmDataElement.getResult() != null) {
-//            //todo stan
-//        }
+        if (qdmDataElement.getResult() != null) {
+            conversionMessages.add("Cannot convert QDM attribute result");
+        }
 
         if (!converterBase.processNegation(qdmDataElement, procedure)) {
             // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8152-intervention-performed
@@ -66,9 +67,9 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
             extension.setValue(new DateTimeType(qdmDataElement.getIncisionDatetime()));
         }
 
-//        if (CollectionUtils.isNotEmpty(qdmDataElement.getComponents())) {
-//            //todo stan
-//        }
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getComponents())) {
+            conversionMessages.add("Cannot convert QDM attribute components");
+        }
 
 //        if (qdmDataElement.getPerformer() != null) {
 //            // No data

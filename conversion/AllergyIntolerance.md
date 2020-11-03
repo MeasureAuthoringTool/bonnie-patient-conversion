@@ -102,7 +102,9 @@
       <td>Severity</td>
       <td>AllergyIntolerance.reaction.severity</td>
       <td>mild, moderate, severe</td>
-      <td>Based on what factors we map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality</td>
+      <td>Based on what factors we map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality<br><br>
+      qdmDataElement.getSeverity()  is a code how to we map to a enum
+      </td>
     </tr>
     <tr>
       <td>&nbsp;</td>
