@@ -39,10 +39,37 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         List<String> conversionMessages = new ArrayList<>();
 
         Communication communication = new Communication();
+
         communication.setId(qdmDataElement.get_id());
         communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-
         communication.setReceived(qdmDataElement.getReceivedDatetime());
+
+        if (qdmDataElement.getCategory() != null) {
+            communication.setCategory(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getCategory())));
+        }
+
+        if (qdmDataElement.getMedium() != null) {
+            communication.setMedium(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getMedium())));
+        }
+
+        if (qdmDataElement.getSentDatetime() != null) {
+            communication.setSent(qdmDataElement.getSentDatetime());
+        }
+
+        if (qdmDataElement.getRelatedTo() != null) {
+//            communication.setBasedOn(qdmDataElement.getRelatedTo());
+        }
+
+        if (qdmDataElement.getSender() != null) {
+//            Todo Mike http://hl7.org/fhir/us/qicore/Communication-example.json.html
+//            what will be value of sender.reference
+//            communication.setSender(qdmDataElement.getSender());
+        }
+
+        if (qdmDataElement.getRecipient() != null) {
+            //            what will be value of recipient.reference
+//            communication.setRecipient(qdmDataElement.getRecipient());
+        }
 
         if (processNegation(qdmDataElement, communication)) {
             communication.setStatus(Communication.CommunicationStatus.UNKNOWN);

@@ -41,6 +41,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
     public QdmToFhirConversionResult<Goal> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
         Goal goal = new Goal();
+
         goal.setId(qdmDataElement.get_id());
         goal.setSubject(createReference(fhirPatient));
 
@@ -54,6 +55,10 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         goal.setTarget(createTarget(qdmDataElement.getTargetOutcome()));
 
         processNegation(qdmDataElement, goal);
+
+        if (qdmDataElement.getRelatedTo() != null) {
+            //todo Mike qdmDataElement.getRelatedTo() is returning back Id's How to map it
+        }
 
         return QdmToFhirConversionResult.<Goal>builder()
                 .fhirResource(goal)
