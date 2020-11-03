@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.model.AdverseEvent;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 @Component
@@ -36,27 +37,37 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         log.info("patient has  AdverseEvent: {}", fhirPatient.getId());
 
         AdverseEvent adverseEvent = new AdverseEvent();
-        adverseEvent.setId(qdmDataElement.get_id());
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             adverseEvent.setEvent(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         }
 
-//        if (qdmDataElement.getCategory() != null) {
+        if (qdmDataElement.getType() != null) {
+//            adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType())));
 //            log.info("We have category"); //todo no data
-//        }
-//
-//        if (qdmDataElement.getSeverity() != null) {
-//            log.info("We have Severity");  //todo no data
-//        }
-//
-//        if (qdmDataElement.getAuthorDatetime() != null) {
-//            log.info("We have AuthorDateTime");  //todo no data
-//        }
-//
-//        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
+        }
+
+        if (qdmDataElement.getSeverity() != null) {
+            //todo no data
+//            adverseEvent.setSeverity(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
+        }
+
+        if (qdmDataElement.getRelevantDatetime() != null) {
+            adverseEvent.setDate(qdmDataElement.getRelevantDatetime());
+        }
+
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
 //            log.info("We have Locations"); //todo no data
-//        }
+        }
+
+        if (qdmDataElement.getAuthorDatetime() != null) {
+//            todo no data
+//            adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
+        }
+
+        adverseEvent.setId(qdmDataElement.get_id());
+
+        // todo There is no Recorder attribute in qdmDataelements
 
         processNegation(qdmDataElement, adverseEvent);
 

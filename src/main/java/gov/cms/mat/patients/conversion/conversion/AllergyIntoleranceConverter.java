@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,21 +37,27 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
     public QdmToFhirConversionResult<AllergyIntolerance> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
 
         AllergyIntolerance allergyIntolerance = new AllergyIntolerance();
-        allergyIntolerance.setId(qdmDataElement.get_id());
-
-        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#83-allergyintolerance
-        // active, inactive, resolved
-        // allergyIntolerance.setClinicalStatus() 	this is codeable Concept
-
         allergyIntolerance.setPatient(createReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             allergyIntolerance.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         }
 
+        allergyIntolerance.setId(qdmDataElement.get_id());
+
         if (qdmDataElement.getPrevalencePeriod() != null) {
             allergyIntolerance.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
         }
+
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
+        }
+
+        if (qdmDataElement.getSeverity() != null) {
+            //todo Mike Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
+        }
+
+        // todo There is no Recorder attribute in qdmDataelements
 
         if (qdmDataElement.getType() != null) {
             List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();
@@ -59,6 +66,9 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
             component.setSubstance(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType()));
             list.add(component);
         }
+        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#83-allergyintolerance
+        // active, inactive, resolved
+        // allergyIntolerance.setClinicalStatus() 	this is codeable Concept
 
         processNegation(qdmDataElement, allergyIntolerance);
 
