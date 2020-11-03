@@ -33,15 +33,15 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
 
         nutritionOrder.setId(qdmDataElement.get_id());
 
-        if (qdmDataElement.getFrequency() != null) {
-            // No Data
-        }
+//        if (qdmDataElement.getFrequency() != null) {
+//            // No Data
+//        }
 
         nutritionOrder.setDateTime(qdmDataElement.getAuthorDatetime());
 
-        if (qdmDataElement.getRoute() != null) {
-            // No Data
-        }
+//        if (qdmDataElement.getRoute() != null) {
+//            // No Data
+//        }
 
         if (qdmDataElement.getDataElementCodes() != null) {
             nutritionOrder.getEnteralFormula()
@@ -49,7 +49,6 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getDosage() != null) {
-
             nutritionOrder.getEnteralFormula().getAdministrationFirstRep()
                     .setQuantity(convertQuantity(qdmDataElement.getDosage()));
         }
@@ -63,17 +62,13 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
             //conversionMessages.add("Unable to convert RelevantPeriod to a Fhir Timing object");
         }
 
-        if (qdmDataElement.getRefills() != null) {
-            System.out.println("HI");
-        }
-
-
+//        if (qdmDataElement.getRefills() != null) {
+//            // No Data
+//        }
 
         return QdmToFhirConversionResult.<NutritionOrder>builder()
                 .fhirResource(nutritionOrder)
                 .conversionMessages(conversionMessages)
                 .build();
-
-
     }
 }
