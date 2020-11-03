@@ -27,7 +27,7 @@
       <td>Code</td>
       <td>Goal.target.measure</td>
       <td>&nbsp;</td>
-      <td>qdmDataElement.getTargetOutcome()</td>
+      <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -50,6 +50,7 @@
       <td>Target outcome</td>
       <td>Goal.target.detail[x]</td>
       <td>&nbsp;</td>
+      <td>qdmDataElement.getTargetOutcome()</td>
     </tr>
     <tr>
       <td>Relevant Period</td>

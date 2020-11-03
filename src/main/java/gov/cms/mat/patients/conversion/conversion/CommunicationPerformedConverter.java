@@ -40,9 +40,9 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
 
         Communication communication = new Communication();
 
-        communication.setId(qdmDataElement.get_id());
         communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-        communication.setReceived(qdmDataElement.getReceivedDatetime());
+
+        communication.setId(qdmDataElement.get_id());
 
         if (qdmDataElement.getCategory() != null) {
             communication.setCategory(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getCategory())));
@@ -56,20 +56,25 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
             communication.setSent(qdmDataElement.getSentDatetime());
         }
 
-        if (qdmDataElement.getRelatedTo() != null) {
-//            communication.setBasedOn(qdmDataElement.getRelatedTo());
+        if (qdmDataElement.getReceivedDatetime() != null) {
+            communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
 
-        if (qdmDataElement.getSender() != null) {
+
+//        if (qdmDataElement.getRelatedTo() != null) {
+//            //communication.setBasedOn(qdmDataElement.getRelatedTo());
+//        }
+
+//        if (qdmDataElement.getSender() != null) {
 //            Todo Mike http://hl7.org/fhir/us/qicore/Communication-example.json.html
 //            what will be value of sender.reference
-//            communication.setSender(qdmDataElement.getSender());
-        }
+//           communication.setSender(qdmDataElement.getSender());
+//        }
 
-        if (qdmDataElement.getRecipient() != null) {
-            //            what will be value of recipient.reference
-//            communication.setRecipient(qdmDataElement.getRecipient());
-        }
+//        if (qdmDataElement.getRecipient() != null) {
+//            //            what will be value of recipient.reference
+//            //communication.setRecipient(qdmDataElement.getRecipient());
+//        }
 
         if (processNegation(qdmDataElement, communication)) {
             communication.setStatus(Communication.CommunicationStatus.UNKNOWN);

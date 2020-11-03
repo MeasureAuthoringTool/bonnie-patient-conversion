@@ -10,6 +10,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.Goal;
@@ -41,24 +42,34 @@ public class CareCoalConverter extends ConverterBase<Goal> {
     public QdmToFhirConversionResult<Goal> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
         Goal goal = new Goal();
+        goal.setSubject(createReference(fhirPatient));
+
+        goal.getTargetFirstRep().setMeasure(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 
         goal.setId(qdmDataElement.get_id());
-        goal.setSubject(createReference(fhirPatient));
+
+        if (qdmDataElement.getTargetOutcome() != null) {
+            QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(qdmDataElement.getTargetOutcome());
+
+            if (qdmCodeSystem != null) {
+                goal.getTargetFirstRep().setDetail(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
+            }
+        }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow()));
             goal.setStatusDate(qdmDataElement.getRelevantPeriod().getHigh());
         }
 
-        goal.setCategory(List.of(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes())));
+//        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
+//            //todo Ashook qdmDataElement.getRelatedTo() is returning back Id's How to map it
+//        }
+//
+//        if (qdmDataElement.getPerformer() != null) {
+//            // no data
+//        }
 
-        goal.setTarget(createTarget(qdmDataElement.getTargetOutcome()));
-
-        processNegation(qdmDataElement, goal);
-
-        if (qdmDataElement.getRelatedTo() != null) {
-            //todo Mike qdmDataElement.getRelatedTo() is returning back Id's How to map it
-        }
+        processNegation(qdmDataElement, goal); // no negations expected
 
         return QdmToFhirConversionResult.<Goal>builder()
                 .fhirResource(goal)

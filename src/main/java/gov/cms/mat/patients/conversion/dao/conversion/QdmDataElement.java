@@ -32,7 +32,7 @@ public class QdmDataElement {
 
     QdmInterval participationPeriod;
 
-    // ids of other patients?
+    // ids of other patients??
     /* "relatedTo": [
           "5c7592f1b8484660416e290c"
         ] */

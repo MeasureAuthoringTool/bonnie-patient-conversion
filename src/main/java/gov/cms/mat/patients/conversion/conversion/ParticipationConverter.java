@@ -35,13 +35,17 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
 
     @Override
     public QdmToFhirConversionResult<Coverage> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
-        Coverage coverage = new Coverage();
         List<String> conversionMessages = new ArrayList<>();
 
-        coverage.setId(qdmDataElement.get_id());
+        Coverage coverage = new Coverage();
         coverage.setBeneficiary(createReference(fhirPatient));
+
         coverage.setStatus(Coverage.CoverageStatus.ACTIVE);
+
         coverage.setType(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+
+        coverage.setId(qdmDataElement.get_id());
+
         convertParticipationPeriod(coverage, qdmDataElement);
 
         return QdmToFhirConversionResult.<Coverage>builder()
