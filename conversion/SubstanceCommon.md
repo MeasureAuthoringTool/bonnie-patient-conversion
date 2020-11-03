@@ -4,6 +4,7 @@
       <th><strong>QDM Context</strong></th>
       <th><strong>FHIR R4</strong></th>
       <th><strong>Comments</strong></th>
+       <th><strong>Conversion</strong></th>
     </tr>
   </thead>
   <tbody>
@@ -26,6 +27,7 @@
       <td>Substance, Recommended</td>
       <td>NutritionOrder.intent</td>
       <td>Constrain to “plan”</td>
+       <td>SubstanceAdministered what to set to?????</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
@@ -36,11 +38,13 @@
       <td>ORAL DIET</td>
       <td>NutritionOrder.oralDiet</td>
       <td>&nbsp;</td>
+      <td>&nbsp;Not mapped </td>
     </tr>
     <tr>
       <td>code (to represent a diet order)</td>
       <td>NutritionOrder.oralDiet.type</td>
       <td>&nbsp;</td>
+      <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -51,6 +55,7 @@
       <td>id</td>
       <td>NutritionOrder.id</td>
       <td>&nbsp;</td>
+       <td>&nbsp;</td>
     </tr>
     <tr>
       <td>dosage</td>
@@ -61,6 +66,7 @@
       <td>frequency</td>
       <td>NutritionOrder.Diet.schedule</td>
       <td>&nbsp;</td>
+     <td>No Data for qdmDataElement.getFrequency()</td>
     </tr>
     <tr>
       <td>negation rationale</td>
@@ -96,11 +102,13 @@
       <td>route</td>
       <td>NutritionOrder.oralDiet</td>
       <td>&nbsp;</td>
+      <td>No data for qdmDataElement.getRoute()</td> 
     </tr>
     <tr>
       <td>Requester</td>
       <td>NutritionOrder.orderer</td>
       <td>&nbsp;</td>
+      <td>Not mapped&nbsp;</td>
     </tr>
     <tr>
       <td>ENTERAL FORMULA</td>
@@ -111,6 +119,7 @@
       <td>code (to represent a diet order)</td>
       <td>NutritionOrder.enteralFormula.baseFormulaType</td>
       <td>&nbsp;</td>
+      <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>Additive to diet order</td>
@@ -126,11 +135,13 @@
       <td>dosage</td>
       <td>NutritionOrder.enterealFormula.administration.quantity</td>
       <td>&nbsp;</td>
+      <td>qdmDataElement.getDosage()</td>
     </tr>
     <tr>
       <td>frequency</td>
       <td>NutritionOrder.enteralFormula.administration.rate[x]</td>
       <td>&nbsp;</td>
+      <td>No Data for qdmDataElement.getFrequency()</td>
     </tr>
     <tr>
       <td>negation rationale</td>
@@ -146,6 +157,7 @@
       <td>relevant period</td>
       <td>NutritionOrder.enteralFormula.administration.schedule</td>
       <td>&nbsp;</td>
+      <td>TODO how to fully convert - qdmDataElement.getRelevantPeriod()</td>
     </tr>
     <tr>
       <td>reason</td>
@@ -161,16 +173,19 @@
       <td>refills</td>
       <td>NutritionOrder.enteralFormula</td>
       <td>&nbsp;</td>
+      <td>No Data for qdmDataElement.getRefills()</td>
     </tr>
     <tr>
       <td>route</td>
       <td>NutritionOrder.enteralFormula.routeofAdministration</td>
       <td>&nbsp;</td>
+      <td>No data for qdmDataElement.getRoute()</td> 
     </tr>
     <tr>
       <td>Requester</td>
       <td>NutritionOrder.orderer</td>
       <td>&nbsp;</td>
+      <td>Not mapped</td>
     </tr>
   </tbody>
 </table>
