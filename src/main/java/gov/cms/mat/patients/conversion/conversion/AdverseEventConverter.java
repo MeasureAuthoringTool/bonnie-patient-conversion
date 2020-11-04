@@ -35,6 +35,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
     @Override
     public QdmToFhirConversionResult<AdverseEvent> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         AdverseEvent adverseEvent = new AdverseEvent();
+        adverseEvent.setSubject(createReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             adverseEvent.setEvent(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
@@ -55,7 +56,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         }
 
 //        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
-//            log.info("We have Locations"); //todo no data
+           //  adverseEvent.setLocation(); // reference
 //        }
 
 //        if (qdmDataElement.getAuthorDatetime() != null) {

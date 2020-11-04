@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class CodeSystemEntriesService {
-    private final MappingDataService mappingDataService;
+    private final GoogleDataService googleDataService;
 
-    public CodeSystemEntriesService(MappingDataService mappingDataService) {
-        this.mappingDataService = mappingDataService;
+    public CodeSystemEntriesService(GoogleDataService googleDataService) {
+        this.googleDataService = googleDataService;
     }
 
     public Optional<CodeSystemEntry> find(String oid) {
@@ -23,7 +23,7 @@ public class CodeSystemEntriesService {
             log.warn("Oid is empty: {}", oid);
             return Optional.empty();
         } else {
-            return mappingDataService.getCodeSystemEntries().stream()
+            return googleDataService.getCodeSystemEntries().stream()
                     .filter(c -> c.getOid().contains(oid))
                     .findFirst();
         }
