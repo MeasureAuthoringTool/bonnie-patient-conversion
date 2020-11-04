@@ -3,16 +3,13 @@ package gov.cms.mat.patients.conversion.conversion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.ResourceFileUtil;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.service.GoogleDataService;
 import gov.cms.mat.patients.conversion.service.PatientService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,15 +20,14 @@ import java.util.stream.Stream;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Disabled
-class PatientConverterTest implements ResourceFileUtil {
+class PatientConverterTestAllData implements ResourceFileUtil {
 
     @Autowired
     PatientService patientService;
 
     @SneakyThrows
     @Test
-    void process() {
+    void processOne() {
         String all = getStringFromResource("/cqm_patients.json");
 
         ObjectMapper objectMapper = new ObjectMapper();

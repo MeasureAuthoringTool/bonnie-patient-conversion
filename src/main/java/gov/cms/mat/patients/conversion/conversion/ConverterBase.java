@@ -83,7 +83,6 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
                                      ValidationResult validationResult,
                                      QdmDataElement dataElement) {
         try {
-
             ConversionOutcome conversionOutcome = ConversionOutcome.builder()
                     .conversionMessages(qdmToFhirConversionResult.getConversionMessages())
                     .validationMessages(validationResult.getMessages())
