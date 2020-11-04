@@ -1,0 +1,13 @@
+spring:
+  main:
+    banner-mode: "off"
+
+logging:
+  level:
+    root: DEBUG
+    gov.cms.mat: DEBUG
+    org.hl7.fhir.r4.hapi.ctx: INFO
+    org.hl7.fhir.r4.hapi.validation: INFO
+  pattern:
+    console: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %mdc %-5level %logger{36}.%M - %msg%n"
+
