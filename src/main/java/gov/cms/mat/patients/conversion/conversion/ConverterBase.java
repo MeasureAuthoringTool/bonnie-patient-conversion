@@ -32,6 +32,7 @@ import org.springframework.scheduling.annotation.Async;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -41,9 +42,8 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     public static final String NO_STATUS_MAPPING = "No mapping for status";
 
     public static final String INCISION_DATE_TIME_URL = "http://hl7.org/fhir/StructureDefinition/procedure-incisionDateTime";
-
-    static final String QICORE_NOT_DONE = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDone";
     public static final String QICORE_DO_NOT_PERFORM_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-doNotPerformReason";
+    static final String QICORE_NOT_DONE = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDone";
     static final String QICORE_NOT_DONE_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDoneReason";
     static final String QICORE_RECORDED = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-recorded";
     @Getter
@@ -76,6 +76,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         } else {
             return dataElements.stream()
                     .map(d -> convertQdmToFhir(fhirPatient, d))
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
     }
@@ -133,9 +134,13 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     public FhirDataElement convertQdmToFhir(Patient fhirPatient, QdmDataElement dataElement) {
         QdmToFhirConversionResult<T> qdmToFhirConversionResult = convertToFhir(fhirPatient, dataElement);
 
-        ValidationResult validationResult = validationService.validate(qdmToFhirConversionResult.getFhirResource());
+        if (qdmToFhirConversionResult == null) {
+            return null;
+        } else {
+            ValidationResult validationResult = validationService.validate(qdmToFhirConversionResult.getFhirResource());
 
-        return buildDataElement(qdmToFhirConversionResult, validationResult, dataElement);
+            return buildDataElement(qdmToFhirConversionResult, validationResult, dataElement);
+        }
     }
 
     public boolean processNegation(QdmDataElement qdmDataElement, T resource) {

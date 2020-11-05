@@ -18,6 +18,7 @@ import gov.cms.mat.patients.conversion.conversion.EncounterConverter;
 import gov.cms.mat.patients.conversion.conversion.EncounterOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.FamilyHistoryConverter;
 import gov.cms.mat.patients.conversion.conversion.ImmunizationAdministeredConverter;
+import gov.cms.mat.patients.conversion.conversion.ImmunizationAdministeredNegationConverter;
 import gov.cms.mat.patients.conversion.conversion.ImmunizationOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.InterventionOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.InterventionPerformedConverter;
@@ -88,6 +89,7 @@ public class PatientService implements FhirCreator {
     private final MedicationAdministeredConverter medicationAdministeredConverter;
     private final MedicationDispensedConverter medicationDispensedConverter;
     private final ImmunizationAdministeredConverter immunizationAdministeredConverter;
+    private final ImmunizationAdministeredNegationConverter immunizationAdministeredNegationConverter;
     private final ImmunizationOrderConverter immunizationOrderConverter;
     private final ParticipationConverter participationConverter;
     private final PhysicalExamPerformedConverter physicalExamPerformedConverter;
@@ -125,6 +127,7 @@ public class PatientService implements FhirCreator {
                           MedicationAdministeredConverter medicationAdministeredConverter,
                           MedicationDispensedConverter medicationDispensedConverter,
                           ImmunizationAdministeredConverter immunizationAdministeredConverter,
+                          ImmunizationAdministeredNegationConverter immunizationAdministeredNegationConverter,
                           ParticipationConverter participationConverter,
                           PhysicalExamPerformedConverter physicalExamPerformedConverter,
                           ProcedureOrderConverter procedureOrderConverter,
@@ -155,6 +158,7 @@ public class PatientService implements FhirCreator {
         this.deviceAppliedConverter = deviceAppliedConverter;
         this.medicationActiveConverter = medicationActiveConverter;
         this.medicationAdministeredConverter = medicationAdministeredConverter;
+        this.immunizationAdministeredNegationConverter = immunizationAdministeredNegationConverter;
         this.procedurePerformedConverter = procedurePerformedConverter;
         this.substanceAdministeredConverter = substanceAdministeredConverter;
         this.symptomConverter = symptomConverter;
@@ -271,6 +275,10 @@ public class PatientService implements FhirCreator {
 
             if (qdmTypes.contains(ImmunizationAdministeredConverter.QDM_TYPE)) {
                 processFuture(bonniePatient, fhirPatient, immunizationAdministeredConverter, futures);
+            }
+
+            if (qdmTypes.contains(ImmunizationAdministeredNegationConverter.QDM_TYPE)) {
+                processFuture(bonniePatient, fhirPatient, immunizationAdministeredNegationConverter, futures);
             }
 
             if (qdmTypes.contains(ImmunizationOrderConverter.QDM_TYPE)) {

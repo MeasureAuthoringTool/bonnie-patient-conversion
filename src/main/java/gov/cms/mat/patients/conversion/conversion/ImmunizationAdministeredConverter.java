@@ -34,6 +34,15 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
     @Override
     public QdmToFhirConversionResult<Immunization> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
+        if (qdmDataElement.getNegationRationale() != null) {
+            log.debug("Not creating Immunization due to negation");
+            return null;
+        } else {
+            return convertToFhirNoNegation(fhirPatient, qdmDataElement);
+        }
+    }
+
+    private QdmToFhirConversionResult<Immunization> convertToFhirNoNegation(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
         Immunization immunization = new Immunization();

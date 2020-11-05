@@ -38,22 +38,16 @@ class PatientConverterTestAllData implements ResourceFileUtil {
         Set<String> types = new TreeSet<>();
         BonniePatient bonniePatient = null;
         for (String split : splits) {
-
             try {
                 bonniePatient = objectMapper.readValue(split, BonniePatient.class);
                 System.out.println(bonniePatient.get_id());
                 patientService.processOne(bonniePatient);
 
             } catch (Exception e) {
-
                 System.out.println(split);
                 e.printStackTrace();
-                // throw new IllegalArgumentException("shit");
             }
-
         }
-
-        System.out.println(types);
     }
 
     @SneakyThrows
@@ -65,5 +59,4 @@ class PatientConverterTestAllData implements ResourceFileUtil {
 
         patientService.processMany(Arrays.asList(patients));
     }
-
 }
