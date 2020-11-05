@@ -92,8 +92,8 @@
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
-       <td>&nbsp;</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#871-communication-performed"> Click Here</a></td>
+      <td>&nbsp;</td>
     </tr>
   </tbody>
 </table>
