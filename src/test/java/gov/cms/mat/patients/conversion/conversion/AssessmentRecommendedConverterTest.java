@@ -14,21 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AssessmentOrderConverterTest extends BaseConversionTest implements FhirConversionTest, ServiceRequestCommon {
-    private final ServiceRequest.ServiceRequestIntent FHIR_INTENT = ServiceRequest.ServiceRequestIntent.ORDER;
+class AssessmentRecommendedConverterTest extends BaseConversionTest implements FhirConversionTest, ServiceRequestCommon {
+    private final ServiceRequest.ServiceRequestIntent FHIR_INTENT = ServiceRequest.ServiceRequestIntent.PLAN;
     @Autowired
-    private AssessmentOrderConverter assessmentOrderConverter;
+    private AssessmentRecommendedConverter assessmentRecommendedConverter;
 
     @Test
     void getQdmType() {
-        assertEquals(AssessmentOrderConverter.QDM_TYPE, assessmentOrderConverter.getQdmType());
+        assertEquals(AssessmentRecommendedConverter.QDM_TYPE, assessmentRecommendedConverter.getQdmType());
     }
 
     @Test
     void convertToFhirWithoutNegation() {
         createServiceRequestDataElement(qdmDataElement);
 
-        QdmToFhirConversionResult<ServiceRequest> result = assessmentOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<ServiceRequest> result = assessmentRecommendedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkWithoutNegationResult(result, FHIR_INTENT);
     }
@@ -38,14 +38,14 @@ class AssessmentOrderConverterTest extends BaseConversionTest implements FhirCon
         createServiceRequestDataElement(qdmDataElement);
         qdmDataElement.setNegationRationale(createNegationRationale());
 
-        QdmToFhirConversionResult<ServiceRequest> result = assessmentOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<ServiceRequest> result = assessmentRecommendedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkNegation(result, FHIR_INTENT);
     }
 
     @Test
     void convertToFhirEmptyObjects() {
-        QdmToFhirConversionResult<ServiceRequest> result = assessmentOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<ServiceRequest> result = assessmentRecommendedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         assertEquals(FHIR_INTENT, result.getFhirResource().getIntent());

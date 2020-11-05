@@ -1,9 +1,9 @@
 package gov.cms.mat.patients.conversion.conversion;
 
+import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
+import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.hl7.fhir.r4.model.AdverseEvent;
-import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AdverseEventConverterTest extends BaseConverterTest {
+class AdverseEventConverterTest extends BaseConversionTest implements FhirConversionTest {
     @Autowired
     private AdverseEventConverter adverseEventConverter;
 
@@ -28,9 +28,6 @@ class AdverseEventConverterTest extends BaseConverterTest {
 
     @Test
     void convertToFhir() {
-        Patient fhirPatient = createFhirPatient();
-        QdmDataElement qdmDataElement = createQdmDataElement();
-
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
         qdmDataElement.setRelevantDatetime(createRelevantDatetime());
 
@@ -50,8 +47,6 @@ class AdverseEventConverterTest extends BaseConverterTest {
 
     @Test
     void convertToFhirEmptyObjects() {
-        Patient fhirPatient = createFhirPatient();
-        QdmDataElement qdmDataElement = createQdmDataElement();
         QdmToFhirConversionResult<AdverseEvent> result = adverseEventConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());

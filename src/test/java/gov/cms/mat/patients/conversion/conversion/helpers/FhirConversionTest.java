@@ -1,4 +1,4 @@
-package gov.cms.mat.patients.conversion.conversion;
+package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -18,18 +18,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.ELEMENT_ID;
+import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.FAMILY_NAME;
+import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.GIVEN_NAMES;
+import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.PATIENT_ID;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BaseConverterTest {
-    static final String PATIENT_ID = "1";
-    static final String ELEMENT_ID = "2";
-    static final String FAMILY_NAME = "Public";
-    static final String GIVEN_NAMES[] = {"Joe", "Q"};
-    private final static Instant now = Instant.now();
+public interface FhirConversionTest {
+    Instant now = Instant.now();
 
-    private HumanName createName() {
+    default Patient createFhirPatient() {
+        Patient patient = new Patient();
+        patient.setName(List.of(createName()));
+        patient.setId(PATIENT_ID);
+        return patient;
+    }
+
+    default HumanName createName() {
         HumanName humanName = new HumanName();
         humanName.setUse(HumanName.NameUse.USUAL);
 
@@ -44,27 +51,22 @@ public class BaseConverterTest {
         return humanName;
     }
 
-    Patient createFhirPatient() {
-        Patient patient = new Patient();
-        patient.setName(List.of(createName()));
-        patient.setId(PATIENT_ID);
-        return patient;
-    }
-
-    QdmDataElement createQdmDataElement() {
+    default QdmDataElement createQdmDataElement() {
         QdmDataElement qdmDataElement = new QdmDataElement();
         qdmDataElement.set_id(ELEMENT_ID);
         return qdmDataElement;
     }
 
-    public void checkBase(String fhirResourceId, Reference patientReference) {
-        assertEquals(fhirResourceId, ELEMENT_ID);
+    default void checkBase(String fhirResourceId, Reference patientReference) {
+        assertEquals(ELEMENT_ID, fhirResourceId);
 
-        assertEquals(patientReference.getReference(), "Patient/1");
-        assertEquals(patientReference.getDisplay(), "Joe Q Public");
+        assertEquals("Patient/" + PATIENT_ID, patientReference.getReference());
+
+        String name = GIVEN_NAMES[0] + ' ' + GIVEN_NAMES[1] + ' ' + FAMILY_NAME;
+        assertEquals(name, patientReference.getDisplay());
     }
 
-    public QdmCodeSystem createDataElementCode() {
+    default QdmCodeSystem createDataElementCode() {
         QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
         qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
         qdmCodeSystem.setCode("50699000");
@@ -72,7 +74,7 @@ public class BaseConverterTest {
         return qdmCodeSystem;
     }
 
-    public void checkDataElementCode(CodeableConcept codeableConcept) {
+    default void checkDataElementCode(CodeableConcept codeableConcept) {
         assertEquals(1, codeableConcept.getCoding().size());
         Coding coding = codeableConcept.getCoding().get(0);
         assertEquals("http://snomed.info/sct", coding.getSystem());
@@ -80,38 +82,38 @@ public class BaseConverterTest {
         assertEquals("Hospital admission, short-term", coding.getDisplay());
     }
 
-    public Date createRelevantDatetime() {
+    default Date createRelevantDatetime() {
         return new Date(now.toEpochMilli() - 10000);
     }
 
-    public void checkRelevantDateTime(Date relevantDatetime) {
+    default void checkRelevantDateTime(Date relevantDatetime) {
         assertEquals(createRelevantDatetime(), relevantDatetime);
     }
 
-    public QdmPeriod createPrevalencePeriod() {
+    default QdmPeriod createPrevalencePeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
         qdmPeriod.setLow(new Date(now.toEpochMilli() - 1000000));
         qdmPeriod.setHigh(new Date(now.toEpochMilli() - 100));
         return qdmPeriod;
     }
 
-    public void checkPrevalencePeriod(Period fhirPeriod) {
+    default void checkPrevalencePeriod(Period fhirPeriod) {
         QdmPeriod qdmPeriod = createPrevalencePeriod();
 
         assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
         assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
     }
 
-    public Date createAuthorDatetime() {
+    default Date createAuthorDatetime() {
         return new Date(now.toEpochMilli() - 50);
     }
 
-    public void checkAuthorDatetime(Date date) {
+    default void checkAuthorDatetime(Date date) {
         assertEquals(createAuthorDatetime(), date);
     }
 
 
-    public QdmCodeSystem createType() {
+    default QdmCodeSystem createType() {
         QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
         qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
         qdmCodeSystem.setCode("64572001");
@@ -119,7 +121,7 @@ public class BaseConverterTest {
         return qdmCodeSystem;
     }
 
-    public void checkType(CodeableConcept codeableConcept) {
+    default void checkType(CodeableConcept codeableConcept) {
         assertEquals(1, codeableConcept.getCoding().size());
         Coding coding = codeableConcept.getCoding().get(0);
         assertEquals("http://snomed.info/sct", coding.getSystem());
@@ -127,7 +129,7 @@ public class BaseConverterTest {
         assertEquals("Diseases", coding.getDisplay());
     }
 
-    public QdmCodeSystem createReason() {
+    default QdmCodeSystem createReason() {
         QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
         qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
         qdmCodeSystem.setCode("80247002");
@@ -135,7 +137,7 @@ public class BaseConverterTest {
         return qdmCodeSystem;
     }
 
-    public void checkReason(CodeableConcept codeableConcept) {
+    default void checkReason(CodeableConcept codeableConcept) {
         assertEquals(1, codeableConcept.getCoding().size());
         Coding coding = codeableConcept.getCoding().get(0);
         assertEquals("http://snomed.info/sct", coding.getSystem());
@@ -143,7 +145,7 @@ public class BaseConverterTest {
         assertEquals("Third degree burn injury", coding.getDisplay());
     }
 
-    public QdmCodeSystem createNegationRationale() {
+    default QdmCodeSystem createNegationRationale() {
         QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
         qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
         qdmCodeSystem.setCode("47448006");
@@ -151,7 +153,7 @@ public class BaseConverterTest {
         return qdmCodeSystem;
     }
 
-    public void checkNegationRationale(Type value) {
+    default void checkNegationRationale(Type value) {
         assertThat(value, instanceOf(Coding.class));
         Coding coding = (Coding) value;
 

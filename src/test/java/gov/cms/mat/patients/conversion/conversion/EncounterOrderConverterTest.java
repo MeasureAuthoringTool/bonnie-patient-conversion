@@ -10,25 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AssessmentOrderConverterTest extends BaseConversionTest implements FhirConversionTest, ServiceRequestCommon {
+class EncounterOrderConverterTest extends BaseConversionTest implements FhirConversionTest, ServiceRequestCommon {
     private final ServiceRequest.ServiceRequestIntent FHIR_INTENT = ServiceRequest.ServiceRequestIntent.ORDER;
+
     @Autowired
-    private AssessmentOrderConverter assessmentOrderConverter;
+    private EncounterOrderConverter encounterOrderConverter;
 
     @Test
     void getQdmType() {
-        assertEquals(AssessmentOrderConverter.QDM_TYPE, assessmentOrderConverter.getQdmType());
+        assertEquals(EncounterOrderConverter.QDM_TYPE, encounterOrderConverter.getQdmType());
     }
 
     @Test
     void convertToFhirWithoutNegation() {
         createServiceRequestDataElement(qdmDataElement);
 
-        QdmToFhirConversionResult<ServiceRequest> result = assessmentOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<ServiceRequest> result = encounterOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkWithoutNegationResult(result, FHIR_INTENT);
     }
@@ -38,14 +39,14 @@ class AssessmentOrderConverterTest extends BaseConversionTest implements FhirCon
         createServiceRequestDataElement(qdmDataElement);
         qdmDataElement.setNegationRationale(createNegationRationale());
 
-        QdmToFhirConversionResult<ServiceRequest> result = assessmentOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<ServiceRequest> result = encounterOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkNegation(result, FHIR_INTENT);
     }
 
     @Test
     void convertToFhirEmptyObjects() {
-        QdmToFhirConversionResult<ServiceRequest> result = assessmentOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<ServiceRequest> result = encounterOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         assertEquals(FHIR_INTENT, result.getFhirResource().getIntent());

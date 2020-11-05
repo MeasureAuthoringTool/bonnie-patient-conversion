@@ -1,10 +1,9 @@
-package gov.cms.mat.patients.conversion.conversion;
+package gov.cms.mat.patients.conversion.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.ResourceFileUtil;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
-import gov.cms.mat.patients.conversion.service.PatientService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

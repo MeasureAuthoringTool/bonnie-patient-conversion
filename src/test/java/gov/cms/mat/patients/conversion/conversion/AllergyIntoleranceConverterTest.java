@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion;
 
+import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AllergyIntoleranceConverterTest extends BaseConverterTest {
+class AllergyIntoleranceConverterTest implements FhirConversionTest {
     @Autowired
     private AllergyIntoleranceConverter allergyIntoleranceConverter;
 
