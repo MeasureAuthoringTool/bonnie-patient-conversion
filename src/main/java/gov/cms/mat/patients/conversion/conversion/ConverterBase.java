@@ -134,6 +134,10 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     public FhirDataElement convertQdmToFhir(Patient fhirPatient, QdmDataElement dataElement) {
         QdmToFhirConversionResult<T> qdmToFhirConversionResult = convertToFhir(fhirPatient, dataElement);
 
+        return validate(dataElement, qdmToFhirConversionResult);
+    }
+
+    public FhirDataElement validate(QdmDataElement dataElement, QdmToFhirConversionResult<T> qdmToFhirConversionResult) {
         if (qdmToFhirConversionResult == null) {
             return null;
         } else {
