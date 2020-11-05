@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.ServiceRequest;
 
@@ -22,7 +23,10 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
 
         serviceRequest.setIntent(intent);
 
-        serviceRequest.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            serviceRequest.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        }
+
         serviceRequest.setId(qdmDataElement.get_id());
 
         if (qdmDataElement.getReason() != null) {

@@ -2,12 +2,15 @@ package gov.cms.mat.patients.conversion.conversion;
 
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.Type;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -15,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BaseConverterTest {
@@ -76,12 +81,82 @@ public class BaseConverterTest {
     }
 
     public Date createRelevantDatetime() {
-        return new Date(now.toEpochMilli() - 100);
+        return new Date(now.toEpochMilli() - 10000);
     }
 
     public void checkRelevantDateTime(Date relevantDatetime) {
         assertEquals(createRelevantDatetime(), relevantDatetime);
     }
 
+    public QdmPeriod createPrevalencePeriod() {
+        QdmPeriod qdmPeriod = new QdmPeriod();
+        qdmPeriod.setLow(new Date(now.toEpochMilli() - 1000000));
+        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 100));
+        return qdmPeriod;
+    }
 
+    public void checkPrevalencePeriod(Period fhirPeriod) {
+        QdmPeriod qdmPeriod = createPrevalencePeriod();
+
+        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
+        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
+    }
+
+    public Date createAuthorDatetime() {
+        return new Date(now.toEpochMilli() - 50);
+    }
+
+    public void checkAuthorDatetime(Date date) {
+        assertEquals(createAuthorDatetime(), date);
+    }
+
+
+    public QdmCodeSystem createType() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
+        qdmCodeSystem.setCode("64572001");
+        qdmCodeSystem.setDisplay("Diseases");
+        return qdmCodeSystem;
+    }
+
+    public void checkType(CodeableConcept codeableConcept) {
+        assertEquals(1, codeableConcept.getCoding().size());
+        Coding coding = codeableConcept.getCoding().get(0);
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("64572001", coding.getCode());
+        assertEquals("Diseases", coding.getDisplay());
+    }
+
+    public QdmCodeSystem createReason() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
+        qdmCodeSystem.setCode("80247002");
+        qdmCodeSystem.setDisplay("Third degree burn injury");
+        return qdmCodeSystem;
+    }
+
+    public void checkReason(CodeableConcept codeableConcept) {
+        assertEquals(1, codeableConcept.getCoding().size());
+        Coding coding = codeableConcept.getCoding().get(0);
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("80247002", coding.getCode());
+        assertEquals("Third degree burn injury", coding.getDisplay());
+    }
+
+    public QdmCodeSystem createNegationRationale() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
+        qdmCodeSystem.setCode("47448006");
+        qdmCodeSystem.setDisplay("Hot Water");
+        return qdmCodeSystem;
+    }
+
+    public void checkNegationRationale(Type value) {
+        assertThat(value, instanceOf(Coding.class));
+        Coding coding = (Coding) value;
+
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("47448006", coding.getCode());
+        assertEquals("Hot Water", coding.getDisplay());
+    }
 }

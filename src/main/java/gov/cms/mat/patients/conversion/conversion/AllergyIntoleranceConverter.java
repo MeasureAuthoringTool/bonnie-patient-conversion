@@ -52,11 +52,11 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
         allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
 
 
-        if (qdmDataElement.getSeverity() != null) {
-          AllergyIntolerance.AllergyIntoleranceReactionComponent  component = allergyIntolerance.getReactionFirstRep();
-            //todo Stan/Ashok Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
-            // How do we map code to enum
-        }
+//        if (qdmDataElement.getSeverity() != null) {
+//          AllergyIntolerance.AllergyIntoleranceReactionComponent  component = allergyIntolerance.getReactionFirstRep();
+//            //todo Stan/Ashok Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
+//            // How do we map code to enum
+//        }
 
 
         if (qdmDataElement.getType() != null) {

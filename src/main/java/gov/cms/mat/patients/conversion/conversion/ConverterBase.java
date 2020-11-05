@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+
 @Slf4j
 public abstract class ConverterBase<T extends IBaseResource> implements FhirCreator, DataElementFinder {
     public static final String NO_STATUS_MAPPING = "No mapping for status";
@@ -197,4 +198,5 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
         medicationRequest.setReasonCode(List.of(codeableConcept));
     }
+
 }

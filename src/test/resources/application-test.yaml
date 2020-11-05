@@ -4,7 +4,7 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
     gov.cms.mat: DEBUG
     org.hl7.fhir.r4.hapi.ctx: INFO
     org.hl7.fhir.r4.hapi.validation: INFO

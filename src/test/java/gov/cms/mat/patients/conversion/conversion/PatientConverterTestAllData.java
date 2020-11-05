@@ -18,16 +18,16 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Disabled //takes to long to run as unit test
 @SpringBootTest
 @ActiveProfiles("test")
 class PatientConverterTestAllData implements ResourceFileUtil {
-
     @Autowired
     PatientService patientService;
 
     @SneakyThrows
     @Test
-    void processOne() {
+    void process() {
         String all = getStringFromResource("/cqm_patients.json");
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -55,29 +55,16 @@ class PatientConverterTestAllData implements ResourceFileUtil {
         }
 
         System.out.println(types);
-
-
-//        String json = "[" + String.join(",\n", splits) + "]";
-//
-//        Path path = Paths.get("/tmp/all.json");
-//        byte[] strToBytes = json.getBytes();
-
-        //     Files.write(path, strToBytes);
     }
 
     @SneakyThrows
     @Test
-    public void load() {
-
+    void load() {
         String all = getStringFromResource("/patients_all_QDM_PROD_as_array.json");
         ObjectMapper objectMapper = new ObjectMapper();
         BonniePatient[] patients = objectMapper.readValue(all, BonniePatient[].class);
 
         patientService.processMany(Arrays.asList(patients));
-
-        //   objectMapper.readValue()
-
     }
-
 
 }

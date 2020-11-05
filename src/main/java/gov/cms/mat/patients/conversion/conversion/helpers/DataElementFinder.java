@@ -1,6 +1,5 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
-
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -12,15 +11,15 @@ import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface DataElementFinder {
-
     default CodeableConcept convertToCodeSystems(CodeSystemEntriesService codeSystemEntriesService,
-                                                 List<QdmCodeSystem> dataElementCodes) {
+                                                 @Nonnull List<QdmCodeSystem> dataElementCodes) {
         if (dataElementCodes.isEmpty()) {
             return null;
         } else {
@@ -38,7 +37,6 @@ public interface DataElementFinder {
         return new CodeableConcept().setCoding(List.of(convertToCoding(codeSystemEntriesService, qdmCodeSystem)));
     }
 
-
     default Coding convertToCoding(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
         String theSystem;
 
@@ -51,7 +49,6 @@ public interface DataElementFinder {
 
         return new Coding(theSystem, qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay());
     }
-
 
     default Coding createCodingFromDataElementCodes(CodeSystemEntriesService codeSystemEntriesService,
                                                     List<QdmCodeSystem> dataElementCodes) {
@@ -70,7 +67,6 @@ public interface DataElementFinder {
             }
         }
     }
-
 
     default Optional<QdmDataElement> findOptionalDataElementsByType(BonniePatient bonniePatient, String type) {
         List<QdmDataElement> dataElements = findDataElementsByType(bonniePatient, type);
