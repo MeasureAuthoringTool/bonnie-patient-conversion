@@ -37,30 +37,23 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
     @Override
     public QdmToFhirConversionResult<Communication> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
-
         Communication communication = new Communication();
 
+        communication.setSubject(createReference(fhirPatient));
         communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-
         communication.setId(qdmDataElement.get_id());
-
         if (qdmDataElement.getCategory() != null) {
             communication.setCategory(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getCategory())));
         }
-
         if (qdmDataElement.getMedium() != null) {
             communication.setMedium(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getMedium())));
         }
-
         if (qdmDataElement.getSentDatetime() != null) {
             communication.setSent(qdmDataElement.getSentDatetime());
         }
-
         if (qdmDataElement.getReceivedDatetime() != null) {
             communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
-
-
 //        if (qdmDataElement.getRelatedTo() != null) {
 //            //communication.setBasedOn(qdmDataElement.getRelatedTo());
 //        }
@@ -85,7 +78,6 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
                 .conversionMessages(conversionMessages)
                 .build();
     }
-
 
     @Override
     void convertNegation(QdmDataElement qdmDataElement, Communication communication) {
