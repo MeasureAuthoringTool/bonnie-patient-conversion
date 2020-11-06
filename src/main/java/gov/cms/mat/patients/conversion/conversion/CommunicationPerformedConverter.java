@@ -66,7 +66,6 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
 //        }
 
 //        if (qdmDataElement.getSender() != null) {
-//            Todo Mike http://hl7.org/fhir/us/qicore/Communication-example.json.html
 //            what will be value of sender.reference
 //           communication.setSender(qdmDataElement.getSender());
 //        }

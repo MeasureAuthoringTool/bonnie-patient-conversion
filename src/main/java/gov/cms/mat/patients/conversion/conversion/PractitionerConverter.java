@@ -67,7 +67,6 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
     }
 
     private Object convertToFhirTest(Prescriber dispenser, QdmDataElement d) {
-
         return null;
     }
 
@@ -101,6 +100,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         }
 
         if( sender.getIdentifier() != null) {
+            //https://www.hl7.org/fhir/identifier-registry.html
             practitioner.getIdentifierFirstRep()
                     .setValue(sender.getIdentifier().getValue())
                     .setSystem(UNITED_STATES_NATIONAL_PROVIDER_IDENTIFIER);

@@ -192,7 +192,6 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         extensionNotDone.setValue(new BooleanType(true));
         procedure.setModifierExtension(List.of(extensionNotDone));
 
-        //todo stan is this correct
         Extension extensionNotDoneReason = new Extension(QICORE_RECORDED);
         extensionNotDoneReason.setValue(new DateTimeType(qdmDataElement.getAuthorDatetime()));
         procedure.setExtension(List.of(extensionNotDoneReason));
