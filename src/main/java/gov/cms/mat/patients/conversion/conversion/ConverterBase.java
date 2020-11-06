@@ -27,6 +27,7 @@ import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
+import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.springframework.scheduling.annotation.Async;
 
@@ -60,6 +61,10 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         this.fhirContext = fhirContext;
         this.objectMapper = objectMapper;
         this.validationService = validationService;
+    }
+
+    public <T extends Resource> T createFhirResourceFromJsonNode(JsonNode jsonNode, Class<T> resourceClass) throws JsonProcessingException {
+        return parseResource(fhirContext, resourceClass, jsonNode);
     }
 
     @Async("threadPoolConversion")
@@ -98,8 +103,11 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
                     .codeListId(dataElement.getCodeListId())
                     .description(description)
                     .valueSetTitle(valueSetTitle)
-                    .fhirResource(createFhirResourceJsonNode(qdmToFhirConversionResult.getFhirResource()))
+                    .fhirResource(createJsonNodeFromFhirResource(qdmToFhirConversionResult.getFhirResource()))
                     .outcome(conversionOutcome)
+                    .fhirType(qdmToFhirConversionResult.getFhirResource().fhirType())
+                    .fhirId(qdmToFhirConversionResult.getFhirResource().getIdElement().getValue())
+                    .fhirObject(qdmToFhirConversionResult.getFhirResource())
                     .build();
         } catch (JsonProcessingException e) {
             log.error("Cannot create DataElement", e);
@@ -122,7 +130,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         }
     }
 
-    private JsonNode createFhirResourceJsonNode(IBaseResource fhirResource) throws JsonProcessingException {
+    private JsonNode createJsonNodeFromFhirResource(IBaseResource fhirResource) throws JsonProcessingException {
         String json = toJson(fhirContext, fhirResource);
         return objectMapper.readTree(json);
     }

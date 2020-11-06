@@ -45,10 +45,13 @@ import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import gov.cms.mat.patients.conversion.dao.results.ConvertedPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Reference;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -330,6 +333,8 @@ public class PatientConversionService implements FhirCreator {
 
             List<FhirDataElement> fhirDataElements = findFhirDataElementsFromFutures(futures);
 
+            processRelatedTo(fhirDataElements);
+
             ConvertedPatient convertedPatient = ConvertedPatient.builder()
                     .fhirPatient(objectMapper.readTree(toJson(fhirContext, fhirPatient)))
                     .outcome(qdmToFhirPatientResult.getOutcome())
@@ -393,5 +398,53 @@ public class PatientConversionService implements FhirCreator {
                 .filter(r -> r.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No result found with the id: " + id));
+    }
+
+
+    private void processRelatedTo(List<FhirDataElement> fhirDataElements) {
+
+        var communicationElementList = fhirDataElements.stream()
+                .filter(fhirDataElement -> fhirDataElement.getFhirType().equals("Communication"))
+                .filter(fhirDataElement -> ((Communication) fhirDataElement.getFhirObject()).hasBasedOn())
+                .collect(Collectors.toList());
+
+        communicationElementList.forEach(fhirDataElement -> processCommunicationRelatedTo(fhirDataElement, fhirDataElements));
+
+    }
+
+    @SneakyThrows
+    private void processCommunicationRelatedTo(FhirDataElement communicationFhirDataElement, List<FhirDataElement> fhirDataElements) {
+        Communication communication = (Communication) communicationFhirDataElement.getFhirObject();
+
+        communication.getBasedOn().forEach(reference -> processBasedOn(reference, communicationFhirDataElement, fhirDataElements));
+
+        String json = toJson(fhirContext, communication);
+
+        communicationFhirDataElement.setFhirResource(objectMapper.readTree(json));
+    }
+
+    private void processBasedOn(Reference reference, FhirDataElement communicationFhirDataElement, List<FhirDataElement> fhirDataElements) {
+        String splits[] = reference.getReference().split("/");
+
+        if (splits.length != 2) {
+            log.error("Cannot parse reference: {}", reference.getReference());
+        } else {
+            String id = splits[1];
+
+            var optional = fhirDataElements.stream()
+                    .filter(f -> f.getFhirId().equals(id))
+                    .findFirst();
+
+            if (optional.isEmpty()) {
+                String message = "Cannot find resource for relatedTo to with id: " + id;
+                log.warn(message);
+
+                communicationFhirDataElement.getOutcome().getConversionMessages()
+                        .add(message + ". Please adjust reference.");
+            } else {
+                FhirDataElement relatedElement = optional.get();
+                reference.setReference(relatedElement.getFhirType() + "/" + relatedElement.getFhirId());
+            }
+        }
     }
 }

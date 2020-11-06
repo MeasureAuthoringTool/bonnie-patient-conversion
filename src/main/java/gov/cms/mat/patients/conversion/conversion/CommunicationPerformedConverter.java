@@ -12,10 +12,12 @@ import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Reference;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -54,12 +56,16 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         if (qdmDataElement.getReceivedDatetime() != null) {
             communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
- //        if (qdmDataElement.getRelatedTo() != null) {
-////            //communication.setBasedOn(qdmDataElement.getRelatedTo()); //  todo ashok how do people set this
-////       }
+        if (qdmDataElement.getRelatedTo() != null) {
+            var references = qdmDataElement.getRelatedTo().stream()
+                    .map(s -> new Reference("Unknown/" + s))
+                    .collect(Collectors.toList());
+
+            communication.setBasedOn(references);
+        }
 
         if (qdmDataElement.getSender() != null) {
-           communication.setSender(createPractitionerReference(qdmDataElement.getSender()));
+            communication.setSender(createPractitionerReference(qdmDataElement.getSender()));
         }
 
         if (qdmDataElement.getRecipient() != null) {

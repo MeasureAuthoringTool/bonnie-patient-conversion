@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import ca.uhn.fhir.context.FhirContext;
+import com.fasterxml.jackson.databind.JsonNode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
@@ -14,6 +15,7 @@ import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
 import org.springframework.util.CollectionUtils;
 
@@ -69,6 +71,13 @@ public interface FhirCreator {
         return fhirContext.newJsonParser()
                 .setPrettyPrint(true)
                 .encodeResourceToString(theResource);
+    }
+
+    default <T extends Resource> T parseResource(FhirContext fhirContext, Class<T> resourceClass, JsonNode fhirResource) {
+        String resourceJson = fhirResource.toPrettyString();
+
+        return fhirContext.newJsonParser()
+                .parseResource(resourceClass, resourceJson);
     }
 
     default Quantity convertQuantity(QdmQuantity qdmQuantity) {

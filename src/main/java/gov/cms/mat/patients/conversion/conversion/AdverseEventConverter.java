@@ -42,12 +42,12 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
 
         if (qdmDataElement.getType() != null) {
             adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType())));
-            log.info("We have category"); //no data
+            log.info("We finally have category"); //no data
         }
 
-        if (qdmDataElement.getSeverity() != null) {//
+        if (qdmDataElement.getSeverity() != null) {
             adverseEvent.setSeverity(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
-            log.info("We have severity"); //no data
+            log.info("We finally have severity"); //no data
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
@@ -57,12 +57,12 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
             //no data
             // adverseEvent.setLocation(); // reference how to map
-            log.info("We have facilityLocations"); //no data
+            log.info("We finally have facilityLocations"); //no data
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
             adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
-            log.info("We have severity"); //no data
+            log.info("We finally have severity"); //no data
         }
 
         adverseEvent.setId(qdmDataElement.get_id());
