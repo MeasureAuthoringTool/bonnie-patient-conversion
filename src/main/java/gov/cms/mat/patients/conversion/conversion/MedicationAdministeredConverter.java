@@ -39,7 +39,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         List<String> conversionMessages = new ArrayList<>();
 
         MedicationAdministration medicationAdministration = new MedicationAdministration();
-        medicationAdministration.setSubject(createReference(fhirPatient));
+        medicationAdministration.setSubject(createPatientReference(fhirPatient));
 
         medicationAdministration.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 

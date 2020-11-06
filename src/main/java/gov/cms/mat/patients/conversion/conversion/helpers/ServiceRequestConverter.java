@@ -19,7 +19,7 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
         List<String> conversionMessages = new ArrayList<>();
 
         ServiceRequest serviceRequest = new ServiceRequest();
-        serviceRequest.setSubject(createReference(fhirPatient));
+        serviceRequest.setSubject(createPatientReference(fhirPatient));
 
         serviceRequest.setIntent(intent);
 

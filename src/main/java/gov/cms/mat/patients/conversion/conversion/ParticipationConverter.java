@@ -38,7 +38,7 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
         List<String> conversionMessages = new ArrayList<>();
 
         Coverage coverage = new Coverage();
-        coverage.setBeneficiary(createReference(fhirPatient));
+        coverage.setBeneficiary(createPatientReference(fhirPatient));
 
         coverage.setStatus(Coverage.CoverageStatus.ACTIVE);
 

@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @ActiveProfiles("test")
 class PatientConverterTestAllData implements ResourceFileUtil {
     @Autowired
-    PatientService patientService;
+    PatientConversionService patientConversionService;
 
     @SneakyThrows
     @Test
@@ -41,7 +41,7 @@ class PatientConverterTestAllData implements ResourceFileUtil {
             try {
                 bonniePatient = objectMapper.readValue(split, BonniePatient.class);
                 System.out.println(bonniePatient.get_id());
-                patientService.processOne(bonniePatient);
+                patientConversionService.processOne(bonniePatient);
 
             } catch (Exception e) {
                 System.out.println(split);
@@ -57,6 +57,6 @@ class PatientConverterTestAllData implements ResourceFileUtil {
         ObjectMapper objectMapper = new ObjectMapper();
         BonniePatient[] patients = objectMapper.readValue(all, BonniePatient[].class);
 
-        patientService.processMany(Arrays.asList(patients));
+        patientConversionService.processMany(Arrays.asList(patients));
     }
 }

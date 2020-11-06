@@ -4,10 +4,9 @@ import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.dao.conversion.Prescriber;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.Sender;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
@@ -50,25 +49,34 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
                     .map(d -> convertToFhirPractitioner(d.getRecipient(), d))
                     .collect(Collectors.toList());
 
-            bonniePatient.getQdmPatient().getDataElements().stream()
+            var dispenserList =    bonniePatient.getQdmPatient().getDataElements().stream()
                     .filter(d -> d.getDispenser() != null)
-                    .map(d -> convertToFhirTest(d.getDispenser(), d));
+                    .map(d -> convertToFhirPractitioner(d.getDispenser(), d))
+                    .collect(Collectors.toList());
 
-            bonniePatient.getQdmPatient().getDataElements().stream()
+            var performerList =       bonniePatient.getQdmPatient().getDataElements().stream()
                     .filter(d -> d.getPerformer() != null)
-                    .map(d -> convertToFhirTest(d.getPerformer(), d));
+                    .map(d -> convertToFhirPractitioner(d.getPerformer(), d))
+                    .collect(Collectors.toList());
+
+            var prescriberList =       bonniePatient.getQdmPatient().getDataElements().stream()
+                    .filter(d -> d.getPrescriber() != null)
+                    .map(d -> convertToFhirPractitioner(d.getPrescriber(), d))
+                    .collect(Collectors.toList());
 
 
             var combinedList = new ArrayList<FhirDataElement>();
             combinedList.addAll(senderList);
             combinedList.addAll(recipientList);
+            combinedList.addAll(dispenserList);
+            combinedList.addAll(performerList);
+            combinedList.addAll(prescriberList);
+
             return combinedList;
         }
     }
 
-    private Object convertToFhirTest(Prescriber dispenser, QdmDataElement d) {
-        return null;
-    }
+
 
     @Override
     public String getQdmType() {
@@ -81,7 +89,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
     }
 
 
-    public FhirDataElement convertToFhirPractitioner(Sender sender, QdmDataElement qdmDataElement) {
+    public FhirDataElement convertToFhirPractitioner(QdmPractitioner sender, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
         Practitioner practitioner = new Practitioner();

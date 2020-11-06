@@ -21,7 +21,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
                                                                         ConverterBase<Procedure> converterBase) {
         List<String> conversionMessages = new ArrayList<>();
         Procedure procedure = new Procedure();
-        procedure.setSubject(createReference(fhirPatient));
+        procedure.setSubject(createPatientReference(fhirPatient));
 
         procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
         procedure.setId(qdmDataElement.get_id());

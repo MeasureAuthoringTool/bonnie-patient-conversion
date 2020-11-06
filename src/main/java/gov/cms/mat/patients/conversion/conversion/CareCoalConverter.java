@@ -10,7 +10,6 @@ import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.Goal;
@@ -42,7 +41,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
     public QdmToFhirConversionResult<Goal> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
         Goal goal = new Goal();
-        goal.setSubject(createReference(fhirPatient));
+        goal.setSubject(createPatientReference(fhirPatient));
 
         goal.getTargetFirstRep().setMeasure(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("test")
 class PatientConverterTest implements ResourceFileUtil {
     @Autowired
-    PatientService patientService;
+    PatientConversionService patientConversionService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -30,7 +30,7 @@ class PatientConverterTest implements ResourceFileUtil {
     void processOne() {
         String fromResource = getStringFromResource("/patient_one.json");
         BonniePatient bonniePatient = objectMapper.readValue(fromResource, BonniePatient.class);
-        ConversionResult conversionResult = patientService.processOne(bonniePatient);
+        ConversionResult conversionResult = patientConversionService.processOne(bonniePatient);
         assertNotNull(conversionResult);
 
         assertEquals(bonniePatient.get_id(), conversionResult.getId());
@@ -44,7 +44,7 @@ class PatientConverterTest implements ResourceFileUtil {
         String fromResource = getStringFromResource("/patients_100.json");
         BonniePatient[] patients = objectMapper.readValue(fromResource, BonniePatient[].class);
 
-        List<ConversionResult> conversionResults = patientService.processMany(Arrays.asList(patients));
+        List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(patients));
         assertEquals(patients.length, conversionResults.size());
     }
 }

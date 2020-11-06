@@ -37,7 +37,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         List<String> conversionMessages = new ArrayList<>();
 
         FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
-        familyMemberHistory.setPatient(createReference(fhirPatient));
+        familyMemberHistory.setPatient(createPatientReference(fhirPatient));
 
         FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
         familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));

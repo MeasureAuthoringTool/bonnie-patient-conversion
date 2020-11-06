@@ -27,7 +27,7 @@ bonnie-thread-pools:
       max-pool-size: 100
       queue-capacity: 150
 
-mat-api-key: ${MAT_API_KEY}
+mat-api-key: DISABLED
 
 logging:
   level:

@@ -46,6 +46,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         List<String> conversionMessages = new ArrayList<>();
 
         Immunization immunization = new Immunization();
+        immunization.setPatient(createPatientReference(fhirPatient));
 
         // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered
         // Constrain to Completed, entered-in-error, not-done
@@ -66,10 +67,11 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
             immunization.setRoute(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getRoute()));
         }
 
-//        if (qdmDataElement.getReason() != null) {
-//            // No data todo can we expect data
-//            immunization.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
-//        }
+        if (qdmDataElement.getReason() != null) {
+            // No data
+            log.info("We have reason data");
+            immunization.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
+        }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             immunization.setOccurrence(new DateTimeType(qdmDataElement.getRelevantDatetime()));
@@ -77,11 +79,11 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
         immunization.setRecorded(qdmDataElement.getAuthorDatetime());
 
-//        if( qdmDataElement.getPerformer() != null) {
-//             // No data todo can we expect data
-//        }
+        if( qdmDataElement.getPerformer() != null) {
+             // No data todo can we expect data
+        }
 
-        immunization.setPatient(createReference(fhirPatient));
+
 
         return QdmToFhirConversionResult.<Immunization>builder()
                 .fhirResource(immunization)

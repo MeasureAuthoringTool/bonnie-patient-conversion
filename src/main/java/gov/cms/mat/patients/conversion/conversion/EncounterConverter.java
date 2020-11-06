@@ -55,7 +55,7 @@ public class EncounterConverter extends ConverterBase<Encounter> {
 
         encounter.setDiagnosis(createDiagnoses(qdmDataElement));
 
-        encounter.setSubject(createReference(fhirPatient));
+        encounter.setSubject(createPatientReference(fhirPatient));
 
         if (qdmDataElement.getLengthOfStay() == null) {
             log.debug("Length of stay is null");
@@ -122,9 +122,9 @@ public class EncounterConverter extends ConverterBase<Encounter> {
             }
         }
 
-        //  todo how to set
-        //   "message": "Profile http://hl7.org/fhir/StructureDefinition/Encounter, Element 'Encounter.diagnosis[0].condition': minimum required = 1, but only found 0",
 
+        //  We are not doing references to other qdmElements at this juncture
+        //   "message": "Profile http://hl7.org/fhir/StructureDefinition/Encounter, Element 'Encounter.diagnosis[0].condition': minimum required = 1, but only found 0",
         //  Reference condition = new Reference();
         //  diagnosisComponent.setCondition(condition);
 

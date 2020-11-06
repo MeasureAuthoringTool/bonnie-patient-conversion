@@ -39,7 +39,7 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         List<String> conversionMessages = new ArrayList<>();
         Communication communication = new Communication();
 
-        communication.setSubject(createReference(fhirPatient));
+        communication.setSubject(createPatientReference(fhirPatient));
         communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         communication.setId(qdmDataElement.get_id());
         if (qdmDataElement.getCategory() != null) {
@@ -54,19 +54,17 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         if (qdmDataElement.getReceivedDatetime() != null) {
             communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
-//        if (qdmDataElement.getRelatedTo() != null) {
-//            //communication.setBasedOn(qdmDataElement.getRelatedTo());
-//        }
+ //        if (qdmDataElement.getRelatedTo() != null) {
+////            //communication.setBasedOn(qdmDataElement.getRelatedTo()); //  todo ashok how do people set this
+////       }
 
-//        if (qdmDataElement.getSender() != null) {
-//            what will be value of sender.reference
-//           communication.setSender(qdmDataElement.getSender());
-//        }
+        if (qdmDataElement.getSender() != null) {
+           communication.setSender(createPractitionerReference(qdmDataElement.getSender()));
+        }
 
-//        if (qdmDataElement.getRecipient() != null) {
-//            //            what will be value of recipient.reference
-//            //communication.setRecipient(qdmDataElement.getRecipient());
-//        }
+        if (qdmDataElement.getRecipient() != null) {
+            communication.setRecipient(List.of(createPractitionerReference(qdmDataElement.getRecipient())));
+        }
 
         if (processNegation(qdmDataElement, communication)) {
             communication.setStatus(Communication.CommunicationStatus.UNKNOWN);

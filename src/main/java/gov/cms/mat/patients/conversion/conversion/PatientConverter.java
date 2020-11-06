@@ -33,12 +33,9 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
     public static final String US_CORE_RACE_URL = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     public static final String DETAILED_RACE_URL = "http://hl7.org/fhir/us/core/ValueSet/detailed-race";
 
-
     private final ValidationService validationService;
 
-
     public PatientConverter(ValidationService validationService) {
-
         this.validationService = validationService;
     }
 

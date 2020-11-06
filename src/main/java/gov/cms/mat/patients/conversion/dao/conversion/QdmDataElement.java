@@ -38,14 +38,12 @@ public class QdmDataElement {
         ] */
     List<String> relatedTo;
 
-
     Date expiredDatetime;
     Date activeDatetime;
     Date birthDatetime;
 
     Date authorDatetime;
-    Sender sender;
-    Sender recipient;
+
 
     Integer refills;
     QdmQuantity dosage;
@@ -63,12 +61,10 @@ public class QdmDataElement {
 
     QdmCodeSystem dischargeDisposition;
 
-
     List<Diagnoses> diagnoses;
 
-    QdmCodeSystem reason;  //"5ca62964b8484628b8de1f51", is a Qdm
+    QdmCodeSystem reason;
 
-    // @JsonIgnore  // "5aeb772fb848463d625b1dd7" is an int
     JsonNode result;
 
     QdmReferenceRange referenceRange;
@@ -94,18 +90,9 @@ public class QdmDataElement {
 
     String description;
 
-    /* "targetOutcome": {
-          "unit": "",
-          "value": 2
-        } */
-    //@JsonIgnore
-    //  QdmCode targetOutcome;  // "_id": "5d654ae61c76ba7ea32ed30c",
-    //JsonNode targetOutcome;
-
     TargetOutcome targetOutcome;
 
     String codeListId;
-    Prescriber prescriber;
 
     Date relevantDatetime;
 
@@ -116,8 +103,11 @@ public class QdmDataElement {
     Date sentDatetime;
     Date receivedDatetime;
 
-    Prescriber dispenser;
-    Prescriber performer;
+    QdmPractitioner sender;
+    QdmPractitioner recipient;
+    QdmPractitioner prescriber;
+    QdmPractitioner dispenser;
+    QdmPractitioner performer;
 
     public String identifier() {
         return _id;

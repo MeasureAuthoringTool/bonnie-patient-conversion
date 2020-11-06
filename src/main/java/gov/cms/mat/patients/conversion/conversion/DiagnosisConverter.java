@@ -8,7 +8,6 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -38,7 +37,7 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
         List<String> conversionMessages = new ArrayList<>();
 
         Condition condition = new Condition();
-        condition.setSubject(createReference(fhirPatient));
+        condition.setSubject(createPatientReference(fhirPatient));
 
         condition.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 

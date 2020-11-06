@@ -38,7 +38,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
 
         procedure.setId(qdmDataElement.get_id());
         procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
-        procedure.setSubject(createReference(fhirPatient));
+        procedure.setSubject(createPatientReference(fhirPatient));
         procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
 
         conversionMessages.add(NO_STATUS_MAPPING);

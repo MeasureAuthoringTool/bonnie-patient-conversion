@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import ca.uhn.fhir.context.FhirContext;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
@@ -21,9 +22,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public interface FhirCreator {
-    default Reference createReference(Patient fhirPatient) {
+    default Reference createPatientReference(Patient fhirPatient) {
         Reference reference = new Reference("Patient/" + fhirPatient.getId());
         return reference.setDisplay(convertHumanNamesToString(fhirPatient.getName()));
+    }
+
+    default Reference createPractitionerReference(QdmPractitioner qdmPractitioner) {
+        return new Reference("Practitioner/" + qdmPractitioner.get_id());
+
     }
 
     default CodeableConcept createCodeableConcept(QdmCodeSystem code, String system) {

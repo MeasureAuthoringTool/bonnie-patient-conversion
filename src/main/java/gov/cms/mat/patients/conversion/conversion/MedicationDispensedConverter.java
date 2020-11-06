@@ -44,7 +44,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
 
         MedicationDispense medicationDispense = new MedicationDispense();
         medicationDispense.setId(qdmDataElement.get_id());
-        medicationDispense.setSubject(createReference(fhirPatient));
+        medicationDispense.setSubject(createPatientReference(fhirPatient));
 
         medicationDispense.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 

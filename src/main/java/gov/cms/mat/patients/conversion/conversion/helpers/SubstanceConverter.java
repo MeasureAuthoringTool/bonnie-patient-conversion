@@ -20,7 +20,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         List<String> conversionMessages = new ArrayList<>();
 
         NutritionOrder nutritionOrder = new NutritionOrder();
-        nutritionOrder.setPatient(createReference(fhirPatient));
+        nutritionOrder.setPatient(createPatientReference(fhirPatient));
 
         nutritionOrder.setIntent(NutritionOrder.NutritiionOrderIntent.NULL); // todo NO intent for SubstanceAdministered todo find
 

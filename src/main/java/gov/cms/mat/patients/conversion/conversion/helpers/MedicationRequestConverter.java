@@ -29,7 +29,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         List<String> conversionMessages = new ArrayList<>();
 
         MedicationRequest medicationRequest = new MedicationRequest();
-        medicationRequest.setSubject(createReference(fhirPatient));
+        medicationRequest.setSubject(createPatientReference(fhirPatient));
 
         medicationRequest.setIntent(intent);
         medicationRequest.setMedication(getMedicationCodeableConcept(qdmDataElement.getDataElementCodes(), converterBase));

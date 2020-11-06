@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PatientService implements FhirCreator {
+public class PatientConversionService implements FhirCreator {
     private static final int THREAD_POOL_TIMEOUT_MINUTES = 1;
     private final PatientConverter patientConverter;
     private final EncounterConverter encounterConverter;
@@ -103,41 +103,41 @@ public class PatientService implements FhirCreator {
     private final ObjectMapper objectMapper;
     private final FhirContext fhirContext;
 
-    public PatientService(PatientConverter patientConverter,
-                          EncounterConverter encounterConverter,
-                          InterventionOrderConverter interventionOrderConverter,
-                          InterventionPerformedConverter interventionPerformedConverter,
-                          MedicationDischargeConverter medicationDischargeConverter,
-                          AdverseEventConverter adverseEventConverter,
-                          AllergyIntoleranceConverter allergyIntoleranceConverter,
-                          AssessmentOrderConverter assessmentOrderConverter,
-                          AssessmentPerformedConverter assessmentPerformedConverter,
-                          AssessmentRecommendedConverter assessmentRecommendedConverter,
-                          CareCoalConverter careCoalConverter,
-                          CommunicationPerformedConverter communicationPerformedConverter,
-                          DiagnosisConverter diagnosisConverter,
-                          DiagnosticStudyOrderConverter diagnosticStudyOrderConverter,
-                          DiagnosticStudyPerformedConverter diagnosticStudyPerformedConverter,
-                          FamilyHistoryConverter familyHistoryConverter,
-                          InterventionRecommendedConverter interventionRecommendedConverter,
-                          LaboratoryTestOrderConverter laboratoryTestOrderConverter,
-                          ImmunizationOrderConverter immunizationOrderConverter,
-                          DeviceAppliedConverter deviceAppliedConverter,
-                          EncounterOrderConverter encounterOrderConverter,
-                          LaboratoryTestPerformedConverter laboratoryTestPerformedConverter,
-                          MedicationActiveConverter medicationActiveConverter,
-                          MedicationAdministeredConverter medicationAdministeredConverter,
-                          MedicationDispensedConverter medicationDispensedConverter,
-                          ImmunizationAdministeredConverter immunizationAdministeredConverter,
-                          ImmunizationAdministeredNegationConverter immunizationAdministeredNegationConverter,
-                          ParticipationConverter participationConverter,
-                          PhysicalExamPerformedConverter physicalExamPerformedConverter,
-                          ProcedureOrderConverter procedureOrderConverter,
-                          ProcedurePerformedConverter procedurePerformedConverter,
-                          SubstanceAdministeredConverter substanceAdministeredConverter,
-                          ObjectMapper objectMapper,
-                          SymptomConverter symptomConverter,
-                          PractitionerConverter practitionerConverter, FhirContext fhirContext) {
+    public PatientConversionService(PatientConverter patientConverter,
+                                    EncounterConverter encounterConverter,
+                                    InterventionOrderConverter interventionOrderConverter,
+                                    InterventionPerformedConverter interventionPerformedConverter,
+                                    MedicationDischargeConverter medicationDischargeConverter,
+                                    AdverseEventConverter adverseEventConverter,
+                                    AllergyIntoleranceConverter allergyIntoleranceConverter,
+                                    AssessmentOrderConverter assessmentOrderConverter,
+                                    AssessmentPerformedConverter assessmentPerformedConverter,
+                                    AssessmentRecommendedConverter assessmentRecommendedConverter,
+                                    CareCoalConverter careCoalConverter,
+                                    CommunicationPerformedConverter communicationPerformedConverter,
+                                    DiagnosisConverter diagnosisConverter,
+                                    DiagnosticStudyOrderConverter diagnosticStudyOrderConverter,
+                                    DiagnosticStudyPerformedConverter diagnosticStudyPerformedConverter,
+                                    FamilyHistoryConverter familyHistoryConverter,
+                                    InterventionRecommendedConverter interventionRecommendedConverter,
+                                    LaboratoryTestOrderConverter laboratoryTestOrderConverter,
+                                    ImmunizationOrderConverter immunizationOrderConverter,
+                                    DeviceAppliedConverter deviceAppliedConverter,
+                                    EncounterOrderConverter encounterOrderConverter,
+                                    LaboratoryTestPerformedConverter laboratoryTestPerformedConverter,
+                                    MedicationActiveConverter medicationActiveConverter,
+                                    MedicationAdministeredConverter medicationAdministeredConverter,
+                                    MedicationDispensedConverter medicationDispensedConverter,
+                                    ImmunizationAdministeredConverter immunizationAdministeredConverter,
+                                    ImmunizationAdministeredNegationConverter immunizationAdministeredNegationConverter,
+                                    ParticipationConverter participationConverter,
+                                    PhysicalExamPerformedConverter physicalExamPerformedConverter,
+                                    ProcedureOrderConverter procedureOrderConverter,
+                                    ProcedurePerformedConverter procedurePerformedConverter,
+                                    SubstanceAdministeredConverter substanceAdministeredConverter,
+                                    ObjectMapper objectMapper,
+                                    SymptomConverter symptomConverter,
+                                    PractitionerConverter practitionerConverter, FhirContext fhirContext) {
         this.patientConverter = patientConverter;
         this.encounterConverter = encounterConverter;
         this.interventionOrderConverter = interventionOrderConverter;

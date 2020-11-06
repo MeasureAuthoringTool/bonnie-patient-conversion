@@ -5,16 +5,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Prescriber {
+public class QdmPractitioner {
     String _id;
     String qdmVersion;
     String _type;
+
+    String type;
+
+    QdmCodeSystem role;
+    QdmCodeSystem specialty;
+    QdmCodeSystem qualification;
+
+    QdmIdentifier identifier;
     String hqmfOid;
     String qrdaOid;
-    QdmIdentifier identifier;
-
-    String role;
-    String specialty;
-    String qualification;
-    String type;
 }
