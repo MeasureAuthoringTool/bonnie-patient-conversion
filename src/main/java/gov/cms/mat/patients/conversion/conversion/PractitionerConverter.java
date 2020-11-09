@@ -19,12 +19,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class PractitionerConverter extends ConverterBase<Practitioner> {
-  private static final String  UNITED_STATES_NATIONAL_PROVIDER_IDENTIFIER = "http://hl7.org/fhir/sid/us-npi";
+    private static final String UNITED_STATES_NATIONAL_PROVIDER_IDENTIFIER = "http://hl7.org/fhir/sid/us-npi";
 
 
     public PractitionerConverter(CodeSystemEntriesService codeSystemEntriesService,
@@ -39,43 +38,36 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         if (bonniePatient.getQdmPatient() == null || CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
             return Collections.emptyList();
         } else {
-            var senderList = bonniePatient.getQdmPatient().getDataElements().stream()
-                    .filter(d -> d.getSender() != null)
-                    .map(d -> convertToFhirPractitioner(d.getSender(), d))
-                    .collect(Collectors.toList());
+            var dataElements = new ArrayList<FhirDataElement>();
 
-            var recipientList = bonniePatient.getQdmPatient().getDataElements().stream()
-                    .filter(d -> d.getRecipient() != null)
-                    .map(d -> convertToFhirPractitioner(d.getRecipient(), d))
-                    .collect(Collectors.toList());
+            bonniePatient.getQdmPatient().getDataElements()
+                    .forEach(dataElement -> doShitList(dataElement, dataElements));
 
-            var dispenserList =    bonniePatient.getQdmPatient().getDataElements().stream()
-                    .filter(d -> d.getDispenser() != null)
-                    .map(d -> convertToFhirPractitioner(d.getDispenser(), d))
-                    .collect(Collectors.toList());
-
-            var performerList =       bonniePatient.getQdmPatient().getDataElements().stream()
-                    .filter(d -> d.getPerformer() != null)
-                    .map(d -> convertToFhirPractitioner(d.getPerformer(), d))
-                    .collect(Collectors.toList());
-
-            var prescriberList =       bonniePatient.getQdmPatient().getDataElements().stream()
-                    .filter(d -> d.getPrescriber() != null)
-                    .map(d -> convertToFhirPractitioner(d.getPrescriber(), d))
-                    .collect(Collectors.toList());
-
-
-            var combinedList = new ArrayList<FhirDataElement>();
-            combinedList.addAll(senderList);
-            combinedList.addAll(recipientList);
-            combinedList.addAll(dispenserList);
-            combinedList.addAll(performerList);
-            combinedList.addAll(prescriberList);
-
-            return combinedList;
+            return dataElements;
         }
     }
 
+    public void doShitList(QdmDataElement dataElement, List<FhirDataElement> dataElements) {
+        if (dataElement.getSender() != null) {
+            dataElements.add(convertToFhirPractitioner(dataElement.getSender(), dataElement));
+        }
+
+        if (dataElement.getRecipient() != null) {
+            dataElements.add(convertToFhirPractitioner(dataElement.getRecipient(), dataElement));
+        }
+
+        if (dataElement.getDispenser() != null) {
+            dataElements.add(convertToFhirPractitioner(dataElement.getDispenser(), dataElement));
+        }
+
+        if (dataElement.getPerformer() != null) {
+            dataElements.add(convertToFhirPractitioner(dataElement.getPerformer(), dataElement));
+        }
+
+        if (dataElement.getPrescriber() != null) {
+            dataElements.add(convertToFhirPractitioner(dataElement.getPrescriber(), dataElement));
+        }
+    }
 
 
     @Override
@@ -107,7 +99,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
             creeateFhirQualification(sender.getQualification(), practitioner);
         }
 
-        if( sender.getIdentifier() != null) {
+        if (sender.getIdentifier() != null) {
             //https://www.hl7.org/fhir/identifier-registry.html
             practitioner.getIdentifierFirstRep()
                     .setValue(sender.getIdentifier().getValue())
