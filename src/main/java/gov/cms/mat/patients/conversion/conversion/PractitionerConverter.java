@@ -41,13 +41,13 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
             var dataElements = new ArrayList<FhirDataElement>();
 
             bonniePatient.getQdmPatient().getDataElements()
-                    .forEach(dataElement -> createPractioners(dataElement, dataElements));
+                    .forEach(dataElement -> createPractitioners(dataElement, dataElements));
 
             return dataElements;
         }
     }
 
-    public void createPractioners(QdmDataElement dataElement, List<FhirDataElement> dataElements) {
+    public void createPractitioners(QdmDataElement dataElement, List<FhirDataElement> dataElements) {
         if (dataElement.getSender() != null) {
             dataElements.add(convertToFhirPractitioner(dataElement.getSender(), dataElement));
         }
