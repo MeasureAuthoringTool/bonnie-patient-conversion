@@ -37,7 +37,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         if (bonniePatient.getQdmPatient() == null || CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
             return Collections.emptyList();
         } else {
-            var dataElements = new ArrayList<FhirDataElement>();
+            var dataElements = Collections.synchronizedList(new ArrayList<FhirDataElement>());
 
             bonniePatient.getQdmPatient().getDataElements()
                     .parallelStream()

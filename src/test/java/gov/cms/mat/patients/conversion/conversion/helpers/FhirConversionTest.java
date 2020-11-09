@@ -1,11 +1,17 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmCode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.HumanName;
+import org.hl7.fhir.r4.model.IntegerType;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Reference;
@@ -161,4 +167,76 @@ public interface FhirConversionTest {
         assertEquals("47448006", coding.getCode());
         assertEquals("Hot Water", coding.getDisplay());
     }
+
+    default IntNode createIntegerTypeResult() {
+        return new IntNode(Integer.MAX_VALUE);
+    }
+
+    default void checkIntegerTypeResult(Type result) {
+        assertThat(result, instanceOf(IntegerType.class));
+
+        IntegerType integerType = (IntegerType) result;
+
+        assertEquals(Integer.MAX_VALUE, integerType.getValue());
+
+    }
+
+    default TextNode createTextTypeResult() {
+        return new TextNode("FHIR");
+    }
+
+    default void checkTextTypeResult(Type result) {
+        assertThat(result, instanceOf(StringType.class));
+
+        StringType stringType = (StringType) result;
+
+        assertEquals("FHIR", stringType.getValue());
+    }
+
+
+    default QdmPeriod createRelevantPeriod() {
+        QdmPeriod qdmPeriod = new QdmPeriod();
+        qdmPeriod.setLow(new Date(now.toEpochMilli() - 2000000));
+        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 1000));
+        return qdmPeriod;
+    }
+
+    default void checkRelevantPeriod(Period fhirPeriod) {
+        QdmPeriod qdmPeriod = createRelevantPeriod();
+
+        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
+        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
+    }
+
+    default QdmComponent createComponents() {
+
+        QdmComponent qdmComponent = new QdmComponent();
+
+        QdmCode qdmCode = new QdmCode();
+        qdmCode.setSystem("2.16.840.1.113883.6.96");
+        qdmCode.setCode("11713004");
+        qdmCode.setDisplay("H2O - water");
+        qdmComponent.setCode(qdmCode);
+
+        qdmComponent.setResult(new IntNode(Integer.MIN_VALUE));
+
+
+        QdmPeriod qdmPeriod = new QdmPeriod();
+        qdmPeriod.setLow(new Date(now.toEpochMilli() - 20000));
+        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 999));
+
+        qdmComponent.setReferenceRange(qdmPeriod);
+
+        return qdmComponent;
+
+    }
+
+
+    default void checkComponents(List<Observation.ObservationComponentComponent> components) {
+        assertEquals(1, components.size());
+
+
+    }
+
+
 }

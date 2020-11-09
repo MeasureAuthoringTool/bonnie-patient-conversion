@@ -30,7 +30,7 @@ public class QdmDataElement {
     String qdmStatus;
     String qdmVersion;
 
-    QdmInterval participationPeriod;
+    QdmPeriod participationPeriod;
 
     // ids of other patients??
     /* "relatedTo": [

@@ -2,7 +2,7 @@ package gov.cms.mat.patients.conversion.conversion;
 
 import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
-import gov.cms.mat.patients.conversion.conversion.helpers.ServiceRequestCommon;
+import gov.cms.mat.patients.conversion.conversion.helpers.ServiceRequestCommonTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class DiagnosticStudyOrderConverterTest extends BaseConversionTest implements FhirConversionTest, ServiceRequestCommon {
+class DiagnosticStudyOrderConverterTest extends BaseConversionTest implements FhirConversionTest, ServiceRequestCommonTest {
     private final ServiceRequest.ServiceRequestIntent FHIR_INTENT = ServiceRequest.ServiceRequestIntent.ORDER;
 
     @Autowired

@@ -16,7 +16,7 @@ public class QdmComponent {
 
     JsonNode result;
 
-    QdmComponentCode code;
+    QdmCode code;
 
-    QdmInterval referenceRange;
+    QdmPeriod referenceRange;
 }

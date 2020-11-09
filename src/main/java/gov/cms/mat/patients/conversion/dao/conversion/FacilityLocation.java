@@ -12,5 +12,5 @@ public class FacilityLocation {
     String _id;
     QdmCodeSystem code;
 
-    QdmInterval locationPeriod;
+    QdmPeriod locationPeriod;
 }

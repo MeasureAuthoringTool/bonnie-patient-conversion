@@ -194,9 +194,9 @@ public class PatientConversionService implements FhirCreator {
         try {
             List<CompletableFuture<List<FhirDataElement>>> futures = new ArrayList<>();
 
-            var qdmTypes = collectQdmTypes(bonniePatient);
+            Set<String> qdmTypes = collectQdmTypes(bonniePatient);
 
-            QdmToFhirPatientResult qdmToFhirPatientResult = patientConverter.convert(bonniePatient);
+            QdmToFhirPatientResult qdmToFhirPatientResult = patientConverter.convert(bonniePatient, qdmTypes);
             Patient fhirPatient = qdmToFhirPatientResult.getFhirPatient();
 
             processFuture(bonniePatient, fhirPatient, practitionerConverter, futures);

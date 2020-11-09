@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmInterval;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +56,7 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
     }
 
     private void convertParticipationPeriod(Coverage coverage, QdmDataElement qdmDataElement) {
-        QdmInterval qdmInterval = qdmDataElement.getParticipationPeriod();
+        QdmPeriod qdmInterval = qdmDataElement.getParticipationPeriod();
         coverage.getPeriod().setStart(qdmInterval.getLow());
         coverage.getPeriod().setEnd(qdmInterval.getHigh());
     }
