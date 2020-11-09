@@ -25,7 +25,6 @@ import java.util.List;
 public class PractitionerConverter extends ConverterBase<Practitioner> {
     private static final String UNITED_STATES_NATIONAL_PROVIDER_IDENTIFIER = "http://hl7.org/fhir/sid/us-npi";
 
-
     public PractitionerConverter(CodeSystemEntriesService codeSystemEntriesService,
                                  FhirContext fhirContext,
                                  ObjectMapper objectMapper,
@@ -41,6 +40,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
             var dataElements = new ArrayList<FhirDataElement>();
 
             bonniePatient.getQdmPatient().getDataElements()
+                    .parallelStream()
                     .forEach(dataElement -> createPractitioners(dataElement, dataElements));
 
             return dataElements;
@@ -69,7 +69,6 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         }
     }
 
-
     @Override
     public String getQdmType() {
         return null;
@@ -79,7 +78,6 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
     public QdmToFhirConversionResult<Practitioner> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         throw new UnsupportedOperationException("Not implemented");
     }
-
 
     public FhirDataElement convertToFhirPractitioner(QdmPractitioner sender, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
