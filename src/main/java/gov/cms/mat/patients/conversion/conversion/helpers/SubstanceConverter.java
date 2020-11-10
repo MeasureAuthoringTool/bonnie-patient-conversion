@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
 public interface SubstanceConverter extends DataElementFinder, FhirCreator {
     default QdmToFhirConversionResult<NutritionOrder> convertToFhirNutritionOrder(Patient fhirPatient,
@@ -31,17 +32,17 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
 
         nutritionOrder.getOralDiet().addType(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
 
-        nutritionOrder.setId(qdmDataElement.get_id());
+        nutritionOrder.setId(qdmDataElement.getId());
 
-//        if (qdmDataElement.getFrequency() != null) {
-//            // No Data
-//        }
+        if (qdmDataElement.getFrequency() != null) {
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "frequency");
+        }
 
         nutritionOrder.setDateTime(qdmDataElement.getAuthorDatetime());
 
-//        if (qdmDataElement.getRoute() != null) {
-//            // No Data
-//        }
+        if (qdmDataElement.getRoute() != null) {
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "route");
+        }
 
         if (qdmDataElement.getDataElementCodes() != null) {
             nutritionOrder.getEnteralFormula()
@@ -55,16 +56,14 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
 
 
         if (qdmDataElement.getRelevantPeriod() != null) {
-            // todo stan how to fully convert
             Timing timing = new Timing();
             timing.setEvent(List.of(new DateTimeType(qdmDataElement.getRelevantPeriod().getLow())));
             nutritionOrder.getEnteralFormula().getAdministrationFirstRep().setSchedule(timing);
-            //conversionMessages.add("Unable to convert RelevantPeriod to a Fhir Timing object");
         }
 
-//        if (qdmDataElement.getRefills() != null) {
-//            // No Data
-//        }
+        if (qdmDataElement.getRefills() != null) {
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "refills");
+        }
 
         return QdmToFhirConversionResult.<NutritionOrder>builder()
                 .fhirResource(nutritionOrder)

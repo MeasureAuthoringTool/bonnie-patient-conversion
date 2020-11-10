@@ -41,7 +41,7 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
 
         condition.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 
-        condition.setId(qdmDataElement.get_id());
+        condition.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             condition.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));

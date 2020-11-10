@@ -40,13 +40,13 @@ public class EncounterOrderConverter extends ConverterBase<ServiceRequest> imple
                 ServiceRequest.ServiceRequestIntent.ORDER);
 
 
-//        if (qdmDataElement.getFacilityLocations() != null) {
-//            log.debug("HI"); //todo can it exists
-//        }
-//
-//        if (qdmDataElement.getPriority() != null) {
-//            log.debug("HI"); //todo can it exists
-//        }
+        if (qdmDataElement.getFacilityLocations() != null) {
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "facilityLocations");
+        }
+
+        if (qdmDataElement.getPriority() != null) {
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "priority");
+        }
 
         return result;
     }

@@ -13,12 +13,10 @@ import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Reference;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -44,7 +42,7 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
 
         communication.setSubject(createPatientReference(fhirPatient));
         communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-        communication.setId(qdmDataElement.get_id());
+        communication.setId(qdmDataElement.getId());
         if (qdmDataElement.getCategory() != null) {
             communication.setCategory(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getCategory())));
         }

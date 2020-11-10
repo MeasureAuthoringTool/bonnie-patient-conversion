@@ -36,12 +36,11 @@ public class ExpectedValues {
     Integer msrpopl;
 
     @JsonProperty("MSRPOPLEX")
-    Integer MSRPOPLEX;
+    Integer msrPoplex;
 
     @JsonProperty("OBSERV_UNIT")
     String observeUnit;
 
-    @JsonProperty("OBSERV")  // "_id": "5d65454e1c76ba7ea32d98f2", todo
-    // Integer[] observ;
+    @JsonProperty("OBSERV")
     JsonNode observ;
 }

@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.ResourceFileUtil;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
+import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -12,15 +13,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Disabled //takes to long to run as unit test
 @SpringBootTest
 @ActiveProfiles("test")
-class PatientConverterTestAllData implements ResourceFileUtil {
+class TestPatientConverterAllData implements ResourceFileUtil {
     @Autowired
     PatientConversionService patientConversionService;
 
@@ -35,13 +37,12 @@ class PatientConverterTestAllData implements ResourceFileUtil {
                 .map(String::new)
                 .collect(Collectors.toList());
 
-        Set<String> types = new TreeSet<>();
-        BonniePatient bonniePatient = null;
         for (String split : splits) {
             try {
-                bonniePatient = objectMapper.readValue(split, BonniePatient.class);
-                System.out.println(bonniePatient.get_id());
-                patientConversionService.processOne(bonniePatient);
+                BonniePatient      bonniePatient = objectMapper.readValue(split, BonniePatient.class);
+                System.out.println(bonniePatient.getId());
+                ConversionResult conversionResult = patientConversionService.processOne(bonniePatient);
+                assertNotNull(conversionResult);
 
             } catch (Exception e) {
                 System.out.println(split);
@@ -57,6 +58,7 @@ class PatientConverterTestAllData implements ResourceFileUtil {
         ObjectMapper objectMapper = new ObjectMapper();
         BonniePatient[] patients = objectMapper.readValue(all, BonniePatient[].class);
 
-        patientConversionService.processMany(Arrays.asList(patients));
+        List<ConversionResult>  results =   patientConversionService.processMany(Arrays.asList(patients));
+        assertEquals( patients.length, results.size());
     }
 }

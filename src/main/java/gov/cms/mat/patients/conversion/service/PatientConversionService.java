@@ -46,13 +46,10 @@ import gov.cms.mat.patients.conversion.dao.results.ConvertedPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.helpers.RelatedToProcessor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Reference;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -187,7 +184,7 @@ public class PatientConversionService implements FhirCreator {
 
         //  maintain the order from the input list
         return bonniePatients.stream()
-                .map(b -> findResultById(b.get_id(), results))
+                .map(b -> findResultById(b.getId(), results))
                 .collect(Collectors.toList());
     }
 
@@ -202,133 +199,11 @@ public class PatientConversionService implements FhirCreator {
 
             processFuture(bonniePatient, fhirPatient, practitionerConverter, futures);
 
-            if (qdmTypes.contains(EncounterConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, encounterConverter, futures);
-            }
+            processGroup1(bonniePatient, futures, qdmTypes, fhirPatient);
 
-            if (qdmTypes.contains(InterventionOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, interventionOrderConverter, futures);
-            }
+            processGroup2(bonniePatient, futures, qdmTypes, fhirPatient);
 
-            if (qdmTypes.contains(InterventionPerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, interventionPerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(MedicationDischargeConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, medicationDischargeConverter, futures);
-            }
-
-            if (qdmTypes.contains(AdverseEventConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, adverseEventConverter, futures);
-            }
-
-            if (qdmTypes.contains(AllergyIntoleranceConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, allergyIntoleranceConverter, futures);
-            }
-
-            if (qdmTypes.contains(AssessmentOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, assessmentOrderConverter, futures);
-            }
-
-            if (qdmTypes.contains(AssessmentPerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, assessmentPerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(AssessmentRecommendedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, assessmentRecommendedConverter, futures);
-            }
-
-            if (qdmTypes.contains(CareCoalConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, careCoalConverter, futures);
-            }
-
-            if (qdmTypes.contains(CommunicationPerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, communicationPerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(DiagnosisConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, diagnosisConverter, futures);
-            }
-
-            if (qdmTypes.contains(DiagnosticStudyOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, diagnosticStudyOrderConverter, futures);
-            }
-
-            if (qdmTypes.contains(DiagnosticStudyPerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, diagnosticStudyPerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(DeviceAppliedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, deviceAppliedConverter, futures);
-            }
-
-            if (qdmTypes.contains(EncounterOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, encounterOrderConverter, futures);
-            }
-
-            if (qdmTypes.contains(FamilyHistoryConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, familyHistoryConverter, futures);
-            }
-
-            if (qdmTypes.contains(InterventionRecommendedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, interventionRecommendedConverter, futures);
-            }
-
-            if (qdmTypes.contains(LaboratoryTestOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, laboratoryTestOrderConverter, futures);
-            }
-
-            if (qdmTypes.contains(LaboratoryTestPerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, laboratoryTestPerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(ImmunizationAdministeredConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, immunizationAdministeredConverter, futures);
-            }
-
-            if (qdmTypes.contains(ImmunizationAdministeredNegationConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, immunizationAdministeredNegationConverter, futures);
-            }
-
-            if (qdmTypes.contains(ImmunizationOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, immunizationOrderConverter, futures);
-            }
-
-            if (qdmTypes.contains(MedicationActiveConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, medicationActiveConverter, futures);
-            }
-
-            if (qdmTypes.contains(MedicationAdministeredConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, medicationAdministeredConverter, futures);
-            }
-
-            if (qdmTypes.contains(MedicationDispensedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, medicationDispensedConverter, futures);
-            }
-
-            if (qdmTypes.contains(ParticipationConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, participationConverter, futures);
-            }
-
-            if (qdmTypes.contains(PhysicalExamPerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, physicalExamPerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(ProcedureOrderConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, procedureOrderConverter, futures);
-            }
-
-            if (qdmTypes.contains(ProcedurePerformedConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, procedurePerformedConverter, futures);
-            }
-
-            if (qdmTypes.contains(SubstanceAdministeredConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, substanceAdministeredConverter, futures);
-            }
-
-            if (qdmTypes.contains(SymptomConverter.QDM_TYPE)) {
-                processFuture(bonniePatient, fhirPatient, symptomConverter, futures);
-            }
+            processGroup3(bonniePatient, futures, qdmTypes, fhirPatient);
 
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).get();
 
@@ -343,7 +218,7 @@ public class PatientConversionService implements FhirCreator {
 
             Instant timeStamp = Instant.now();
             return ConversionResult.builder()
-                    .id(bonniePatient.get_id())
+                    .id(bonniePatient.getId())
                     .expectedValues(bonniePatient.getExpectedValues())
                     .measureIds(bonniePatient.getMeasureIds())
                     .convertedPatient(convertedPatient)
@@ -355,6 +230,140 @@ public class PatientConversionService implements FhirCreator {
         } catch (Exception e) {
             log.warn("Error ", e);
             throw new PatientConversionException("Error", e);
+        }
+    }
+
+    public void processGroup3(BonniePatient bonniePatient, List<CompletableFuture<List<FhirDataElement>>> futures, Set<String> qdmTypes, Patient fhirPatient) {
+        if (qdmTypes.contains(ImmunizationOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, immunizationOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(MedicationActiveConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, medicationActiveConverter, futures);
+        }
+
+        if (qdmTypes.contains(MedicationAdministeredConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, medicationAdministeredConverter, futures);
+        }
+
+        if (qdmTypes.contains(MedicationDispensedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, medicationDispensedConverter, futures);
+        }
+
+        if (qdmTypes.contains(ParticipationConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, participationConverter, futures);
+        }
+
+        if (qdmTypes.contains(PhysicalExamPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, physicalExamPerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(ProcedureOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, procedureOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(ProcedurePerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, procedurePerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(SubstanceAdministeredConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, substanceAdministeredConverter, futures);
+        }
+
+        if (qdmTypes.contains(SymptomConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, symptomConverter, futures);
+        }
+    }
+
+    public void processGroup2(BonniePatient bonniePatient, List<CompletableFuture<List<FhirDataElement>>> futures, Set<String> qdmTypes, Patient fhirPatient) {
+        if (qdmTypes.contains(CommunicationPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, communicationPerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(DiagnosisConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, diagnosisConverter, futures);
+        }
+
+        if (qdmTypes.contains(DiagnosticStudyOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, diagnosticStudyOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(DiagnosticStudyPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, diagnosticStudyPerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(DeviceAppliedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, deviceAppliedConverter, futures);
+        }
+
+        if (qdmTypes.contains(EncounterOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, encounterOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(FamilyHistoryConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, familyHistoryConverter, futures);
+        }
+
+        if (qdmTypes.contains(InterventionRecommendedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, interventionRecommendedConverter, futures);
+        }
+
+        if (qdmTypes.contains(LaboratoryTestOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, laboratoryTestOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(LaboratoryTestPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, laboratoryTestPerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(ImmunizationAdministeredConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, immunizationAdministeredConverter, futures);
+        }
+
+        if (qdmTypes.contains(ImmunizationAdministeredNegationConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, immunizationAdministeredNegationConverter, futures);
+        }
+    }
+
+    public void processGroup1(BonniePatient bonniePatient, List<CompletableFuture<List<FhirDataElement>>> futures, Set<String> qdmTypes, Patient fhirPatient) {
+        if (qdmTypes.contains(EncounterConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, encounterConverter, futures);
+        }
+
+        if (qdmTypes.contains(InterventionOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, interventionOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(InterventionPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, interventionPerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(MedicationDischargeConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, medicationDischargeConverter, futures);
+        }
+
+        if (qdmTypes.contains(AdverseEventConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, adverseEventConverter, futures);
+        }
+
+        if (qdmTypes.contains(AllergyIntoleranceConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, allergyIntoleranceConverter, futures);
+        }
+
+        if (qdmTypes.contains(AssessmentOrderConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, assessmentOrderConverter, futures);
+        }
+
+        if (qdmTypes.contains(AssessmentPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, assessmentPerformedConverter, futures);
+        }
+
+        if (qdmTypes.contains(AssessmentRecommendedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, assessmentRecommendedConverter, futures);
+        }
+
+        if (qdmTypes.contains(CareCoalConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, careCoalConverter, futures);
         }
     }
 
@@ -376,11 +385,11 @@ public class PatientConversionService implements FhirCreator {
 
     public Set<String> collectQdmTypes(BonniePatient bonniePatient) {
         if (bonniePatient.getQdmPatient() == null || CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
-            log.warn("Bonnie Patient id: {} has no data elements", bonniePatient.get_id());
+            log.warn("Bonnie Patient id: {} has no data elements", bonniePatient.getId());
             return Collections.emptySet();
         } else {
             return bonniePatient.getQdmPatient().getDataElements().stream()
-                    .map(QdmDataElement::get_type)
+                    .map(QdmDataElement::getQdmType)
                     .collect(Collectors.toSet());
         }
     }
@@ -402,7 +411,7 @@ public class PatientConversionService implements FhirCreator {
     }
 
     private void processRelatedTo(List<FhirDataElement> fhirDataElements) {
-        RelatedToProcessor  relatedToProcessor = new RelatedToProcessor(fhirContext, objectMapper,  fhirDataElements);
+        RelatedToProcessor relatedToProcessor = new RelatedToProcessor(fhirContext, objectMapper, fhirDataElements);
         relatedToProcessor.process();
     }
 }

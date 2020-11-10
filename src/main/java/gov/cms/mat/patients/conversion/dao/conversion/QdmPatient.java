@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,12 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 // @JsonIgnoreProperties(ignoreUnknown = true)
 public class QdmPatient {
-    String _id;
+    @JsonProperty("_id")
+    String id;
+
     String qdmVersion;
 
     Date birthDatetime;
     ExtendedData extendedData;
-    // JsonNode extendedData;
 
     List<QdmDataElement> dataElements;
 }

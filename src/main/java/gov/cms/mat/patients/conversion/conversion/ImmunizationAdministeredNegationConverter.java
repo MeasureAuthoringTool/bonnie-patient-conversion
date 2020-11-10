@@ -8,14 +8,9 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Slf4j
@@ -40,7 +35,7 @@ public class ImmunizationAdministeredNegationConverter extends ConverterBase<Med
             log.debug("Not creating Immunization due to element not having negation");
             return null;
         } else {
-            return  convertToFhirNegation(fhirPatient, qdmDataElement);
+            return convertToFhirNegation(fhirPatient, qdmDataElement);
         }
     }
 

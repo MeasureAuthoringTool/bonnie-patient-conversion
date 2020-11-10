@@ -25,7 +25,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         Observation observation = new Observation();
         List<String> conversionMessages = new ArrayList<>();
 
-        observation.setId(qdmDataElement.get_id());
+        observation.setId(qdmDataElement.getId());
         observation.setSubject(createPatientReference(fhirPatient));
 
         if(CollectionUtils.isNotEmpty( qdmDataElement.getDataElementCodes())) {

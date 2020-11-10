@@ -10,12 +10,15 @@ import java.util.List;
 @NoArgsConstructor
 // @JsonIgnoreProperties(ignoreUnknown = true)
 public class BonniePatient {
-    String _id;
+    @JsonProperty("_id")
+    String id;
+
     List<String> givenNames;
     String familyName;
     String bundleId;
 
-    String[] provider_ids;
+    @JsonProperty("provider_ids")
+    String[] providerIds;
 
     List<ExpectedValues> expectedValues;
 
@@ -24,11 +27,12 @@ public class BonniePatient {
     @JsonProperty("measure_ids")
     List<String> measureIds;
 
-    String user_id;
+    @JsonProperty("user_id")
+    String userId;
 
     QdmPatient qdmPatient;
 
     public String identifier() {
-        return _id;
+        return id;
     }
 }

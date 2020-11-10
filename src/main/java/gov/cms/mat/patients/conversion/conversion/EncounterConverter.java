@@ -43,7 +43,7 @@ public class EncounterConverter extends ConverterBase<Encounter> {
     public QdmToFhirConversionResult<Encounter> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
         Encounter encounter = new Encounter();
-        encounter.setId(qdmDataElement.get_id());
+        encounter.setId(qdmDataElement.getId());
 
         encounter.setClass_(createCodingFromDataElementCodes(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 
@@ -73,12 +73,9 @@ public class EncounterConverter extends ConverterBase<Encounter> {
         }
 
         if (processNegation(qdmDataElement, encounter)) {
-            //todo stan we have many with data right now
             // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8114-encounter-performed
             //	There is no current use case for an eCQM to request a reason for failure to perform an encounter.
-
             conversionMessages.add("There is no current use case for an eCQM to request a reason for failure to perform an encounter.");
-
         }
 
         return QdmToFhirConversionResult.<Encounter>builder()
@@ -124,9 +121,8 @@ public class EncounterConverter extends ConverterBase<Encounter> {
 
 
         //  We are not doing references to other qdmElements at this juncture
-        //   "message": "Profile http://hl7.org/fhir/StructureDefinition/Encounter, Element 'Encounter.diagnosis[0].condition': minimum required = 1, but only found 0",
-        //  Reference condition = new Reference();
-        //  diagnosisComponent.setCondition(condition);
+        //   "message": "Profile http://hl7.org/fhir/StructureDefinition/Encounter,
+        //   Element 'Encounter.diagnosis[0].condition': minimum required = 1, but only found 0",
 
 
         if (diagnoses.getRank() != null) {

@@ -39,7 +39,7 @@ public class SymptomConverter extends ConverterBase<Observation> implements Obse
         Observation observation = new Observation();
         List<String> conversionMessages = new ArrayList<>();
 
-        observation.setId(qdmDataElement.get_id());
+        observation.setId(qdmDataElement.getId());
         observation.setSubject(createPatientReference(fhirPatient));
         observation.setStatus(Observation.ObservationStatus.UNKNOWN);
         observation.setValue(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));

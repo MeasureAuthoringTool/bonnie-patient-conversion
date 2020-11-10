@@ -7,6 +7,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
@@ -43,7 +44,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
 
         medicationAdministration.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 
-        medicationAdministration.setId(qdmDataElement.get_id());
+        medicationAdministration.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
             medicationAdministration.getDosage().setDose(convertQuantity(qdmDataElement.getDosage()));
@@ -54,9 +55,14 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         // This object if not null then all the elements in the object is null
-//        if (qdmDataElement.getFrequency() != null) {
-//            //medicationAdministration.getDosage().setRate() should go hera
-//        }
+        if (qdmDataElement.getFrequency() != null) {
+
+            if (StringUtils.isBlank(qdmDataElement.getFrequency().getCodeSystem())) {
+                log.info("qdmDataElement.getFrequency() all elements are null");
+            } else {
+                log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "frequency");
+            }
+        }
 
         if (qdmDataElement.getReason() != null) {
             medicationAdministration.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
@@ -70,9 +76,10 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
             medicationAdministration.setEffective(convertPeriod(qdmDataElement.getRelevantPeriod()));
         }
 
-//        if( qdmDataElement.getPerformer() != null) {
-//            log.debug("HI");
-//        }
+        if (qdmDataElement.getPerformer() != null) {
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
+            medicationAdministration.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
 
         if (!processNegation(qdmDataElement, medicationAdministration)) {
             medicationAdministration.setStatus("unknown");

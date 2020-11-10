@@ -67,7 +67,7 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
     private String createNotMappedMessage(String type, List<QdmDataElement> dataElements) {
         long count = dataElements.stream()
-                .filter(d -> d.get_type().equals(type))
+                .filter(d -> d.getQdmType().equals(type))
                 .count();
 
         return String.format(NOT_MAPPED_MESSAGE, count, type);
@@ -75,7 +75,7 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
     public Patient process(BonniePatient bonniePatient) {
         Patient fhirPatient = new Patient();
-        fhirPatient.setId(bonniePatient.get_id());
+        fhirPatient.setId(bonniePatient.getId());
         fhirPatient.setExtension(List.of(new Extension(US_CORE_RACE_URL), new Extension(DETAILED_RACE_URL)));
         fhirPatient.setActive(true); // ??
 

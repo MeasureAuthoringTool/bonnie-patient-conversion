@@ -43,7 +43,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         List<String> conversionMessages = new ArrayList<>();
 
         MedicationDispense medicationDispense = new MedicationDispense();
-        medicationDispense.setId(qdmDataElement.get_id());
+        medicationDispense.setId(qdmDataElement.getId());
         medicationDispense.setSubject(createPatientReference(fhirPatient));
 
         medicationDispense.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
@@ -68,18 +68,15 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         }
 
         if (qdmDataElement.getSetting() != null) {
-            log.warn("Not mapping -> qdmDataElement.getSetting()");
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "setting");
         }
 
         if (qdmDataElement.getPrescriber() != null) {
-            log.warn("Not mapping -> qdmDataElement.getPrescriber()");
-             // todo ashok how to map
-            // medicationDispense.addAuthorizingPrescription()
+            medicationDispense.addAuthorizingPrescription(createPractitionerReference(qdmDataElement.getPrescriber()));
         }
 
         if (qdmDataElement.getDispenser() != null) {
-            // todo ashok how to map
-            log.warn("Not mapping -> qdmDataElement.getDispenser() ");
+            medicationDispense.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getDispenser()));
         }
 
         if (qdmDataElement.getSupply() != null) {
@@ -92,12 +89,10 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             conversionMessages.add(NO_STATUS_MAPPING);
         }
 
-
         return QdmToFhirConversionResult.<MedicationDispense>builder()
                 .fhirResource(medicationDispense)
                 .conversionMessages(conversionMessages)
                 .build();
-
     }
 
     @Override

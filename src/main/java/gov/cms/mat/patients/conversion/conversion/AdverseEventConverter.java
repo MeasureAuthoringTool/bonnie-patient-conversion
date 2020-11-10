@@ -65,7 +65,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
             log.info("We finally have severity"); //no data
         }
 
-        adverseEvent.setId(qdmDataElement.get_id());
+        adverseEvent.setId(qdmDataElement.getId());
 
         // There is no Recorder attribute in qdmDataElement but could be mapped to one of  QdmPractitioner objects
 

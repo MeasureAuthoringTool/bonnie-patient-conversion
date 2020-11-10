@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,5 +9,6 @@ import lombok.NoArgsConstructor;
 public class LengthOfStay {
     Integer value;
     String unit;
-    String _type;
+    @JsonProperty("_type")
+    String type;
 }

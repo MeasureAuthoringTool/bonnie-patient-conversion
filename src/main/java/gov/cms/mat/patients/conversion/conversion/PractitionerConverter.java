@@ -83,7 +83,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         List<String> conversionMessages = new ArrayList<>();
 
         Practitioner practitioner = new Practitioner();
-        practitioner.setId(sender.get_id());
+        practitioner.setId(sender.getId());
 
         if (sender.getRole() != null) {
             creeateFhirQualification(sender.getRole(), practitioner);

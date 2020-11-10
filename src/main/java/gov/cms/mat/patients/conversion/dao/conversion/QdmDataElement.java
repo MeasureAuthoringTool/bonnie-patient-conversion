@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,13 @@ import java.util.List;
 // @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QdmDataElement {
-    String _id;
+    @JsonProperty("_id")
+    String id;
+
     List<QdmCodeSystem> dataElementCodes;
 
-    String _type;
+    @JsonProperty("_type")
+    String qdmType;
 
     QdmCodeSystem type; //in there  "_id": "5c95406eb8484612c37f1f57",
 
@@ -110,6 +114,6 @@ public class QdmDataElement {
     QdmPractitioner performer;
 
     public String identifier() {
-        return _id;
+        return id;
     }
 }

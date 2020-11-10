@@ -18,7 +18,6 @@ import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -46,7 +45,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
 
         goal.getTargetFirstRep().setMeasure(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
 
-        goal.setId(qdmDataElement.get_id());
+        goal.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getTargetOutcome() != null) {
             QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(qdmDataElement.getTargetOutcome());
@@ -76,20 +75,6 @@ public class CareCoalConverter extends ConverterBase<Goal> {
                 .fhirResource(goal)
                 .conversionMessages(conversionMessages)
                 .build();
-    }
-
-    private List<Goal.GoalTargetComponent> createTarget(TargetOutcome targetOutcome) {
-        QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(targetOutcome);
-
-        if (qdmCodeSystem == null) {
-            return Collections.emptyList();
-        } else {
-            Goal.GoalTargetComponent targetComponent = new Goal.GoalTargetComponent();
-
-            targetComponent.setMeasure(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
-
-            return List.of(targetComponent);
-        }
     }
 
     private QdmCodeSystem convertToQdmCodeSystem(TargetOutcome targetOutcome) {

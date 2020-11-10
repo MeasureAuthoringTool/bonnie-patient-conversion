@@ -1,21 +1,23 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public class Participant {
-    String _id;
+    @JsonProperty("_id")
+    String id;
+
     String qdmVersion;
-    String _type;
+
+    @JsonProperty("_type")
+    String qdmType;
+
     String hqmfOid;
     String qrdaOid;
     QdmCodeSystem relationship;
-
     QdmIdentifier identifier;
-
     String type;
-
-
 }

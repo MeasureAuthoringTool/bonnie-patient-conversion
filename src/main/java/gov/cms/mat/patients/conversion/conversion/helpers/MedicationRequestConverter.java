@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
 public interface MedicationRequestConverter extends FhirCreator, DataElementFinder {
 
@@ -34,45 +35,22 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         medicationRequest.setIntent(intent);
         medicationRequest.setMedication(getMedicationCodeableConcept(qdmDataElement.getDataElementCodes(), converterBase));
 
-        medicationRequest.setId(qdmDataElement.get_id());
+        medicationRequest.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
-            try {
-                Quantity quantity = convertQuantity(qdmDataElement.getDosage());
-
-                Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-                dosage.getDoseAndRateFirstRep().setDose(quantity);
-            } catch (InvalidUnitException e) {
-                conversionMessages.add(e.getMessage());
-            }
+            createDosage(qdmDataElement, conversionMessages, medicationRequest);
         }
 
         if (qdmDataElement.getSupply() != null) {
-            try {
-                Quantity quantity = convertQuantity(qdmDataElement.getSupply());
-                medicationRequest.getDispenseRequest().setQuantity(quantity);
-            } catch (InvalidUnitException e) {
-                conversionMessages.add(e.getMessage());
-            }
+            createSupply(qdmDataElement, conversionMessages, medicationRequest);
         }
 
         if (qdmDataElement.getDaysSupplied() != null) {
-            MedicationRequest.MedicationRequestDispenseRequestComponent dispenseRequest = medicationRequest.getDispenseRequest();
-            Duration duration = new Duration();
-            duration.setUnit("d");
-            duration.setSystem("http://unitsofmeasure.org");
-            duration.setValue(qdmDataElement.getDaysSupplied());
-            dispenseRequest.setExpectedSupplyDuration(duration);
+            createDuration(qdmDataElement, medicationRequest);
         }
 
         if (qdmDataElement.getFrequency() != null) {
-            if (qdmDataElement.getFrequency().getCode() == null) {
-                conversionMessages.add("Frequency code is null");
-            } else {
-                Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-                Timing timing = dosage.getTiming();
-                timing.setCode(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getFrequency()));
-            }
+            createFrequency(qdmDataElement, converterBase, conversionMessages, medicationRequest);
         }
 
         if (qdmDataElement.getRefills() != null) {
@@ -85,19 +63,20 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
             dosage.setRoute(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getRoute()));
         }
 
-        /* Missing data awaiting confirmation that it will never appear
+
+        // if we had data would be hard to convert code to enum
         if (qdmDataElement.getSetting() != null) {
-            // NO data Found
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "setting");
         }
+
         if (qdmDataElement.getReason() != null) {
-            // NO data Found
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "reason");
+            medicationRequest.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getReason())));
         }
-        */
 
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-
             dosage.getTiming().setEvent(List.of(new DateTimeType(qdmDataElement.getRelevantDatetime())));
         }
 
@@ -112,30 +91,62 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         medicationRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
 
 
-        if (!converterBase.processNegation(qdmDataElement, medicationRequest)) {
+        if (!converterBase.processNegation(qdmDataElement, medicationRequest) && setStatusToUnknown) {
             // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8173-medication-discharge
             // 	Constrain to active, completed, on-hold
-
-            if (setStatusToUnknown) {
-                medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.UNKNOWN);
-                conversionMessages.add(NO_STATUS_MAPPING);
-            }
+            medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.UNKNOWN);
+            conversionMessages.add(NO_STATUS_MAPPING);
         }
 
-        /* Missing data awaiting confirmation that it will never appear
+
         if (qdmDataElement.getPrescriber() != null) {
-            // NO data Found
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "prescriber");
+            medicationRequest.setRequester(createPractitionerReference(qdmDataElement.getPrescriber()));
         }
-
-        if (qdmDataElement.getDispenser() != null) {
-            // NO data Found
-        }
-        */
 
         return QdmToFhirConversionResult.<MedicationRequest>builder()
                 .fhirResource(medicationRequest)
                 .conversionMessages(conversionMessages)
                 .build();
+    }
+
+    private void createFrequency(QdmDataElement qdmDataElement, ConverterBase<MedicationRequest> converterBase, List<String> conversionMessages, MedicationRequest medicationRequest) {
+        if (qdmDataElement.getFrequency().getCode() == null) {
+            conversionMessages.add("Frequency code is null");
+        } else {
+            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+            Timing timing = dosage.getTiming();
+            timing.setCode(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getFrequency()));
+        }
+    }
+
+    private void createSupply(QdmDataElement qdmDataElement, List<String> conversionMessages, MedicationRequest medicationRequest) {
+        try {
+            Quantity quantity = convertQuantity(qdmDataElement.getSupply());
+            medicationRequest.getDispenseRequest().setQuantity(quantity);
+        } catch (InvalidUnitException e) {
+            conversionMessages.add(e.getMessage());
+        }
+    }
+
+    private void createDosage(QdmDataElement qdmDataElement, List<String> conversionMessages, MedicationRequest medicationRequest) {
+        try {
+            Quantity quantity = convertQuantity(qdmDataElement.getDosage());
+
+            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+            dosage.getDoseAndRateFirstRep().setDose(quantity);
+        } catch (InvalidUnitException e) {
+            conversionMessages.add(e.getMessage());
+        }
+    }
+
+    private void createDuration(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
+        MedicationRequest.MedicationRequestDispenseRequestComponent dispenseRequest = medicationRequest.getDispenseRequest();
+        Duration duration = new Duration();
+        duration.setUnit("d");
+        duration.setSystem("http://unitsofmeasure.org");
+        duration.setValue(qdmDataElement.getDaysSupplied());
+        dispenseRequest.setExpectedSupplyDuration(duration);
     }
 
     private CodeableConcept getMedicationCodeableConcept(List<QdmCodeSystem> dataElementCodes, ConverterBase<MedicationRequest> converterBase) {

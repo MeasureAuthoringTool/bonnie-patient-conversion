@@ -55,7 +55,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
         immunization.setVaccineCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
 
-        immunization.setId(qdmDataElement.get_id());
+        immunization.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
             immunization.setDoseQuantity(convertQuantity(qdmDataElement.getDosage()));
@@ -69,7 +69,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
         if (qdmDataElement.getReason() != null) {
             // No data
-            log.info("We have reason data");
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "reason");
             immunization.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
         }
 
@@ -80,10 +80,9 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         immunization.setRecorded(qdmDataElement.getAuthorDatetime());
 
         if( qdmDataElement.getPerformer() != null) {
-             // No data todo can we expect data
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
+            immunization.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
         }
-
-
 
         return QdmToFhirConversionResult.<Immunization>builder()
                 .fhirResource(immunization)
@@ -95,6 +94,6 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
     void convertNegation(QdmDataElement qdmDataElement, Immunization immunization) {
         // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered
         log.warn("QdmDataElement id: {} - for converting {} to Fhir Immunization,  Will create a MedicationRequest in another class.",
-                qdmDataElement.get_id(), qdmDataElement.get_type());
+                qdmDataElement.getId(), qdmDataElement.getQdmType());
     }
 }

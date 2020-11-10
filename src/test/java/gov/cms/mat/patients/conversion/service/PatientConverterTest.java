@@ -33,8 +33,8 @@ class PatientConverterTest implements ResourceFileUtil {
         ConversionResult conversionResult = patientConversionService.processOne(bonniePatient);
         assertNotNull(conversionResult);
 
-        assertEquals(bonniePatient.get_id(), conversionResult.getId());
-        assertEquals(bonniePatient.get_id(), conversionResult.getConvertedPatient().getFhirPatient().get("id").asText());
+        assertEquals(bonniePatient.getId(), conversionResult.getId());
+        assertEquals(bonniePatient.getId(), conversionResult.getConvertedPatient().getFhirPatient().get("id").asText());
         assertEquals(bonniePatient.getMeasureIds(), conversionResult.getMeasureIds());
     }
 

@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,5 +11,7 @@ public class QdmReferenceRange {
     QdmQuantity high;
     Boolean lowClosed;
     Boolean highClosed;
-    String _type; //  is "QDM::Interval"  but has different high/low
+
+    @JsonProperty("_type")
+    String type;
 }

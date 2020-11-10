@@ -106,7 +106,7 @@ public interface DataElementFinder {
             return Collections.emptyList();
         } else {
             return qdmPatient.getDataElements().stream()
-                    .filter(d -> d.get_type().equals(type))
+                    .filter(d -> d.getQdmType().equals(type))
                     .collect(Collectors.toList());
         }
     }

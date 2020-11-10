@@ -27,8 +27,8 @@ import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ServiceRequest;
+import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.Collections;
@@ -40,7 +40,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class ConverterBase<T extends IBaseResource> implements FhirCreator, DataElementFinder {
+
     public static final String NO_STATUS_MAPPING = "No mapping for status";
+
+    public static final String UNEXPECTED_DATA_LOG_MESSAGE = "Unexpected data found for qdmType: {} qdmDataElement property: {}.";
 
     public static final String INCISION_DATE_TIME_URL = "http://hl7.org/fhir/StructureDefinition/procedure-incisionDateTime";
     public static final String QICORE_DO_NOT_PERFORM_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-doNotPerformReason";
@@ -63,8 +66,8 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         this.validationService = validationService;
     }
 
-    public <T extends Resource> T createFhirResourceFromJsonNode(JsonNode jsonNode, Class<T> resourceClass) throws JsonProcessingException {
-        return parseResource(fhirContext, resourceClass, jsonNode);
+    public Logger getLog() {
+        return log;
     }
 
     @Async("threadPoolConversion")
@@ -167,7 +170,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
 
     void convertNegation(QdmDataElement qdmDataElement, T resource) {
         log.warn("Negation not handled for qdmDataElement id: {} - for converting {} to Fhir {}",
-                qdmDataElement.get_id(), qdmDataElement.get_type(), resource.getClass().getSimpleName());
+                qdmDataElement.getId(), qdmDataElement.getQdmType(), resource.getClass().getSimpleName());
     }
 
     void convertNegationServiceRequest(QdmDataElement qdmDataElement, ServiceRequest serviceRequest) {

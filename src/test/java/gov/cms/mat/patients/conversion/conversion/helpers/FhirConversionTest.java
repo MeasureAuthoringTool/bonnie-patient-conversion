@@ -63,7 +63,7 @@ public interface FhirConversionTest {
 
     default QdmDataElement createQdmDataElement() {
         QdmDataElement qdmDataElement = new QdmDataElement();
-        qdmDataElement.set_id(ELEMENT_ID);
+        qdmDataElement.setId(ELEMENT_ID);
         return qdmDataElement;
     }
 
@@ -255,8 +255,7 @@ public interface FhirConversionTest {
     }
 
     default FacilityLocation createFacilityLocation() {
-        FacilityLocation facilityLocation = new FacilityLocation();
-        return facilityLocation;
+        return new FacilityLocation();
     }
 
     default ObjectNode createCodeableConceptObjectNode() {

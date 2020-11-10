@@ -29,7 +29,7 @@ public interface FhirCreator {
     }
 
     default Reference createPractitionerReference(QdmPractitioner qdmPractitioner) {
-        return new Reference("Practitioner/" + qdmPractitioner.get_id());
+        return new Reference("Practitioner/" + qdmPractitioner.getId());
 
     }
 
@@ -101,13 +101,6 @@ public interface FhirCreator {
         // https://ucum.nlm.nih.gov/ucum-lhc/demo.html Nice tool for codes
         // Let bonnie decide what valid
         return unit;
-
-//        if (StringUtils.isBlank(unit)) {
-//            //  throw new InvalidUnitException("Cannot convert unit, unit is blank");
-//            return unit;
-//        } else {
-//            return unit;
-//        }
     }
 
     default List<Reference> convertRelatedTo(List<String> relatedTo) {
@@ -115,6 +108,4 @@ public interface FhirCreator {
                 .map(relatedToId -> new Reference("Unknown/" + relatedToId))
                 .collect(Collectors.toList());
     }
-
-
 }

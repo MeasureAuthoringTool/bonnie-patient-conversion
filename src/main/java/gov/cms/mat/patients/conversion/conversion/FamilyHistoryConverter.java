@@ -42,7 +42,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
         familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
 
-        familyMemberHistory.setId(qdmDataElement.get_id());
+        familyMemberHistory.setId(qdmDataElement.getId());
 
         familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
 

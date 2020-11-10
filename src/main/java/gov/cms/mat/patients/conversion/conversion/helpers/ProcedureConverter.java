@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.INCISION_DATE_TIME_URL;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
 public interface ProcedureConverter extends DataElementFinder, FhirCreator {
 
@@ -24,7 +25,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         procedure.setSubject(createPatientReference(fhirPatient));
 
         procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
-        procedure.setId(qdmDataElement.get_id());
+        procedure.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getRank() != null) {
             conversionMessages.add("Cannot convert QDM attribute rank");
@@ -71,9 +72,10 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
             conversionMessages.add("Cannot convert QDM attribute components");
         }
 
-//        if (qdmDataElement.getPerformer() != null) {
-//            // No data
-//        }
+        if (qdmDataElement.getPerformer() != null) {
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "performer");
+            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
 
         return QdmToFhirConversionResult.<Procedure>builder()
                 .fhirResource(procedure)

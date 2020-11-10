@@ -4,7 +4,6 @@ import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmInterval;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
@@ -23,9 +22,9 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
     public static final String QDM_TYPE = "QDM::Participation";
 
     public ParticipationConverter(CodeSystemEntriesService codeSystemEntriesService,
-                                             FhirContext fhirContext,
-                                             ObjectMapper objectMapper,
-                                             ValidationService validationService) {
+                                  FhirContext fhirContext,
+                                  ObjectMapper objectMapper,
+                                  ValidationService validationService) {
         super(codeSystemEntriesService, fhirContext, objectMapper, validationService);
     }
 
@@ -45,7 +44,7 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
 
         coverage.setType(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
 
-        coverage.setId(qdmDataElement.get_id());
+        coverage.setId(qdmDataElement.getId());
 
         convertParticipationPeriod(coverage, qdmDataElement);
 

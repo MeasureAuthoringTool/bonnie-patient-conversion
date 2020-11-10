@@ -27,7 +27,7 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
             serviceRequest.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
         }
 
-        serviceRequest.setId(qdmDataElement.get_id());
+        serviceRequest.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getReason() != null) {
             serviceRequest.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(),

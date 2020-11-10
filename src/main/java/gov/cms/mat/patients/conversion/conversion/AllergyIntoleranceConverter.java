@@ -12,7 +12,7 @@ import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -34,6 +34,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
     @Override
     public QdmToFhirConversionResult<AllergyIntolerance> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
+        List<String> conversionMessages = new ArrayList<>();
 
         AllergyIntolerance allergyIntolerance = new AllergyIntolerance();
         allergyIntolerance.setPatient(createPatientReference(fhirPatient));
@@ -42,7 +43,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
             allergyIntolerance.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         }
 
-        allergyIntolerance.setId(qdmDataElement.get_id());
+        allergyIntolerance.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             allergyIntolerance.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
@@ -50,11 +51,9 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
         allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
 
-//        if (qdmDataElement.getSeverity() != null) {
-//          AllergyIntolerance.AllergyIntoleranceReactionComponent  component = allergyIntolerance.getReactionFirstRep();
-//            //todo Stan/Ashok Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
-//            // How do we map code to enum
-//        }
+        if (qdmDataElement.getSeverity() != null) {
+            conversionMessages.add("Cannot convert severity to the enum AllergyIntolerance.reaction.severity");
+        }
 
         if (qdmDataElement.getType() != null) {
             List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();
@@ -68,7 +67,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
         return QdmToFhirConversionResult.<AllergyIntolerance>builder()
                 .fhirResource(allergyIntolerance)
-                .conversionMessages(Collections.emptyList())
+                .conversionMessages(conversionMessages)
                 .build();
 
     }
