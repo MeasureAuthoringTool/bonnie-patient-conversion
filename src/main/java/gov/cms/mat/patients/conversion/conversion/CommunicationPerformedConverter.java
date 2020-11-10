@@ -8,6 +8,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Extension;
@@ -56,12 +57,8 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         if (qdmDataElement.getReceivedDatetime() != null) {
             communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
-        if (qdmDataElement.getRelatedTo() != null) {
-            var references = qdmDataElement.getRelatedTo().stream()
-                    .map(s -> new Reference("Unknown/" + s))
-                    .collect(Collectors.toList());
-
-            communication.setBasedOn(references);
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
+            communication.setBasedOn(convertRelatedTo(qdmDataElement.getRelatedTo()));
         }
 
         if (qdmDataElement.getSender() != null) {
@@ -101,6 +98,4 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
 
         communication.setStatusReason(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
     }
-
-
 }

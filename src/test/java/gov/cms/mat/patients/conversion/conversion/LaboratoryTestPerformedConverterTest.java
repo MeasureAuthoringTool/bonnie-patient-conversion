@@ -10,17 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AssessmentPerformedConverterTest extends BaseConversionTest implements FhirConversionTest, ObservationCommonTest {
+class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements FhirConversionTest, ObservationCommonTest {
+
     @Autowired
-    private AssessmentPerformedConverter assessmentPerformedConverter;
+    private LaboratoryTestPerformedConverter laboratoryTestPerformedConverter;
 
     @Test
     void getQdmType() {
-        assertEquals(AssessmentPerformedConverter.QDM_TYPE, assessmentPerformedConverter.getQdmType());
+        assertEquals(LaboratoryTestPerformedConverter.QDM_TYPE, laboratoryTestPerformedConverter.getQdmType());
     }
 
     @Test
@@ -29,7 +30,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
 
         qdmDataElement.setResult(createIntegerTypeResult());
 
-        QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkWithoutNegationResult(result);
 
@@ -43,7 +44,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
 
         qdmDataElement.setResult(createTextTypeResult());
 
-        QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkNegationResult(result);
 
@@ -52,8 +53,9 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
 
     @Test
     void convertToFhirEmptyObjects() {
-        QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
     }
+
 }

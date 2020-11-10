@@ -11,4 +11,6 @@ public class QdmCode {
     String display;
     String version;
     String _type;
+
+   String  descriptor;
 }

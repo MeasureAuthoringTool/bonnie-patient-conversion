@@ -10,6 +10,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.Goal;
@@ -60,13 +61,14 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             goal.setStatusDate(qdmDataElement.getRelevantPeriod().getHigh());
         }
 
-//        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
-//            //todo Ashook qdmDataElement.getRelatedTo() is returning back Id's How to map it
-//        }
-//
-//        if (qdmDataElement.getPerformer() != null) {
-//            // no data
-//        }
+
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
+            goal.setAddresses(convertRelatedTo(qdmDataElement.getRelatedTo()));
+        }
+
+        if (qdmDataElement.getPerformer() != null) {
+           goal.setExpressedBy(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
 
         processNegation(qdmDataElement, goal); // no negations expected
 
@@ -105,6 +107,4 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             return qdmCodeSystem;
         }
     }
-
-
 }

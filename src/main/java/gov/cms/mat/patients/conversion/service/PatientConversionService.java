@@ -45,6 +45,7 @@ import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import gov.cms.mat.patients.conversion.dao.results.ConvertedPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
+import gov.cms.mat.patients.conversion.service.helpers.RelatedToProcessor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -67,7 +68,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class PatientConversionService implements FhirCreator {
-    private static final int THREAD_POOL_TIMEOUT_MINUTES = 1;
+    private static final int THREAD_POOL_TIMEOUT_MINUTES = 2;
     private final PatientConverter patientConverter;
     private final EncounterConverter encounterConverter;
     private final InterventionOrderConverter interventionOrderConverter;
@@ -400,51 +401,8 @@ public class PatientConversionService implements FhirCreator {
                 .orElseThrow(() -> new IllegalArgumentException("No result found with the id: " + id));
     }
 
-
     private void processRelatedTo(List<FhirDataElement> fhirDataElements) {
-
-        var communicationElementList = fhirDataElements.stream()
-                .filter(fhirDataElement -> fhirDataElement.getFhirType().equals("Communication"))
-                .filter(fhirDataElement -> ((Communication) fhirDataElement.getFhirObject()).hasBasedOn())
-                .collect(Collectors.toList());
-
-        communicationElementList.forEach(fhirDataElement -> processCommunicationRelatedTo(fhirDataElement, fhirDataElements));
-
-    }
-
-    @SneakyThrows
-    private void processCommunicationRelatedTo(FhirDataElement communicationFhirDataElement, List<FhirDataElement> fhirDataElements) {
-        Communication communication = (Communication) communicationFhirDataElement.getFhirObject();
-
-        communication.getBasedOn().forEach(reference -> processBasedOn(reference, communicationFhirDataElement, fhirDataElements));
-
-        String json = toJson(fhirContext, communication);
-
-        communicationFhirDataElement.setFhirResource(objectMapper.readTree(json));
-    }
-
-    private void processBasedOn(Reference reference, FhirDataElement communicationFhirDataElement, List<FhirDataElement> fhirDataElements) {
-        String splits[] = reference.getReference().split("/");
-
-        if (splits.length != 2) {
-            log.error("Cannot parse reference: {}", reference.getReference());
-        } else {
-            String id = splits[1];
-
-            var optional = fhirDataElements.stream()
-                    .filter(f -> f.getFhirId().equals(id))
-                    .findFirst();
-
-            if (optional.isEmpty()) {
-                String message = "Cannot find resource for relatedTo to with id: " + id;
-                log.warn(message);
-
-                communicationFhirDataElement.getOutcome().getConversionMessages()
-                        .add(message + ". Please adjust reference.");
-            } else {
-                FhirDataElement relatedElement = optional.get();
-                reference.setReference(relatedElement.getFhirType() + "/" + relatedElement.getFhirId());
-            }
-        }
+        RelatedToProcessor  relatedToProcessor = new RelatedToProcessor(fhirContext, objectMapper,  fhirDataElements);
+        relatedToProcessor.process();
     }
 }

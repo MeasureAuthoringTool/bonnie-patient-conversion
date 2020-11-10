@@ -6,7 +6,6 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
-import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -101,13 +100,21 @@ public interface FhirCreator {
     default String convertUnitToCode(String unit) {
         // https://ucum.nlm.nih.gov/ucum-lhc/demo.html Nice tool for codes
         // Let bonnie decide what valid
+        return unit;
 
-        if (StringUtils.isBlank(unit)) {
-            //  throw new InvalidUnitException("Cannot convert unit, unit is blank");
-            return unit;
-        } else {
-            return unit;
-        }
-
+//        if (StringUtils.isBlank(unit)) {
+//            //  throw new InvalidUnitException("Cannot convert unit, unit is blank");
+//            return unit;
+//        } else {
+//            return unit;
+//        }
     }
+
+    default List<Reference> convertRelatedTo(List<String> relatedTo) {
+        return relatedTo.stream()
+                .map(relatedToId -> new Reference("Unknown/" + relatedToId))
+                .collect(Collectors.toList());
+    }
+
+
 }

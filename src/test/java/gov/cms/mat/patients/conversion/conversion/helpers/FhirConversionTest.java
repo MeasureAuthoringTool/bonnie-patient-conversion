@@ -1,7 +1,11 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import gov.cms.mat.patients.conversion.dao.conversion.FacilityLocation;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
@@ -127,6 +131,11 @@ public interface FhirConversionTest {
         return qdmCodeSystem;
     }
 
+    default void checkTypeList(List<CodeableConcept> codeableConcepts) {
+        assertEquals(1, codeableConcepts.size());
+        checkType(codeableConcepts.get(0));
+    }
+
     default void checkType(CodeableConcept codeableConcept) {
         assertEquals(1, codeableConcept.getCoding().size());
         Coding coding = codeableConcept.getCoding().get(0);
@@ -234,9 +243,42 @@ public interface FhirConversionTest {
 
     default void checkComponents(List<Observation.ObservationComponentComponent> components) {
         assertEquals(1, components.size());
-
-
+        //todo
     }
 
+    default QdmCodeSystem createSeverity() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
+        qdmCodeSystem.setCode("24484000");
+        qdmCodeSystem.setDisplay("Severe");
+        return qdmCodeSystem;
+    }
 
+    default FacilityLocation createFacilityLocation() {
+        FacilityLocation facilityLocation = new FacilityLocation();
+        return facilityLocation;
+    }
+
+    default ObjectNode createCodeableConceptObjectNode() {
+        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectNode root = mapper.createObjectNode();
+
+        root.set("system", mapper.convertValue("2.16.840.1.113883.6.96", JsonNode.class));
+        root.set("code", mapper.convertValue("276333003", JsonNode.class));
+        root.set("display", mapper.convertValue("Microphallus", JsonNode.class));
+
+        return root;
+    }
+
+   default void checkCodeableConceptObjectNode(Type value) {
+       assertThat(value, instanceOf(CodeableConcept.class));
+
+       CodeableConcept codeableConcept = (CodeableConcept) value;
+
+       Coding coding = codeableConcept.getCodingFirstRep();
+
+       assertEquals("http://snomed.info/sct", coding.getSystem());
+       assertEquals("276333003", coding.getCode());
+       assertEquals("Microphallus", coding.getDisplay());
+   }
 }

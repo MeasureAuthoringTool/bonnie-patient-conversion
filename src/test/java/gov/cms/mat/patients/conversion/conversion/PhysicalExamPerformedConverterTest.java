@@ -11,29 +11,30 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AssessmentPerformedConverterTest extends BaseConversionTest implements FhirConversionTest, ObservationCommonTest {
+class PhysicalExamPerformedConverterTest extends BaseConversionTest implements FhirConversionTest, ObservationCommonTest {
     @Autowired
-    private AssessmentPerformedConverter assessmentPerformedConverter;
+    private PhysicalExamPerformedConverter physicalExamPerformedConverter;
 
     @Test
     void getQdmType() {
-        assertEquals(AssessmentPerformedConverter.QDM_TYPE, assessmentPerformedConverter.getQdmType());
+        assertEquals(PhysicalExamPerformedConverter.QDM_TYPE, physicalExamPerformedConverter.getQdmType());
     }
 
     @Test
     void convertToFhirWithoutNegation() {
         createObservationDataElement(qdmDataElement);
 
-        qdmDataElement.setResult(createIntegerTypeResult());
+        qdmDataElement.setResult(null);
 
-        QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = physicalExamPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkWithoutNegationResult(result);
 
-        checkIntegerTypeResult(result.getFhirResource().getValue());
+        assertNull(result.getFhirResource().getValue());
     }
 
     @Test
@@ -43,7 +44,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
 
         qdmDataElement.setResult(createTextTypeResult());
 
-        QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = physicalExamPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkNegationResult(result);
 
@@ -52,8 +53,9 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
 
     @Test
     void convertToFhirEmptyObjects() {
-        QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = physicalExamPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
     }
+
 }

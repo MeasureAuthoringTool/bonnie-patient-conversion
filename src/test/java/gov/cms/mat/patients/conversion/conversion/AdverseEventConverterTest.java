@@ -51,4 +51,24 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
     }
+
+    @Test
+    void convertToFhirNoDataElements() {
+        qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
+
+
+        qdmDataElement.setType(createType());
+        qdmDataElement.setSeverity(createSeverity());
+        qdmDataElement.setFacilityLocations(List.of(createFacilityLocation()));
+        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
+
+        QdmToFhirConversionResult<AdverseEvent> result = adverseEventConverter.convertToFhir(fhirPatient, qdmDataElement);
+
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+
+        checkTypeList(result.getFhirResource().getCategory());
+
+    }
+
+
 }

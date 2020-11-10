@@ -73,12 +73,13 @@
       <td>relatedTo</td>
       <td>Goal.addresses</td>
       <td>&nbsp;</td>
+      <td>qdmDataElement.getRelatedTo()</td>
     </tr>
     <tr>
       <td>Performer</td>
       <td>Goal.expressedBy</td>
       <td>&nbsp;</td>
-      <td>No data for Performer</td>
+      <td>No data for Performer qdmDataElement.getPerformer() </td>
     </tr>
   </tbody>
 </table>

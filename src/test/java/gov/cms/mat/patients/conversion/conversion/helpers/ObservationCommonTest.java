@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface ObservationCommonTest extends FhirConversionTest {
-
     default void checkDataElement(QdmToFhirConversionResult<Observation> result) {
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         checkDataElementCode(result.getFhirResource().getCode());
@@ -55,5 +54,4 @@ public interface ObservationCommonTest extends FhirConversionTest {
         assertThat(modifierExtension.getValue(), instanceOf(BooleanType.class));
         assertTrue(((BooleanType) modifierExtension.getValue()).booleanValue());
     }
-
 }

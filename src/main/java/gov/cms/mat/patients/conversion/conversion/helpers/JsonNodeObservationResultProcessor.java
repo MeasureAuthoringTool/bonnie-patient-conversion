@@ -35,11 +35,6 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
 
 
     public Type findType(JsonNode result) {
-        if (result == null) {
-            log.debug("JsonNode is null");
-            return null;
-        }
-
         if (result instanceof ObjectNode) {
             return processObjectNode((ObjectNode) result);
         } else if (result instanceof NullNode) {
