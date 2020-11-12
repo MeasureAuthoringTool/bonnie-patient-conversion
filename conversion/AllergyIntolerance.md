@@ -102,9 +102,11 @@
       <td>Severity</td>
       <td>AllergyIntolerance.reaction.severity</td>
       <td>mild, moderate, severe</td>
-      <td>Based on what factors we map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality<br><br>
-      qdmDataElement.getSeverity()  is a code how to we map to a enum <br>
-       Will create a messge to user
+      <td>
+        Notes from Stan: We'd have to do extensive code mapping and then get consensus from community. 
+        Cost would far outweigh benefit, especially since it doesn't get used much. 
+        Recommend not mapping.<br>
+        Will create a messge to user
       </td>
     </tr>
     <tr>
