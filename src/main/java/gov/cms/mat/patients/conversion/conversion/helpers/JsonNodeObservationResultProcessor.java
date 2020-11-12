@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.exceptions.InvalidUnitException;
-import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -50,7 +49,7 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
             conversionMessages.add(message);
             return null;
         } else {
-            String message = "Observation result does not handle " +  result.getClass().getSimpleName() + " value: " + result.asText();
+            String message = "Observation result does not handle " + result.getClass().getSimpleName() + " value: " + result.asText();
             log.warn(message);
             conversionMessages.add(message);
             return null;

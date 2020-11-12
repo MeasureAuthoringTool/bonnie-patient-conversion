@@ -44,7 +44,7 @@ public interface DataElementFinder {
             CodeSystemEntry codeSystemEntry = codeSystemEntriesService.findRequired(qdmCodeSystem.getSystem());
             theSystem = codeSystemEntry.getUrl();
         } catch (PatientConversionException e) {
-            theSystem = qdmCodeSystem.getSystem();
+            theSystem = "urn:oid:" +  qdmCodeSystem.getSystem();
         }
 
         return new Coding(theSystem, qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay());

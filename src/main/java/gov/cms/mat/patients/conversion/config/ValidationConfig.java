@@ -1,9 +1,7 @@
 package gov.cms.mat.patients.conversion.config;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.context.support.IValidationSupport;
 import ca.uhn.fhir.validation.FhirValidator;
-
 import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +12,11 @@ import static gov.cms.mat.patients.conversion.conversion.PatientConverter.US_COR
 
 @Configuration
 public class ValidationConfig {
-
     private final FhirContext fhirContext;
 
     public ValidationConfig(FhirContext fhirContext) {
         this.fhirContext = fhirContext;
     }
-
 
     @Bean
     FhirValidator fhirValidator() {

@@ -32,7 +32,7 @@ mat-api-key: DISABLED
 logging:
   level:
     root: WARN
-    gov.cms.mat: WARN
+    gov.cms.mat: INFO
     org.hl7.fhir.r4.hapi.ctx: WARN
     org.hl7.fhir.r4.hapi.validation: WARN
   pattern:

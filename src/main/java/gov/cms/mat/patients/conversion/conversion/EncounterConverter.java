@@ -115,7 +115,8 @@ public class EncounterConverter extends ConverterBase<Encounter> {
 
                 return null;
             } else {
-                diagnosisComponent.setUse(createCodeableConcept(diagnoses.getCode(), diagnoses.getCode().getCodeSystem()));
+                diagnosisComponent.setUse(createCodeableConcept(diagnoses.getCode(),
+                        "urn:oid:" + diagnoses.getCode().getCodeSystem()));
             }
         }
 
