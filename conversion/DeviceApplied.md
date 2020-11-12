@@ -58,7 +58,7 @@
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8911-negation-rationale-for-device-applied">Click Here</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -82,36 +82,3 @@
     </tr>
   </tbody>
 </table>
-<table class="grid">
-    <H4><strong>Negation Rationale</strong></H4>
-    <thead>
-        <tr>
-            <th><strong>QI-Core R4</strong></th>
-            <th><strong>Comments</strong></th>
-            <th><strong>Conversion</strong></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Procedure.status</td>
-            <td>Fixed as “not-done”</td>
-            <td>Procedure.ProcedureStatus.NOTDONE</td>
-        </tr>
-        <tr>
-            <td>Procedure.statusReason</td>
-            <td>Use value set NegationReasonCodes</td>
-            <td>&nbsp;</td>          
-        </tr>
-        <tr>
-            <td>Procedure.extension:recorded</td>
-            <td>When this was made available</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td>Procedure.code</td>
-            <td>Use Procedure.code.coding.extension:notDoneValueSet to indicate the specific Procedure that was not performed</td>
-            <td>Created new Extension with QICORE_RECORDED url and 
-            qdmDataElement.getAuthorDatetime()</td>
-        </tr> 
-    </tbody>
-</table>  
