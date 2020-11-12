@@ -70,7 +70,7 @@
       <td>relatedTo</td>
       <td>Communication.basedOn</td>
       <td>An order, proposal or plan fulfilled in whole or in part by this Communication.</td>
-      <td>E.G.. this is example data in  5d63e5c8b848463cab3c7624 which is a QDM::InterventionPerformed  How to map. </td>
+      <td>qdmDataElement.getRelatedTo()</td>
     </tr>
     <tr>
       <td>&nbsp;</td>

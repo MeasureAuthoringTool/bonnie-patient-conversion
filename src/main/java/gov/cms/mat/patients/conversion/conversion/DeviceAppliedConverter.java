@@ -34,21 +34,18 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
     @Override
     public QdmToFhirConversionResult<Procedure> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
+
         Procedure procedure = new Procedure();
-
-        procedure.setId(qdmDataElement.getId());
-        procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
         procedure.setSubject(createPatientReference(fhirPatient));
-        procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
 
-        conversionMessages.add(NO_STATUS_MAPPING);
-
+        procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
         //Todo difference between Procedure.usedCode and Procedure.code
         procedure.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-
+        procedure.setId(qdmDataElement.getId());
         if (qdmDataElement.getReason() != null) {
             procedure.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
         }
+        procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
 
         if (!processNegation(qdmDataElement, procedure)) {
             procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
