@@ -85,7 +85,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
 
 
         if (!processNegation(qdmDataElement, medicationDispense)) {
-            medicationDispense.setStatus("unknown");
+            medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
 
@@ -97,7 +97,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
 
     @Override
     void convertNegation(QdmDataElement qdmDataElement, MedicationDispense medicationDispense) {
-        medicationDispense.setStatus("declined");
+        medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.DECLINED);
 
         CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
         medicationDispense.setStatusReason(codeableConcept);

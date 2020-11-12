@@ -2,6 +2,8 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -181,17 +183,24 @@ public interface FhirConversionTest {
         return new IntNode(Integer.MAX_VALUE);
     }
 
+    default DoubleNode createDoubleTypeResult() {
+        return new DoubleNode (22.2);
+    }
+
     default void checkIntegerTypeResult(Type result) {
         assertThat(result, instanceOf(IntegerType.class));
 
         IntegerType integerType = (IntegerType) result;
 
         assertEquals(Integer.MAX_VALUE, integerType.getValue());
-
     }
 
     default TextNode createTextTypeResult() {
         return new TextNode("FHIR");
+    }
+
+    default BooleanNode createBooleanTypeResult() {
+        return  BooleanNode.FALSE;
     }
 
     default void checkTextTypeResult(Type result) {
@@ -201,7 +210,6 @@ public interface FhirConversionTest {
 
         assertEquals("FHIR", stringType.getValue());
     }
-
 
     default QdmPeriod createRelevantPeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
@@ -237,9 +245,7 @@ public interface FhirConversionTest {
         qdmComponent.setReferenceRange(qdmPeriod);
 
         return qdmComponent;
-
     }
-
 
     default void checkComponents(List<Observation.ObservationComponentComponent> components) {
         assertEquals(1, components.size());

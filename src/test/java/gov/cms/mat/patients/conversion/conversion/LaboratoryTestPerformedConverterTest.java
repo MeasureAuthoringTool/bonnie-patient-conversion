@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
 class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements FhirConversionTest, ObservationCommonTest {
-
     @Autowired
     private LaboratoryTestPerformedConverter laboratoryTestPerformedConverter;
 
@@ -28,13 +28,15 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
     void convertToFhirWithoutNegation() {
         createObservationDataElement(qdmDataElement);
 
-        qdmDataElement.setResult(createIntegerTypeResult());
+        qdmDataElement.setResult(createDoubleTypeResult());
 
         QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkWithoutNegationResult(result);
 
-        checkIntegerTypeResult(result.getFhirResource().getValue());
+        assertNull(result.getFhirResource().getValue());
+
+        assertEquals(2, result.getConversionMessages().size());
     }
 
     @Test
@@ -42,13 +44,15 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
         createObservationDataElement(qdmDataElement);
         qdmDataElement.setNegationRationale(createNegationRationale());
 
-        qdmDataElement.setResult(createTextTypeResult());
+        qdmDataElement.setResult(createBooleanTypeResult());
 
         QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkNegationResult(result);
 
-        checkTextTypeResult(result.getFhirResource().getValue());
+        assertNull(result.getFhirResource().getValue());
+
+        assertEquals(1, result.getConversionMessages().size());
     }
 
     @Test
@@ -56,6 +60,7 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
         QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
-    }
 
+        assertEquals(1, result.getConversionMessages().size());
+    }
 }

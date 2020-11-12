@@ -82,7 +82,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (!processNegation(qdmDataElement, medicationAdministration)) {
-            medicationAdministration.setStatus("unknown");
+            medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
 
@@ -95,7 +95,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
 
     @Override
     void convertNegation(QdmDataElement qdmDataElement, MedicationAdministration medicationAdministration) {
-        medicationAdministration.setStatus("not-done");
+        medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.NOTDONE);
 
         CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
         medicationAdministration.setStatusReason(List.of(codeableConcept));

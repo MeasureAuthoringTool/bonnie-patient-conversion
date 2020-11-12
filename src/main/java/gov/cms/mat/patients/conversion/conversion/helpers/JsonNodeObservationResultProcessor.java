@@ -45,11 +45,15 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         } else if (result instanceof IntNode) {
             return processIntMode((IntNode) result);
         } else if (result instanceof DoubleNode) {
-            conversionMessages.add("Observation result does not handle doubles value: " + result.asText());
+            String message = "Observation result does not handle doubles value: " + result.asText();
+            log.warn(message);
+            conversionMessages.add(message);
             return null;
         } else {
-            log.warn("Unknown json node type: {}", result.getClass().getName());
-            throw new PatientConversionException("Unknown json node type: " + result.getClass().getName());
+            String message = "Observation result does not handle " +  result.getClass().getSimpleName() + " value: " + result.asText();
+            log.warn(message);
+            conversionMessages.add(message);
+            return null;
         }
     }
 
