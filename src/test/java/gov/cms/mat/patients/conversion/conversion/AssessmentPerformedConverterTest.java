@@ -41,13 +41,13 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
         createObservationDataElement(qdmDataElement);
         qdmDataElement.setNegationRationale(createNegationRationale());
 
-        qdmDataElement.setResult(createTextTypeResult());
+        qdmDataElement.setResult(createTextTypeResultDate());
 
         QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkNegationResult(result);
 
-        checkTextTypeResult(result.getFhirResource().getValue());
+        checkTextTypeResultDate(result.getFhirResource().getValue());
     }
 
     @Test

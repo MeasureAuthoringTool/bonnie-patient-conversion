@@ -15,6 +15,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Observation;
@@ -184,7 +185,7 @@ public interface FhirConversionTest {
     }
 
     default DoubleNode createDoubleTypeResult() {
-        return new DoubleNode (22.2);
+        return new DoubleNode(22.2);
     }
 
     default void checkIntegerTypeResult(Type result) {
@@ -199,16 +200,28 @@ public interface FhirConversionTest {
         return new TextNode("FHIR");
     }
 
-    default BooleanNode createBooleanTypeResult() {
-        return  BooleanNode.FALSE;
-    }
-
     default void checkTextTypeResult(Type result) {
         assertThat(result, instanceOf(StringType.class));
 
         StringType stringType = (StringType) result;
 
         assertEquals("FHIR", stringType.getValue());
+    }
+
+    default TextNode createTextTypeResultDate() {
+        return new TextNode("2012-02-01T19:00:00.000+00:00");
+    }
+
+    default void checkTextTypeResultDate(Type result) {
+        assertThat(result, instanceOf(DateTimeType.class));
+
+        DateTimeType dateTimeType = (DateTimeType) result;
+
+        assertEquals("2012-02-01T19:00:00+00:00", dateTimeType.getValueAsString());
+    }
+
+    default BooleanNode createBooleanTypeResult() {
+        return BooleanNode.FALSE;
     }
 
     default QdmPeriod createRelevantPeriod() {
@@ -260,6 +273,14 @@ public interface FhirConversionTest {
         return qdmCodeSystem;
     }
 
+    default void checkSeverity(CodeableConcept codeableConcept) {
+        assertEquals(1, codeableConcept.getCoding().size());
+        Coding coding = codeableConcept.getCoding().get(0);
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("24484000", coding.getCode());
+        assertEquals("Severe", coding.getDisplay());
+    }
+
     default FacilityLocation createFacilityLocation() {
         return new FacilityLocation();
     }
@@ -275,15 +296,15 @@ public interface FhirConversionTest {
         return root;
     }
 
-   default void checkCodeableConceptObjectNode(Type value) {
-       assertThat(value, instanceOf(CodeableConcept.class));
+    default void checkCodeableConceptObjectNode(Type value) {
+        assertThat(value, instanceOf(CodeableConcept.class));
 
-       CodeableConcept codeableConcept = (CodeableConcept) value;
+        CodeableConcept codeableConcept = (CodeableConcept) value;
 
-       Coding coding = codeableConcept.getCodingFirstRep();
+        Coding coding = codeableConcept.getCodingFirstRep();
 
-       assertEquals("http://snomed.info/sct", coding.getSystem());
-       assertEquals("276333003", coding.getCode());
-       assertEquals("Microphallus", coding.getDisplay());
-   }
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("276333003", coding.getCode());
+        assertEquals("Microphallus", coding.getDisplay());
+    }
 }

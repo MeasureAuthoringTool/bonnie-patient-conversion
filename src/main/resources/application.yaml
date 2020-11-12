@@ -16,7 +16,7 @@ springdoc:
 
 json:
   data:
-    code-system-entry-url: https://spreadsheets.google.com/feeds/list/1_heoWR09X3UnyEvyyHLzVXT_D1Hhdt3OPztpgr1hW_k/od6/public/values?alt=json
+    code-system-entry-url: https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values?alt=json
 
 swagger-server:
 

@@ -57,6 +57,7 @@
       <td>recorder</td>
       <td>Observation.performer</td>
       <td>&nbsp;</td>
+       <td>&nbsp;Not mapped </td>
     </tr>
   </tbody>
 </table>
