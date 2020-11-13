@@ -20,7 +20,7 @@ public class CodeSystemEntriesService {
 
     public Optional<CodeSystemEntry> find(String oid) {
         if (StringUtils.isBlank(oid)) {
-            log.warn("Oid is empty: {}", oid);
+            log.trace("Oid is empty: {}", oid);
             return Optional.empty();
         } else {
             return googleDataService.getCodeSystemEntries().stream()

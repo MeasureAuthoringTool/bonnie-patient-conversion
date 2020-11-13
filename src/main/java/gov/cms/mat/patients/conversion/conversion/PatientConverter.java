@@ -99,10 +99,10 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
         if (optional.isPresent()) {
             QdmDataElement dataElement = optional.get();
-            log.debug("Patient is dead");
+            log.trace("Patient is dead");
             return new DateTimeType(dataElement.getExpiredDatetime());
         } else {
-            log.debug("Patient is alive");
+            log.trace("Patient is alive");
             return null;
         }
     }

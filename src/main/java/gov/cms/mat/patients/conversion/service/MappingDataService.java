@@ -14,7 +14,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Data Source https://docs.google.com/spreadsheets/d/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/edit?ts=5fada128#gid=0
+ * Data Source -> https://docs.google.com/spreadsheets/d/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/edit?ts=5fada128#gid=0
+ *
+ * FHir Namingsystem-terminologies -> https://www.hl7.org/fhir/namingsystem-terminologies.html
+ *
+ * CD2-codes  https://terminology.hl7.org/1.0.0/CodeSystem-CD2.json.html
  */
 @Service
 @Slf4j

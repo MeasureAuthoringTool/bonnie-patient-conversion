@@ -4,10 +4,10 @@ spring:
 
 logging:
   level:
-    root: INFO
+    root: WARN
     gov.cms.mat: DEBUG
-    org.hl7.fhir.r4.hapi.ctx: INFO
-    org.hl7.fhir.r4.hapi.validation: INFO
+    org.hl7.fhir.r4.hapi.ctx: WARN
+    org.hl7.fhir.r4.hapi.validation: WARN
   pattern:
     console: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %mdc %-5level %logger{36}.%M - %msg%n"
 

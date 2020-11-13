@@ -57,9 +57,7 @@ public class EncounterConverter extends ConverterBase<Encounter> {
 
         encounter.setSubject(createPatientReference(fhirPatient));
 
-        if (qdmDataElement.getLengthOfStay() == null) {
-            log.debug("Length of stay is null");
-        } else {
+        if (qdmDataElement.getLengthOfStay() != null) {
             Duration duration = new Duration();
             duration.setUnit(qdmDataElement.getLengthOfStay().getUnit());
             duration.setValue(qdmDataElement.getLengthOfStay().getValue());
