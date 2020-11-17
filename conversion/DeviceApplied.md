@@ -18,7 +18,7 @@
       <td>&nbsp;</td>
       <td>Procedure.status</td>
       <td>Constrain to “active”</td>
-      <td>Status is set to UNKNOWN</td>
+      <td>Status is set to UNKNOWN - There is no Procedure.ProcedureStatus.ACTIVE ?HOW to map? </td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -58,7 +58,7 @@
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8911-negation-rationale-for-device-applied">Click Here</td>
+      <td></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>

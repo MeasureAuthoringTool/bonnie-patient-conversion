@@ -7,6 +7,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
 import org.springframework.stereotype.Component;
@@ -38,24 +39,28 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         Procedure procedure = new Procedure();
         procedure.setSubject(createPatientReference(fhirPatient));
 
-        procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
-        procedure.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
-        //Todo difference between Procedure.usedCode and Procedure.code
-        procedure.setCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            procedure.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+
         procedure.setId(qdmDataElement.getId());
+
         if (qdmDataElement.getReason() != null) {
             procedure.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getReason())));
         }
-        procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
+
+        if (qdmDataElement.getRelevantPeriod() != null) {
+            procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
+        }
 
         if (qdmDataElement.getPerformer() != null) {
-            //no data
-            //qdmDataElement.getPerformer()
-            log.debug("We have Performer");
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
+            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
         }
 
         if (!processNegation(qdmDataElement, procedure)) {
-            procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+            procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
+            conversionMessages.add(ConverterBase.NO_STATUS_MAPPING);
         }
 
         return QdmToFhirConversionResult.<Procedure>builder()
