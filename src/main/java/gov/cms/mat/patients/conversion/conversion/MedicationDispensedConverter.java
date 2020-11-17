@@ -43,13 +43,20 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         List<String> conversionMessages = new ArrayList<>();
 
         MedicationDispense medicationDispense = new MedicationDispense();
-        medicationDispense.setId(qdmDataElement.getId());
         medicationDispense.setSubject(createPatientReference(fhirPatient));
 
         medicationDispense.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        medicationDispense.setId(qdmDataElement.getId());
 
-        if (qdmDataElement.getRelevantDatetime() != null) {
-            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
+        if (qdmDataElement.getDosage() != null) {
+            //Todo Dosage not mapped
+            log.debug("Dosage is found");
+//            medicationDispense.setDosageInstruction();
+        }
+
+
+        if (qdmDataElement.getSupply() != null) {
+            medicationDispense.setQuantity(convertQuantity(qdmDataElement.getSupply()));
         }
 
         if (qdmDataElement.getDaysSupplied() != null) {
@@ -67,9 +74,18 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             }
         }
 
+        //No Refills mapped
+        //Route not mapped
+
         if (qdmDataElement.getSetting() != null) {
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "setting");
         }
+
+        if (qdmDataElement.getRelevantDatetime() != null) {
+            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
+        }
+
+        //Relevent Period
 
         if (qdmDataElement.getPrescriber() != null) {
             medicationDispense.addAuthorizingPrescription(createPractitionerReference(qdmDataElement.getPrescriber()));
@@ -78,11 +94,6 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         if (qdmDataElement.getDispenser() != null) {
             medicationDispense.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getDispenser()));
         }
-
-        if (qdmDataElement.getSupply() != null) {
-            medicationDispense.setQuantity(convertQuantity(qdmDataElement.getSupply()));
-        }
-
 
         if (!processNegation(qdmDataElement, medicationDispense)) {
             medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.UNKNOWN);

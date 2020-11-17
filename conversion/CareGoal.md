@@ -12,14 +12,17 @@
       <td><strong>Care Goal</strong></td>
       <td>Goal</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Goal.achievementStatus</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -33,6 +36,7 @@
       <td>&nbsp;</td>
       <td>Goal.target.detail[x]</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>id</td>
@@ -43,8 +47,8 @@
     <tr>
       <td>statusDate</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td></td>
+      <td>&nbsp;</td>     
+      <td>&nbsp;</td>     
     </tr>
     <tr>
       <td>Target outcome</td>
@@ -61,6 +65,7 @@
     <tr>
       <td>&nbsp;</td>
       <td>Goal.target.due[x]</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -85,4 +90,6 @@
 </table>
 
 -----------
+<pre>
 goal.setSubject(createReference(fhirPatient))
+</pre>

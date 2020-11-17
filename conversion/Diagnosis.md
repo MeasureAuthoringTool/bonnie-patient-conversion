@@ -4,7 +4,7 @@
       <th><strong>QDM Context</strong></th>
       <th><strong>QI-Core R4</strong></th>
       <th><strong>Comments</strong></th>
-        <th><strong>Conversion</strong></th>
+      <th><strong>Conversion</strong></th>
     </tr>
   </thead>
   <tbody>
@@ -18,19 +18,23 @@
       <td>&nbsp;</td>
       <td>Condition.clinicalStatus</td>
       <td>defines active/inactive</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Condition.verificationStatus</td>
       <td>confirmed, unconfirmed provisional, differential, refuted, entered-in-error,</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Condition.category</td>
       <td>problem-list-item, encounter-diagnosis, health-concern</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -38,7 +42,7 @@
       <td>code</td>
       <td>Condition.code</td>
       <td>&nbsp;</td>
-       <td>qdmDataElement.getDataElementCodes()</td>
+      <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>id</td>
@@ -56,6 +60,7 @@
       <td>&nbsp;</td>
       <td>Condition.abatement[x]</td>
       <td>May be dateTime, Age, Period Range, string</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Author dateTime</td>
@@ -73,7 +78,7 @@
       <td>Anatomical Location Site</td>
       <td>Condition.bodySite</td>
       <td>&nbsp;</td>
-        <td>&nbsp;Not mapped </td>
+      <td>&nbsp;Not mapped </td>
     </tr>
     <tr>
       <td>Recorder</td>
@@ -85,6 +90,11 @@
       <td>&nbsp;</td>
       <td>Condition.asserter</td>
       <td>Individual who is making the condition statement</td>
+      <td>&nbsp;</td>
     </tr>
   </tbody>
 </table>
+
+<pre>
+condition.setSubject(createPatientReference(fhirPatient));
+</pre>

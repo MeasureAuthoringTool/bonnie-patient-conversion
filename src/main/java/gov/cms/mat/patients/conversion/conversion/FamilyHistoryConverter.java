@@ -39,17 +39,17 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
         familyMemberHistory.setPatient(createPatientReference(fhirPatient));
 
+        //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#812-family-history
+        //Constrain to Completed, entered-in-error, not-done
+        familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
+        conversionMessages.add(NO_STATUS_MAPPING);
+
         FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
         familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
 
         familyMemberHistory.setId(qdmDataElement.getId());
 
         familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
-
-        //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#812-family-history
-        //Constrain to Completed, entered-in-error, not-done
-        familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
-        conversionMessages.add(NO_STATUS_MAPPING);
 
         if (qdmDataElement.getRelationship() != null) {
             //https://terminology.hl7.org/1.0.0/CodeSystem-v3-RoleCode.html

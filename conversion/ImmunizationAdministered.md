@@ -18,9 +18,11 @@
       <td>&nbsp;</td>
       <td>Immunization.status</td>
       <td>Constrain to Completed, entered-in-error, not-done</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -28,30 +30,31 @@
       <td>code</td>
       <td>Immunization.vaccineCode</td>
       <td>&nbsp;</td>
-        <td>qdmDataElement.getDataElementCodes()</td>
+      <td>qdmDataElement.getDataElementCodes()</td>
     </tr>
     <tr>
       <td>id</td>
       <td>Immunization.id</td>
       <td>&nbsp;</td>
-       <td>qdmDataElement.get_id()</td>
+      <td>qdmDataElement.get_id()</td>
     </tr>
     <tr>
       <td>Dosage</td>
       <td>Immunization.doseQuantity</td>
       <td>&nbsp;</td>
-       <td>qdmDataElement.getDosage()</td>
+      <td>qdmDataElement.getDosage()</td>
     </tr>
     <tr>
       <td>Negation Rationale</td>
       <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered"> Click Here </a></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Route</td>
       <td>Immunization.route</td>
       <td>&nbsp;</td>
-      <td>dmDataElement.getRoute()</td>
+      <td>qdmDataElement.getRoute()</td>
     </tr>
     <tr>
       <td>Reason</td>
@@ -79,3 +82,7 @@
     </tr>
   </tbody>
 </table>
+
+<pre>
+immunization.setPatient(createPatientReference(fhirPatient));
+</pre>

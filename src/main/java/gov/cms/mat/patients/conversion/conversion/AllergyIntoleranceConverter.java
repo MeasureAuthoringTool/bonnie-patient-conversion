@@ -51,16 +51,16 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
         allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
 
-        if (qdmDataElement.getSeverity() != null) {
-            conversionMessages.add("Cannot convert severity to the enum AllergyIntolerance.reaction.severity");
-        }
-
         if (qdmDataElement.getType() != null) {
             List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();
 
             var component = new AllergyIntolerance.AllergyIntoleranceReactionComponent();
             component.setSubstance(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType()));
             list.add(component);
+        }
+
+        if (qdmDataElement.getSeverity() != null) {
+            conversionMessages.add("Cannot convert severity to the enum AllergyIntolerance.reaction.severity");
         }
 
         processNegation(qdmDataElement, allergyIntolerance);

@@ -12,34 +12,41 @@
       <td>Allergy/Intolerance</td>
       <td>AllergyIntolerance</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.clinicalStatus</td>
       <td>active, inactive, resolved</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.type</td>
       <td>Defines difference between Allergy and Intolerance</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.verificationStatus</td>
       <td>unconfirmed, confirmed, refuted, entered-in-error</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.extension:reasonRefuted</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.category</td>
       <td>Food, medication, environment, biologic</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -65,11 +72,13 @@
       <td>&nbsp;</td>
       <td>AllergyIntolerance.lastOccurrence</td>
       <td>&nbsp;</td>
+      <td>Not Mapped</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.extension:resolutionAge</td>
       <td>Prevalence Period end time maps to AllergyIntolerance.extension:resolutionAge. Implementers may need to “map” existing allergy resolution timings (e.g., day, age, year, etc.) to a corresponding dateTime to allow calculation of measure or CDS expressions.</td>
+      <td>Not Mapped</td>
     </tr>
     <tr>
       <td>author dateTime</td>
@@ -80,6 +89,7 @@
     <tr>
       <td>Type</td>
       <td>AllergyIntolerance.reaction</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -92,10 +102,12 @@
       <td>&nbsp;</td>
       <td>AllergyIntolerance.reaction.manifestation</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>AllergyIntolerance.reaction.onset</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -113,10 +125,12 @@
       <td>&nbsp;</td>
       <td>AllergyIntolerance.criticality</td>
       <td>low, high, unable-to-assess</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Recorder</td>
       <td>AllergyIntolerance.asserter</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -127,3 +141,7 @@
     </tr>
   </tbody>
 </table>
+
+<pre>
+allergyIntolerance.setPatient(createPatientReference(fhirPatient));
+</pre>
