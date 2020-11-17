@@ -64,13 +64,9 @@ public interface FhirCreator {
     }
 
     default Period convertPeriod(QdmPeriod relevantPeriod) {
-        if (relevantPeriod == null) {
-            return null;
-        } else {
             return new Period()
                     .setStart(relevantPeriod.getLow())
                     .setEnd(relevantPeriod.getHigh() == null ? null : relevantPeriod.getHigh());
-        }
     }
 
     default String toJson(FhirContext fhirContext, IBaseResource theResource) {

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import gov.cms.mat.patients.conversion.dao.conversion.FacilityLocation;
+import gov.cms.mat.patients.conversion.dao.conversion.LengthOfStay;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
@@ -20,6 +21,7 @@ import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DateType;
+import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.IntegerType;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.SNOMED_OID;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.ELEMENT_ID;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.FAMILY_NAME;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.GIVEN_NAMES;
@@ -49,6 +52,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface FhirConversionTest {
     Instant now = Instant.now();
+
+    default void checkSNOMEDCodeableConcept(CodeableConcept codeableConcept, String code, String display) {
+        assertEquals(1, codeableConcept.getCoding().size());
+        Coding coding = codeableConcept.getCoding().get(0);
+
+        checkSNOMEDCoding(coding, code, display);
+    }
+
+    default void checkSNOMEDCoding(Coding coding, String code, String display) {
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals(code, coding.getCode());
+        assertEquals(display, coding.getDisplay());
+    }
+
+    default QdmCodeSystem createSNOMEDCode(String code, String display) {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem(SNOMED_OID);
+        qdmCodeSystem.setCode(code);
+        qdmCodeSystem.setDisplay(display);
+        return qdmCodeSystem;
+    }
 
     default Patient createFhirPatient() {
         Patient patient = new Patient();
@@ -88,19 +112,15 @@ public interface FhirConversionTest {
     }
 
     default QdmCodeSystem createDataElementCode() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("50699000");
-        qdmCodeSystem.setDisplay("Hospital admission, short-term");
-        return qdmCodeSystem;
+        return createSNOMEDCode("50699000", "Hospital admission, short-term");
     }
 
-    default void checkDataElementCode(CodeableConcept codeableConcept) {
-        assertEquals(1, codeableConcept.getCoding().size());
-        Coding coding = codeableConcept.getCoding().get(0);
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("50699000", coding.getCode());
-        assertEquals("Hospital admission, short-term", coding.getDisplay());
+    default void checkDataElementCodeableConcept(CodeableConcept codeableConcept) {
+        checkSNOMEDCodeableConcept(codeableConcept, "50699000", "Hospital admission, short-term");
+    }
+
+    default void checkDataElementCoding(Coding coding) {
+        checkSNOMEDCoding(coding, "50699000", "Hospital admission, short-term");
     }
 
     default Date createRelevantDatetime() {
@@ -133,13 +153,8 @@ public interface FhirConversionTest {
         assertEquals(createAuthorDatetime(), date);
     }
 
-
     default QdmCodeSystem createType() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("64572001");
-        qdmCodeSystem.setDisplay("Diseases");
-        return qdmCodeSystem;
+        return createSNOMEDCode("64572001", "Diseases");
     }
 
     default void checkTypeList(List<CodeableConcept> codeableConcepts) {
@@ -148,44 +163,26 @@ public interface FhirConversionTest {
     }
 
     default void checkType(CodeableConcept codeableConcept) {
-        assertEquals(1, codeableConcept.getCoding().size());
-        Coding coding = codeableConcept.getCoding().get(0);
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("64572001", coding.getCode());
-        assertEquals("Diseases", coding.getDisplay());
+        checkSNOMEDCodeableConcept(codeableConcept, "64572001", "Diseases");
     }
 
     default QdmCodeSystem createReason() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("80247002");
-        qdmCodeSystem.setDisplay("Third degree burn injury");
-        return qdmCodeSystem;
+        return createSNOMEDCode("80247002", "Third degree burn injury");
     }
 
     default void checkReason(CodeableConcept codeableConcept) {
-        assertEquals(1, codeableConcept.getCoding().size());
-        Coding coding = codeableConcept.getCoding().get(0);
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("80247002", coding.getCode());
-        assertEquals("Third degree burn injury", coding.getDisplay());
+        checkSNOMEDCodeableConcept(codeableConcept, "80247002", "Third degree burn injury");
     }
 
     default QdmCodeSystem createNegationRationale() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("47448006");
-        qdmCodeSystem.setDisplay("Hot Water");
-        return qdmCodeSystem;
+        return createSNOMEDCode("47448006", "Hot Water");
     }
 
     default void checkNegationRationaleType(Type value) {
         assertThat(value, instanceOf(Coding.class));
         Coding coding = (Coding) value;
 
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("47448006", coding.getCode());
-        assertEquals("Hot Water", coding.getDisplay());
+        checkSNOMEDCoding(coding, "47448006", "Hot Water");
     }
 
     default void checkNegationRationaleTypeCodeableConcept(CodeableConcept codeableConcept) {
@@ -266,7 +263,7 @@ public interface FhirConversionTest {
         QdmComponent qdmComponent = new QdmComponent();
 
         QdmCode qdmCode = new QdmCode();
-        qdmCode.setSystem("2.16.840.1.113883.6.96");
+        qdmCode.setSystem(SNOMED_OID);
         qdmCode.setCode("11713004");
         qdmCode.setDisplay("H2O - water");
         qdmComponent.setCode(qdmCode);
@@ -289,19 +286,11 @@ public interface FhirConversionTest {
     }
 
     default QdmCodeSystem createSeverity() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("24484000");
-        qdmCodeSystem.setDisplay("Severe");
-        return qdmCodeSystem;
+        return createSNOMEDCode("24484000", "Severe");
     }
 
     default void checkSeverity(CodeableConcept codeableConcept) {
-        assertEquals(1, codeableConcept.getCoding().size());
-        Coding coding = codeableConcept.getCoding().get(0);
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("24484000", coding.getCode());
-        assertEquals("Severe", coding.getDisplay());
+        checkSNOMEDCodeableConcept(codeableConcept, "24484000", "Severe");
     }
 
     default FacilityLocation createFacilityLocation() {
@@ -312,7 +301,7 @@ public interface FhirConversionTest {
         final ObjectMapper mapper = new ObjectMapper();
         final ObjectNode root = mapper.createObjectNode();
 
-        root.set("system", mapper.convertValue("2.16.840.1.113883.6.96", JsonNode.class));
+        root.set("system", mapper.convertValue(SNOMED_OID, JsonNode.class));
         root.set("code", mapper.convertValue("276333003", JsonNode.class));
         root.set("display", mapper.convertValue("Microphallus", JsonNode.class));
 
@@ -326,15 +315,13 @@ public interface FhirConversionTest {
 
         Coding coding = codeableConcept.getCodingFirstRep();
 
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("276333003", coding.getCode());
-        assertEquals("Microphallus", coding.getDisplay());
+        checkSNOMEDCoding(coding, "276333003", "Microphallus");
     }
 
     default TargetOutcome createTargetOutcome() {
         TargetOutcome targetOutcome = new TargetOutcome();
 
-        targetOutcome.setSystem("2.16.840.1.113883.6.96");
+        targetOutcome.setSystem(SNOMED_OID);
         targetOutcome.setCode("63901009");
         targetOutcome.setDisplay("Pain in testicle");
         return targetOutcome;
@@ -342,10 +329,7 @@ public interface FhirConversionTest {
 
     default void checkTargetOutCome(CodeableConcept codeableConcept) {
         Coding coding = codeableConcept.getCodingFirstRep();
-
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("63901009", coding.getCode());
-        assertEquals("Pain in testicle", coding.getDisplay());
+        checkSNOMEDCoding(coding, "63901009", "Pain in testicle");
     }
 
     default String createRelatedTo() {
@@ -360,22 +344,13 @@ public interface FhirConversionTest {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
         qdmPractitioner.setId("987654321");
 
-        QdmCodeSystem role = new QdmCodeSystem();
-        role.setSystem("2.16.840.1.113883.6.96");
-        role.setCode("158965000");
-        role.setDisplay("Medical practitioner");
+        QdmCodeSystem role = createSNOMEDCode("158965000", "Medical practitioner");
         qdmPractitioner.setRole(role);
 
-        QdmCodeSystem specialty = new QdmCodeSystem();
-        specialty.setSystem("2.16.840.1.113883.6.96");
-        specialty.setCode("309338004");
-        specialty.setDisplay("Intensive care specialist");
+        QdmCodeSystem specialty = createSNOMEDCode("309338004", "Intensive care specialist");
         qdmPractitioner.setSpecialty(specialty);
 
-        QdmCodeSystem qualification = new QdmCodeSystem();
-        qualification.setSystem("2.16.840.1.113883.6.96");
-        qualification.setCode("164618002");
-        qualification.setDisplay("General sign qualifications");
+        QdmCodeSystem qualification = createSNOMEDCode("164618002", "General sign qualifications");
         qdmPractitioner.setQualification(qualification);
 
         return qdmPractitioner;
@@ -408,27 +383,15 @@ public interface FhirConversionTest {
     }
 
     default QdmCodeSystem createCategory() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("183095004");
-        qdmCodeSystem.setDisplay("Usual warning given");
-        return qdmCodeSystem;
+        return createSNOMEDCode("183095004", "Usual warning given");
     }
 
     default QdmCodeSystem createMedium() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("408563008");
-        qdmCodeSystem.setDisplay("Email sent to consultant (finding)");
-        return qdmCodeSystem;
+        return createSNOMEDCode("408563008", "Email sent to consultant (finding)");
     }
 
     default void checkMedium(CodeableConcept codeableConcept) {
-        assertEquals(1, codeableConcept.getCoding().size());
-        Coding coding = codeableConcept.getCoding().get(0);
-        assertEquals("http://snomed.info/sct", coding.getSystem());
-        assertEquals("408563008", coding.getCode());
-        assertEquals("Email sent to consultant (finding)", coding.getDisplay());
+        checkSNOMEDCodeableConcept(codeableConcept, "408563008", "Email sent to consultant (finding)");
     }
 
     default Date createSentDatetime() {
@@ -464,4 +427,26 @@ public interface FhirConversionTest {
 
         assertEquals(QICORE_RECORDED, extension.getUrl());
     }
+
+    default LengthOfStay createLengthOfStay() {
+        LengthOfStay lengthOfStay = new LengthOfStay();
+        lengthOfStay.setUnit("day");
+        lengthOfStay.setValue(99);
+        return lengthOfStay;
+    }
+
+    default void checkLengthOfStay(Duration duration) {
+        assertEquals("day", duration.getUnit());
+        assertEquals(99, duration.getValue().intValue());
+    }
+
+    default QdmCodeSystem createDischargeDisposition() {
+        return createSNOMEDCode("430567009", " Ready for discharge");
+    }
+
+    default void checkDischargeDisposition(CodeableConcept codeableConcept) {
+        checkSNOMEDCodeableConcept(codeableConcept, "430567009", " Ready for discharge");
+    }
+
+
 }

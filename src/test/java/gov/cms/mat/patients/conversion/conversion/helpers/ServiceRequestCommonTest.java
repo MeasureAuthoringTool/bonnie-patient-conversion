@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public interface ServiceRequestCommonTest extends FhirConversionTest {
     default void checkDataElement(QdmToFhirConversionResult<ServiceRequest> result) {
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
-        checkDataElementCode(result.getFhirResource().getCode());
+        checkDataElementCodeableConcept(result.getFhirResource().getCode());
         checkAuthorDatetime(result.getFhirResource().getAuthoredOn());
         checkReason(result.getFhirResource().getReasonCodeFirstRep());
     }

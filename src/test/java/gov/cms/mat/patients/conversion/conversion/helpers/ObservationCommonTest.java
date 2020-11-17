@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public interface ObservationCommonTest extends FhirConversionTest {
     default void checkDataElement(QdmToFhirConversionResult<Observation> result) {
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
-        checkDataElementCode(result.getFhirResource().getCode());
+        checkDataElementCodeableConcept(result.getFhirResource().getCode());
 
         checkRelevantPeriod((Period) result.getFhirResource().getEffective());
         checkAuthorDatetime(result.getFhirResource().getIssued());

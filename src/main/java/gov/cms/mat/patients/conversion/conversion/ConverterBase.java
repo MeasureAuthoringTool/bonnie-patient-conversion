@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class ConverterBase<T extends IBaseResource> implements FhirCreator, DataElementFinder {
+    public static final String SNOMED_OID = "2.16.840.1.113883.6.96";
 
     public static final String NO_STATUS_MAPPING = "No mapping for status";
 

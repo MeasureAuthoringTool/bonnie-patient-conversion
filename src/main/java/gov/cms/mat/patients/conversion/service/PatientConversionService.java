@@ -14,7 +14,7 @@ import gov.cms.mat.patients.conversion.conversion.DeviceAppliedConverter;
 import gov.cms.mat.patients.conversion.conversion.DiagnosisConverter;
 import gov.cms.mat.patients.conversion.conversion.DiagnosticStudyOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.DiagnosticStudyPerformedConverter;
-import gov.cms.mat.patients.conversion.conversion.EncounterConverter;
+import gov.cms.mat.patients.conversion.conversion.EncounterPerformedConverter;
 import gov.cms.mat.patients.conversion.conversion.EncounterOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.FamilyHistoryConverter;
 import gov.cms.mat.patients.conversion.conversion.ImmunizationAdministeredConverter;
@@ -67,7 +67,7 @@ import java.util.stream.Collectors;
 public class PatientConversionService implements FhirCreator {
     private static final int THREAD_POOL_TIMEOUT_MINUTES = 2;
     private final PatientConverter patientConverter;
-    private final EncounterConverter encounterConverter;
+    private final EncounterPerformedConverter encounterPerformedConverter;
     private final InterventionOrderConverter interventionOrderConverter;
     private final InterventionPerformedConverter interventionPerformedConverter;
     private final MedicationDischargeConverter medicationDischargeConverter;
@@ -105,7 +105,7 @@ public class PatientConversionService implements FhirCreator {
     private final FhirContext fhirContext;
 
     public PatientConversionService(PatientConverter patientConverter,
-                                    EncounterConverter encounterConverter,
+                                    EncounterPerformedConverter encounterPerformedConverter,
                                     InterventionOrderConverter interventionOrderConverter,
                                     InterventionPerformedConverter interventionPerformedConverter,
                                     MedicationDischargeConverter medicationDischargeConverter,
@@ -140,7 +140,7 @@ public class PatientConversionService implements FhirCreator {
                                     SymptomConverter symptomConverter,
                                     PractitionerConverter practitionerConverter, FhirContext fhirContext) {
         this.patientConverter = patientConverter;
-        this.encounterConverter = encounterConverter;
+        this.encounterPerformedConverter = encounterPerformedConverter;
         this.interventionOrderConverter = interventionOrderConverter;
         this.interventionPerformedConverter = interventionPerformedConverter;
         this.medicationDischargeConverter = medicationDischargeConverter;
@@ -326,8 +326,8 @@ public class PatientConversionService implements FhirCreator {
     }
 
     public void processGroup1(BonniePatient bonniePatient, List<CompletableFuture<List<FhirDataElement>>> futures, Set<String> qdmTypes, Patient fhirPatient) {
-        if (qdmTypes.contains(EncounterConverter.QDM_TYPE)) {
-            processFuture(bonniePatient, fhirPatient, encounterConverter, futures);
+        if (qdmTypes.contains(EncounterPerformedConverter.QDM_TYPE)) {
+            processFuture(bonniePatient, fhirPatient, encounterPerformedConverter, futures);
         }
 
         if (qdmTypes.contains(InterventionOrderConverter.QDM_TYPE)) {

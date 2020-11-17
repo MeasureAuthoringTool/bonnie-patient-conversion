@@ -45,7 +45,7 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         assertEquals(1, result.getConversionMessages().size());
         assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
 
-        checkDataElementCode(result.getFhirResource().getStatusReason());
+        checkDataElementCodeableConcept(result.getFhirResource().getStatusReason());
 
         checkMedium(result.getFhirResource().getMediumFirstRep());
         checkSentDatetime(result.getFhirResource().getSent());

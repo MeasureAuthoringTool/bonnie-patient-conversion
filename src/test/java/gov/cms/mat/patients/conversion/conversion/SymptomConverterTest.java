@@ -35,7 +35,7 @@ class SymptomConverterTest extends BaseConversionTest implements FhirConversionT
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        checkDataElementCode(result.getFhirResource().getValueCodeableConcept());
+        checkDataElementCodeableConcept(result.getFhirResource().getValueCodeableConcept());
         checkPrevalencePeriod(result.getFhirResource().getEffectivePeriod());
         checkSeverity(result.getFhirResource().getInterpretationFirstRep());
     }

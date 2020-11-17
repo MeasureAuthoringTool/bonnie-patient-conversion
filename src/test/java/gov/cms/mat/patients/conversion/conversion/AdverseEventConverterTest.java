@@ -35,7 +35,7 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        checkDataElementCode(result.getFhirResource().getEvent());
+        checkDataElementCodeableConcept(result.getFhirResource().getEvent());
         checkRelevantDateTime(result.getFhirResource().getDate());
 
         /// ensure not mapped

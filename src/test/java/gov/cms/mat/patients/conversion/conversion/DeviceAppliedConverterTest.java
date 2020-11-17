@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -37,7 +36,7 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         assertEquals(Procedure.ProcedureStatus.INPROGRESS, result.getFhirResource().getStatus());
 
-        checkDataElementCode(result.getFhirResource().getCode());
+        checkDataElementCodeableConcept(result.getFhirResource().getCode());
         checkReason(result.getFhirResource().getReasonCodeFirstRep());
         checkRelevantPeriod(result.getFhirResource().getPerformedPeriod());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
