@@ -18,8 +18,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface DataElementFinder {
-    default CodeableConcept convertToCodeSystems(CodeSystemEntriesService codeSystemEntriesService,
-                                                 @Nonnull List<QdmCodeSystem> dataElementCodes) {
+    default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService,
+                                                     @Nonnull List<QdmCodeSystem> dataElementCodes) {
         if (dataElementCodes.isEmpty()) {
             return null;
         } else {
@@ -34,7 +34,8 @@ public interface DataElementFinder {
     }
 
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
-        return new CodeableConcept().setCoding(List.of(convertToCoding(codeSystemEntriesService, qdmCodeSystem)));
+        return new CodeableConcept()
+                .setCoding(List.of(convertToCoding(codeSystemEntriesService, qdmCodeSystem)));
     }
 
     default Coding convertToCoding(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
@@ -44,14 +45,14 @@ public interface DataElementFinder {
             CodeSystemEntry codeSystemEntry = codeSystemEntriesService.findRequired(qdmCodeSystem.getSystem());
             theSystem = codeSystemEntry.getUrl();
         } catch (PatientConversionException e) {
-            theSystem = "urn:oid:" +  qdmCodeSystem.getSystem();
+            theSystem = "urn:oid:" + qdmCodeSystem.getSystem();
         }
 
         return new Coding(theSystem, qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay());
     }
 
-    default Coding createCodingFromDataElementCodes(CodeSystemEntriesService codeSystemEntriesService,
-                                                    List<QdmCodeSystem> dataElementCodes) {
+    default Coding convertToCoding(CodeSystemEntriesService codeSystemEntriesService,
+                                   List<QdmCodeSystem> dataElementCodes) {
         if (CollectionUtils.isEmpty(dataElementCodes)) {
             return null;
         } else {

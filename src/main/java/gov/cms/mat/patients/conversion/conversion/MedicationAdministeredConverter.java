@@ -42,7 +42,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         MedicationAdministration medicationAdministration = new MedicationAdministration();
         medicationAdministration.setSubject(createPatientReference(fhirPatient));
 
-        medicationAdministration.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        medicationAdministration.setMedication(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
 
         medicationAdministration.setId(qdmDataElement.getId());
 
@@ -51,7 +51,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (qdmDataElement.getRoute() != null) {
-            medicationAdministration.getDosage().setRoute(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getRoute()));
+            medicationAdministration.getDosage().setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
         // This object if not null then all the elements in the object is null
@@ -65,7 +65,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (qdmDataElement.getReason() != null) {
-            medicationAdministration.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
+            medicationAdministration.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getReason())));
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
@@ -97,7 +97,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
     void convertNegation(QdmDataElement qdmDataElement, MedicationAdministration medicationAdministration) {
         medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.NOTDONE);
 
-        CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
+        CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
         medicationAdministration.setStatusReason(List.of(codeableConcept));
 
         if (qdmDataElement.getAuthorDatetime() != null) {

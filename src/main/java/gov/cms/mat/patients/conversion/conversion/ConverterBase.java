@@ -9,6 +9,7 @@ import gov.cms.mat.patients.conversion.conversion.helpers.DataElementFinder;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
@@ -19,8 +20,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MedicationRequest;
@@ -50,11 +51,12 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     public static final String QICORE_NOT_DONE = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDone";
     public static final String QICORE_NOT_DONE_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDoneReason";
     static final String QICORE_RECORDED = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-recorded";
+
+    private final FhirContext fhirContext;
+    private final ObjectMapper objectMapper;
+    private final ValidationService validationService;
     @Getter
-    final CodeSystemEntriesService codeSystemEntriesService;
-    final FhirContext fhirContext;
-    final ObjectMapper objectMapper;
-    final ValidationService validationService;
+    private final CodeSystemEntriesService codeSystemEntriesService;
 
     public ConverterBase(CodeSystemEntriesService codeSystemEntriesService,
                          FhirContext fhirContext,
@@ -185,9 +187,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     void convertNegationObservation(QdmDataElement qdmDataElement, Observation observation) {
         observation.setStatus(Observation.ObservationStatus.FINAL);
 
-        Extension extensionNotDone = new Extension(QICORE_NOT_DONE);
-        extensionNotDone.setValue(new BooleanType(true));
-        observation.setModifierExtension(List.of(extensionNotDone));
+        observation.setModifierExtension(List.of(createNotDoneExtension()));
 
         Extension extensionNotDoneReason = new Extension(QICORE_NOT_DONE_REASON);
         extensionNotDoneReason.setValue(convertToCoding(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
@@ -199,23 +199,32 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         // http://hl7.org/fhir/us/qicore/Procedure-negation-example.json.html
         procedure.setStatus(Procedure.ProcedureStatus.NOTDONE);
 
-        Extension extensionNotDone = new Extension(QICORE_NOT_DONE);
-        extensionNotDone.setValue(new BooleanType(true));
-        procedure.setModifierExtension(List.of(extensionNotDone));
+        procedure.setModifierExtension(List.of(createNotDoneExtension()));
 
         Extension extensionNotDoneReason = new Extension(QICORE_RECORDED);
         extensionNotDoneReason.setValue(new DateTimeType(qdmDataElement.getAuthorDatetime()));
         procedure.setExtension(List.of(extensionNotDoneReason));
 
-        procedure.setStatusReason(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
+        procedure.setStatusReason(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
     }
 
     void convertNegationMedicationRequest(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
         medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.COMPLETED);
 
         medicationRequest.setDoNotPerform(true);
-        CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
+        CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
         medicationRequest.setReasonCode(List.of(codeableConcept));
     }
 
+    public CodeableConcept convertToCodeableConcept(QdmCodeSystem qdmCodeSystem) {
+        return convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem);
+    }
+
+    public CodeableConcept convertToCodeableConcept(List<QdmCodeSystem> dataElementCodes) {
+        return convertToCodeableConcept(codeSystemEntriesService, dataElementCodes);
+    }
+
+    public Coding convertToCoding(List<QdmCodeSystem> dataElementCodes) {
+        return convertToCoding(codeSystemEntriesService, dataElementCodes);
+    }
 }

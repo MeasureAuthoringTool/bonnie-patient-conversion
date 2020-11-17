@@ -30,7 +30,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         nutritionOrder.setStatus(NutritionOrder.NutritionOrderStatus.UNKNOWN); // Constrain to Active, on-hold, Completed
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        nutritionOrder.getOralDiet().addType(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        nutritionOrder.getOralDiet().addType(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
 
         nutritionOrder.setId(qdmDataElement.getId());
 
@@ -46,7 +46,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
 
         if (qdmDataElement.getDataElementCodes() != null) {
             nutritionOrder.getEnteralFormula()
-                    .setBaseFormulaType(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+                    .setBaseFormulaType(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getDosage() != null) {

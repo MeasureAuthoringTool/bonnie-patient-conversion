@@ -60,7 +60,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getRoute() != null) {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-            dosage.setRoute(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getRoute()));
+            dosage.setRoute(converterBase.convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
 
@@ -71,7 +71,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getReason() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "reason");
-            medicationRequest.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getReason())));
+            medicationRequest.setReasonCode(List.of(converterBase.convertToCodeableConcept(qdmDataElement.getReason())));
         }
 
 
@@ -116,7 +116,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         } else {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
             Timing timing = dosage.getTiming();
-            timing.setCode(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getFrequency()));
+            timing.setCode(converterBase.convertToCodeableConcept( qdmDataElement.getFrequency()));
         }
     }
 
@@ -151,7 +151,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
     private CodeableConcept getMedicationCodeableConcept(List<QdmCodeSystem> dataElementCodes, ConverterBase<MedicationRequest> converterBase) {
         CodeableConcept codeableConcept = new CodeableConcept();
-        codeableConcept.addCoding(createCodingFromDataElementCodes(converterBase.getCodeSystemEntriesService(), dataElementCodes));
+        codeableConcept.addCoding(converterBase.convertToCoding( dataElementCodes));
 
         return codeableConcept;
     }

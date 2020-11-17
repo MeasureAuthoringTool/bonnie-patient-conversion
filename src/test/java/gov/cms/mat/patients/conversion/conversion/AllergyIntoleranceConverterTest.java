@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion;
 
+import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -13,10 +14,11 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class AllergyIntoleranceConverterTest implements FhirConversionTest {
+class AllergyIntoleranceConverterTest extends BaseConversionTest implements FhirConversionTest {
     @Autowired
     private AllergyIntoleranceConverter allergyIntoleranceConverter;
 
@@ -27,11 +29,10 @@ class AllergyIntoleranceConverterTest implements FhirConversionTest {
 
     @Test
     void convertToFhir() {
-        Patient fhirPatient = createFhirPatient();
-        QdmDataElement qdmDataElement = createQdmDataElement();
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
         qdmDataElement.setPrevalencePeriod(createPrevalencePeriod());
         qdmDataElement.setAuthorDatetime(createAuthorDatetime());
+        qdmDataElement.setSeverity(createSeverity());
         qdmDataElement.setType(createType());
 
         QdmToFhirConversionResult<AllergyIntolerance> result = allergyIntoleranceConverter.convertToFhir(fhirPatient, qdmDataElement);
@@ -40,15 +41,18 @@ class AllergyIntoleranceConverterTest implements FhirConversionTest {
         checkDataElementCode(result.getFhirResource().getCode());
         checkPrevalencePeriod(result.getFhirResource().getOnsetPeriod());
         checkAuthorDatetime(result.getFhirResource().getRecordedDate());
-        checkType(result.getFhirResource().getReaction().get(0).getSubstance());
+        checkType(result.getFhirResource().getReactionFirstRep().getSubstance());
+
+        assertFalse(result.getFhirResource().getReactionFirstRep().hasSeverity()); // we cannot convert
+
+        assertEquals(1, result.getConversionMessages().size());
     }
 
     @Test
     void convertToFhirEmptyObjects() {
-        Patient fhirPatient = createFhirPatient();
-        QdmDataElement qdmDataElement = createQdmDataElement();
-
         QdmToFhirConversionResult<AllergyIntolerance> result = allergyIntoleranceConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
+
+        assertEquals(0, result.getConversionMessages().size());
     }
 }

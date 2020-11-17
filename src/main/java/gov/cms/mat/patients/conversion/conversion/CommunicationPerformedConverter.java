@@ -9,9 +9,7 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Communication;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
@@ -39,15 +37,18 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
     public QdmToFhirConversionResult<Communication> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
         Communication communication = new Communication();
-
-        communication.setSubject(createPatientReference(fhirPatient));
-        communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         communication.setId(qdmDataElement.getId());
+        communication.setSubject(createPatientReference(fhirPatient));
+
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            communication.setStatusReason(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+
         if (qdmDataElement.getCategory() != null) {
-            communication.setCategory(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getCategory())));
+            communication.setCategory(List.of(convertToCodeableConcept( qdmDataElement.getCategory())));
         }
         if (qdmDataElement.getMedium() != null) {
-            communication.setMedium(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getMedium())));
+            communication.setMedium(List.of(convertToCodeableConcept( qdmDataElement.getMedium())));
         }
         if (qdmDataElement.getSentDatetime() != null) {
             communication.setSent(qdmDataElement.getSentDatetime());
@@ -67,7 +68,7 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
             communication.setRecipient(List.of(createPractitionerReference(qdmDataElement.getRecipient())));
         }
 
-        if (processNegation(qdmDataElement, communication)) {
+        if (!processNegation(qdmDataElement, communication)) {
             communication.setStatus(Communication.CommunicationStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
@@ -82,18 +83,8 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
     void convertNegation(QdmDataElement qdmDataElement, Communication communication) {
         communication.setStatus(Communication.CommunicationStatus.NOTDONE);
 
-        Extension extensionNotDone = new Extension(QICORE_NOT_DONE);
-        extensionNotDone.setValue(new BooleanType(true));
-        communication.setModifierExtension(List.of(extensionNotDone));
+        communication.setModifierExtension(List.of(createNotDoneExtension()));
 
-        if (qdmDataElement.getSender() != null) {
-            log.debug("We have Sender");
-        }
-
-        if (qdmDataElement.getSentDatetime() != null) {
-            log.debug("We have SendDateTime");
-        }
-
-        communication.setStatusReason(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
+        communication.setStatusReason(convertToCodeableConcept( qdmDataElement.getNegationRationale()));
     }
 }

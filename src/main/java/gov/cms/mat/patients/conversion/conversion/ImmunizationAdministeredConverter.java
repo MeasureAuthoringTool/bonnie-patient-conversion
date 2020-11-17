@@ -53,7 +53,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         immunization.setStatus(Immunization.ImmunizationStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        immunization.setVaccineCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        immunization.setVaccineCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
 
         immunization.setId(qdmDataElement.getId());
 
@@ -64,13 +64,13 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         processNegation(qdmDataElement, immunization);
 
         if (qdmDataElement.getRoute() != null) {
-            immunization.setRoute(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getRoute()));
+            immunization.setRoute(convertToCodeableConcept( qdmDataElement.getRoute()));
         }
 
         if (qdmDataElement.getReason() != null) {
             // No data
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "reason");
-            immunization.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
+            immunization.setReasonCode(List.of(convertToCodeableConcept( qdmDataElement.getReason())));
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {

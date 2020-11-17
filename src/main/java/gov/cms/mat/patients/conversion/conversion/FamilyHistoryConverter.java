@@ -39,8 +39,8 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
         familyMemberHistory.setPatient(createPatientReference(fhirPatient));
 
-        FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
-        familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        FamilyMemberHistory.FamilyMemberHistoryConditionComponent familyMemberHistoryConditionComponent = familyMemberHistory.getConditionFirstRep();
+        familyMemberHistoryConditionComponent.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
 
         familyMemberHistory.setId(qdmDataElement.getId());
 
@@ -57,7 +57,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
             if (qdmDataElement.getRelationship().getSystem() == null) {
                 conversionMessages.add("RelationShip for code " + qdmDataElement.getRelationship().getCode() + " has no system");
             } else {
-                familyMemberHistory.setRelationship(convertToCodeableConcept(getCodeSystemEntriesService(), qdmDataElement.getRelationship()));
+                familyMemberHistory.setRelationship(convertToCodeableConcept(qdmDataElement.getRelationship()));
             }
         }
 

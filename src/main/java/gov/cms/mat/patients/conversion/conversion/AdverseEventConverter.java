@@ -37,16 +37,16 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         adverseEvent.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            adverseEvent.setEvent(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+            adverseEvent.setEvent(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getType() != null) {
-            adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType())));
+            adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(qdmDataElement.getType())));
             log.info("We finally have category"); //no data
         }
 
         if (qdmDataElement.getSeverity() != null) {
-            adverseEvent.setSeverity(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
+            adverseEvent.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity" );
         }
 

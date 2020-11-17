@@ -40,10 +40,10 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
 
         procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
         //Todo difference between Procedure.usedCode and Procedure.code
-        procedure.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        procedure.setCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         procedure.setId(qdmDataElement.getId());
         if (qdmDataElement.getReason() != null) {
-            procedure.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
+            procedure.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getReason())));
         }
         procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
 

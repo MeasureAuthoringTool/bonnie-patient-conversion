@@ -24,7 +24,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         Procedure procedure = new Procedure();
         procedure.setSubject(createPatientReference(fhirPatient));
 
-        procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        procedure.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         procedure.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getRank() != null) {
@@ -36,7 +36,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getReason() != null) {
-            procedure.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getReason())));
+            procedure.setReasonCode(List.of(converterBase.convertToCodeableConcept(qdmDataElement.getReason())));
         }
 
         if (qdmDataElement.getResult() != null) {

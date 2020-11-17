@@ -1,0 +1,81 @@
+package gov.cms.mat.patients.conversion.conversion;
+
+import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
+import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
+import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
+import org.hl7.fhir.r4.model.Communication;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
+
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@SpringBootTest
+@ActiveProfiles("test")
+class CommunicationPerformedConverterTest extends BaseConversionTest implements FhirConversionTest {
+    @Autowired
+    private CommunicationPerformedConverter communicationPerformedConverter;
+
+    @Test
+    void getQdmType() {
+        assertEquals(CommunicationPerformedConverter.QDM_TYPE, communicationPerformedConverter.getQdmType());
+    }
+
+    @Test
+    void convertToFhir() {
+        qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
+        qdmDataElement.setCategory(createCategory());
+        qdmDataElement.setMedium(createMedium());
+
+        qdmDataElement.setSentDatetime(createSentDatetime());
+        qdmDataElement.setReceivedDatetime(createReceivedDatetime());
+        qdmDataElement.setRelatedTo(List.of(createRelatedTo()));
+        qdmDataElement.setSender(createSender());
+        qdmDataElement.setRecipient(createRecipient());
+
+        QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+
+        assertEquals(Communication.CommunicationStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(1, result.getConversionMessages().size());
+        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+
+        checkMedium(result.getFhirResource().getMediumFirstRep());
+        checkSentDatetime(result.getFhirResource().getSent());
+        checkReceivedDatetime(result.getFhirResource().getReceived());
+        checkRelatedTo(result.getFhirResource().getBasedOnFirstRep());
+        checkSender(result.getFhirResource().getSender());
+        checkRecipient(result.getFhirResource().getRecipientFirstRep());
+    }
+
+    @Test
+    void convertToFhirNegation() {
+        qdmDataElement.setNegationRationale(createNegationRationale());
+
+        QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+
+        assertEquals(Communication.CommunicationStatus.NOTDONE, result.getFhirResource().getStatus());
+        assertEquals(0, result.getConversionMessages().size());
+
+        // checkNegationRationale( result.getFhirResource().getStatusReason());
+
+
+    }
+
+    @Test
+    void convertToFhirEmptyObjects() {
+        QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+
+        assertEquals(1, result.getConversionMessages().size());
+        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+
+    }
+}

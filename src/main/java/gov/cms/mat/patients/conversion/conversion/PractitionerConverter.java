@@ -114,7 +114,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
 
     private void creeateFhirQualification(QdmCodeSystem qdmCodeSystem, Practitioner practitioner) {
         var qualificationComponent = new Practitioner.PractitionerQualificationComponent();
-        qualificationComponent.setCode(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
+        qualificationComponent.setCode(convertToCodeableConcept( qdmCodeSystem));
         practitioner.getQualification().add(qualificationComponent);
     }
 }

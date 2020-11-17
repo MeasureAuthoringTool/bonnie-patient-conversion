@@ -24,14 +24,13 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
         serviceRequest.setIntent(intent);
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            serviceRequest.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+            serviceRequest.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         serviceRequest.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getReason() != null) {
-            serviceRequest.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(),
-                    qdmDataElement.getReason())));
+            serviceRequest.setReasonCode(List.of(converterBase.convertToCodeableConcept(qdmDataElement.getReason())));
         }
 
         serviceRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());

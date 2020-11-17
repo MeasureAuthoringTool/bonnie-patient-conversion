@@ -13,9 +13,12 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
+import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Observation;
@@ -238,6 +241,14 @@ public interface FhirConversionTest {
         assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
     }
 
+    default void checkRelevantPeriodGoal(Type start, DateType end) {
+        assertThat(start, instanceOf(DateType.class));
+        DateType dateType = (DateType) start;
+        assertEquals(new Date(now.toEpochMilli() - 2000000), dateType.getValue());
+
+        assertEquals(new Date(now.toEpochMilli() - 1000), end.getValue());
+    }
+
     default QdmComponent createComponents() {
 
         QdmComponent qdmComponent = new QdmComponent();
@@ -307,4 +318,121 @@ public interface FhirConversionTest {
         assertEquals("276333003", coding.getCode());
         assertEquals("Microphallus", coding.getDisplay());
     }
+
+    default TargetOutcome createTargetOutcome() {
+        TargetOutcome targetOutcome = new TargetOutcome();
+
+        targetOutcome.setSystem("2.16.840.1.113883.6.96");
+        targetOutcome.setCode("63901009");
+        targetOutcome.setDisplay("Pain in testicle");
+        return targetOutcome;
+    }
+
+    default void checkTargetOutCome(CodeableConcept codeableConcept) {
+        Coding coding = codeableConcept.getCodingFirstRep();
+
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("63901009", coding.getCode());
+        assertEquals("Pain in testicle", coding.getDisplay());
+    }
+
+    default String createRelatedTo() {
+        return "1234567890";
+    }
+
+    default void checkRelatedTo(Reference reference) {
+        assertEquals("Unknown/1234567890", reference.getReference());
+    }
+
+    default QdmPractitioner createPerformer() {
+        QdmPractitioner qdmPractitioner = new QdmPractitioner();
+        qdmPractitioner.setId("987654321");
+
+        QdmCodeSystem role = new QdmCodeSystem();
+        role.setSystem("2.16.840.1.113883.6.96");
+        role.setCode("158965000");
+        role.setDisplay("Medical practitioner");
+        qdmPractitioner.setRole(role);
+
+        QdmCodeSystem specialty = new QdmCodeSystem();
+        specialty.setSystem("2.16.840.1.113883.6.96");
+        specialty.setCode("309338004");
+        specialty.setDisplay("Intensive care specialist");
+        qdmPractitioner.setSpecialty(specialty);
+
+        QdmCodeSystem qualification = new QdmCodeSystem();
+        qualification.setSystem("2.16.840.1.113883.6.96");
+        qualification.setCode("164618002");
+        qualification.setDisplay("General sign qualifications");
+        qdmPractitioner.setQualification(qualification);
+
+        return qdmPractitioner;
+    }
+
+    default QdmPractitioner createSender() {
+        QdmPractitioner qdmPractitioner = new QdmPractitioner();
+        qdmPractitioner.setId("54678901234");
+
+        return qdmPractitioner;
+    }
+
+    default void checkSender(Reference reference) {
+        assertEquals("Practitioner/54678901234", reference.getReference());
+    }
+
+    default QdmPractitioner createRecipient() {
+        QdmPractitioner qdmPractitioner = new QdmPractitioner();
+        qdmPractitioner.setId("7890123456");
+
+        return qdmPractitioner;
+    }
+
+    default void checkRecipient(Reference reference) {
+        assertEquals("Practitioner/7890123456", reference.getReference());
+    }
+
+    default void checkPerformer(Reference reference) {
+        assertEquals("Practitioner/987654321", reference.getReference());
+    }
+
+    default QdmCodeSystem createCategory() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
+        qdmCodeSystem.setCode("183095004");
+        qdmCodeSystem.setDisplay("Usual warning given");
+        return qdmCodeSystem;
+    }
+
+    default QdmCodeSystem createMedium() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
+        qdmCodeSystem.setCode("408563008");
+        qdmCodeSystem.setDisplay("Email sent to consultant (finding)");
+        return qdmCodeSystem;
+    }
+
+    default void checkMedium(CodeableConcept codeableConcept) {
+        assertEquals(1, codeableConcept.getCoding().size());
+        Coding coding = codeableConcept.getCoding().get(0);
+        assertEquals("http://snomed.info/sct", coding.getSystem());
+        assertEquals("408563008", coding.getCode());
+        assertEquals("Email sent to consultant (finding)", coding.getDisplay());
+    }
+
+    default Date createSentDatetime() {
+        return new Date(now.toEpochMilli() - 12345);
+    }
+
+    default void checkSentDatetime(Date sent) {
+        assertEquals(createSentDatetime(), sent);
+    }
+
+    default Date createReceivedDatetime() {
+        return new Date(now.toEpochMilli() - 1);
+    }
+
+    default void checkReceivedDatetime(Date received) {
+        assertEquals(createReceivedDatetime(), received);
+    }
+
 }

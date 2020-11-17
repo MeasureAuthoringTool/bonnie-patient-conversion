@@ -7,8 +7,10 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
@@ -21,6 +23,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
 
 public interface FhirCreator {
     default Reference createPatientReference(Patient fhirPatient) {
@@ -107,5 +111,10 @@ public interface FhirCreator {
         return relatedTo.stream()
                 .map(relatedToId -> new Reference("Unknown/" + relatedToId))
                 .collect(Collectors.toList());
+    }
+
+    default Extension createNotDoneExtension() {
+        return new Extension(QICORE_NOT_DONE)
+                .setValue(new BooleanType(true));
     }
 }

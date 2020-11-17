@@ -28,7 +28,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         observation.setSubject(createPatientReference(fhirPatient));
 
         if(CollectionUtils.isNotEmpty( qdmDataElement.getDataElementCodes())) {
-            observation.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+            observation.setCode(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getResult() != null) {

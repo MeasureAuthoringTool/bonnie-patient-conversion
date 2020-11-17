@@ -45,7 +45,7 @@ public class SymptomConverter extends ConverterBase<Observation> {
         conversionMessages.add(NO_STATUS_MAPPING);
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            observation.setValue(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+            observation.setValue(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
@@ -53,7 +53,7 @@ public class SymptomConverter extends ConverterBase<Observation> {
         }
 
         if (qdmDataElement.getSeverity() != null) {
-            observation.addInterpretation(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
+            observation.addInterpretation(convertToCodeableConcept( qdmDataElement.getSeverity()));
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity");
         }
 

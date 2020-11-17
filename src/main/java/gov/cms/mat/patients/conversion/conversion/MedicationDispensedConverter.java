@@ -46,7 +46,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         medicationDispense.setId(qdmDataElement.getId());
         medicationDispense.setSubject(createPatientReference(fhirPatient));
 
-        medicationDispense.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        medicationDispense.setMedication(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
@@ -63,7 +63,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             } else {
                 Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
                 Timing timing = dosage.getTiming();
-                timing.setCode(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getFrequency()));
+                timing.setCode(convertToCodeableConcept(qdmDataElement.getFrequency()));
             }
         }
 
@@ -99,7 +99,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
     void convertNegation(QdmDataElement qdmDataElement, MedicationDispense medicationDispense) {
         medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.DECLINED);
 
-        CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
+        CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
         medicationDispense.setStatusReason(codeableConcept);
 
         if (qdmDataElement.getAuthorDatetime() != null) {

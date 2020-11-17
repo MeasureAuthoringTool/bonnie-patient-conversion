@@ -42,16 +42,17 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         List<String> conversionMessages = new ArrayList<>();
         Goal goal = new Goal();
         goal.setSubject(createPatientReference(fhirPatient));
-
-        goal.getTargetFirstRep().setMeasure(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-
         goal.setId(qdmDataElement.getId());
+
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            goal.getTargetFirstRep().setMeasure(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+        }
 
         if (qdmDataElement.getTargetOutcome() != null) {
             QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(qdmDataElement.getTargetOutcome());
 
             if (qdmCodeSystem != null) {
-                goal.getTargetFirstRep().setDetail(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
+                goal.getTargetFirstRep().setDetail(convertToCodeableConcept(qdmCodeSystem));
             }
         }
 
@@ -60,13 +61,12 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             goal.setStatusDate(qdmDataElement.getRelevantPeriod().getHigh());
         }
 
-
         if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
             goal.setAddresses(convertRelatedTo(qdmDataElement.getRelatedTo()));
         }
 
         if (qdmDataElement.getPerformer() != null) {
-           goal.setExpressedBy(createPractitionerReference(qdmDataElement.getPerformer()));
+            goal.setExpressedBy(createPractitionerReference(qdmDataElement.getPerformer()));
         }
 
         processNegation(qdmDataElement, goal); // no negations expected
@@ -78,10 +78,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
     }
 
     private QdmCodeSystem convertToQdmCodeSystem(TargetOutcome targetOutcome) {
-        if (targetOutcome == null) {
-            log.warn("targetOutcome is null");
-            return null;
-        } else if (StringUtils.isBlank(targetOutcome.getSystem()) || StringUtils.isBlank(targetOutcome.getCode())) {
+        if (StringUtils.isBlank(targetOutcome.getSystem()) || StringUtils.isBlank(targetOutcome.getCode())) {
             log.warn("targetOutcome is invalid: {}", targetOutcome);
             return null;
         } else {

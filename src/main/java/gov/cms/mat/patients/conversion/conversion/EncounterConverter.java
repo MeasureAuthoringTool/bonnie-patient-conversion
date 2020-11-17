@@ -45,7 +45,7 @@ public class EncounterConverter extends ConverterBase<Encounter> {
         Encounter encounter = new Encounter();
         encounter.setId(qdmDataElement.getId());
 
-        encounter.setClass_(createCodingFromDataElementCodes(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        encounter.setClass_(convertToCoding(qdmDataElement.getDataElementCodes()));
 
         //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8114-encounter-performed
         // 	consider constraint to - arrived, triaged, in-progress, on-leave, finished
@@ -66,7 +66,7 @@ public class EncounterConverter extends ConverterBase<Encounter> {
 
         if (qdmDataElement.getDischargeDisposition() != null) {
             Encounter.EncounterHospitalizationComponent hospitalizationComponent = encounter.getHospitalization();
-            CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getDischargeDisposition());
+            CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getDischargeDisposition());
             hospitalizationComponent.setDischargeDisposition(codeableConcept);
         }
 
@@ -105,7 +105,7 @@ public class EncounterConverter extends ConverterBase<Encounter> {
         Encounter.DiagnosisComponent diagnosisComponent = new Encounter.DiagnosisComponent();
 
         try {
-            CodeSystemEntry codeSystemEntry = codeSystemEntriesService.findRequired(diagnoses.getCode().getSystem());
+            CodeSystemEntry codeSystemEntry = getCodeSystemEntriesService().findRequired(diagnoses.getCode().getSystem());
             diagnosisComponent.setUse(createCodeableConcept(diagnoses.getCode(), codeSystemEntry.getUrl()));
         } catch (Exception e) {
             if (diagnoses.getCode() == null) {

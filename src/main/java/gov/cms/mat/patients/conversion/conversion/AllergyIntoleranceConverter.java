@@ -40,7 +40,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
         allergyIntolerance.setPatient(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            allergyIntolerance.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+            allergyIntolerance.setCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         }
 
         allergyIntolerance.setId(qdmDataElement.getId());
@@ -59,7 +59,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
             List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();
 
             var component = new AllergyIntolerance.AllergyIntoleranceReactionComponent();
-            component.setSubstance(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType()));
+            component.setSubstance(convertToCodeableConcept( qdmDataElement.getType()));
             list.add(component);
         }
 
