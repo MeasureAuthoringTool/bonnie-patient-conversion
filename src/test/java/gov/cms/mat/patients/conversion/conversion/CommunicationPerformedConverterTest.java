@@ -64,9 +64,10 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         assertEquals(Communication.CommunicationStatus.NOTDONE, result.getFhirResource().getStatus());
         assertEquals(0, result.getConversionMessages().size());
 
-        // checkNegationRationale( result.getFhirResource().getStatusReason());
+        checkNegationRationaleTypeCodeableConcept(result.getFhirResource().getStatusReason());
 
-
+        assertEquals(1, result.getFhirResource().getModifierExtension().size());
+        checkNotDoneExtension(result.getFhirResource().getModifierExtension().get(0));
     }
 
     @Test
@@ -76,6 +77,5 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
 
         assertEquals(1, result.getConversionMessages().size());
         assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
-
     }
 }

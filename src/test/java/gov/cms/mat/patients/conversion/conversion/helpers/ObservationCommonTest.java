@@ -47,7 +47,7 @@ public interface ObservationCommonTest extends FhirConversionTest {
 
         assertEquals(1, result.getFhirResource().getExtension().size());
         Extension extension = result.getFhirResource().getExtensionByUrl(QICORE_NOT_DONE_REASON);
-        checkNegationRationale(extension.getValue());
+        checkNegationRationaleType(extension.getValue());
 
         assertEquals(1, result.getFhirResource().getModifierExtension().size());
         Extension modifierExtension = result.getFhirResource().getModifierExtensionsByUrl(QICORE_NOT_DONE).get(0);

@@ -49,11 +49,9 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         medicationDispense.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
-            //Todo Dosage not mapped
-            log.debug("Dosage is found");
-//            medicationDispense.setDosageInstruction();
+            log.info("Dosage is found and not mapped");
+            conversionMessages.add("Cannot convert QDM dosage (quantity) to a Fhir dosage instruction");
         }
-
 
         if (qdmDataElement.getSupply() != null) {
             medicationDispense.setQuantity(convertQuantity(qdmDataElement.getSupply()));

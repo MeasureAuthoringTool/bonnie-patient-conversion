@@ -15,10 +15,12 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
+import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DateType;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Observation;
@@ -34,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.ELEMENT_ID;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.FAMILY_NAME;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.GIVEN_NAMES;
@@ -41,6 +44,7 @@ import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionT
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface FhirConversionTest {
     Instant now = Instant.now();
@@ -174,13 +178,20 @@ public interface FhirConversionTest {
         return qdmCodeSystem;
     }
 
-    default void checkNegationRationale(Type value) {
+    default void checkNegationRationaleType(Type value) {
         assertThat(value, instanceOf(Coding.class));
         Coding coding = (Coding) value;
 
         assertEquals("http://snomed.info/sct", coding.getSystem());
         assertEquals("47448006", coding.getCode());
         assertEquals("Hot Water", coding.getDisplay());
+    }
+
+    default void checkNegationRationaleTypeCodeableConcept(CodeableConcept codeableConcept) {
+        assertEquals(1, codeableConcept.getCoding().size());
+        Coding coding = codeableConcept.getCoding().get(0);
+
+        checkNegationRationaleType(coding);
     }
 
     default IntNode createIntegerTypeResult() {
@@ -433,6 +444,14 @@ public interface FhirConversionTest {
 
     default void checkReceivedDatetime(Date received) {
         assertEquals(createReceivedDatetime(), received);
+    }
+
+  default void checkNotDoneExtension(Extension extension) {
+      assertThat(extension.getValue(), instanceOf(BooleanType.class));
+      BooleanType booleanType = (BooleanType) extension.getValue();
+        assertTrue(booleanType.booleanValue());
+
+      assertEquals(QICORE_NOT_DONE,   extension.getUrl() );
     }
 
 }

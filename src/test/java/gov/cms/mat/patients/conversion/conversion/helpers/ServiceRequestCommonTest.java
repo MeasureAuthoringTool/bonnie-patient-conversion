@@ -35,7 +35,7 @@ public interface ServiceRequestCommonTest extends FhirConversionTest {
 
         assertEquals(1, result.getFhirResource().getExtension().size());
         assertEquals(QICORE_DO_NOT_PERFORM_REASON, result.getFhirResource().getExtension().get(0).getUrl());
-        checkNegationRationale(result.getFhirResource().getExtension().get(0).getValue());
+        checkNegationRationaleType(result.getFhirResource().getExtension().get(0).getValue());
     }
 
     default void checkWithoutNegationResult(QdmToFhirConversionResult<ServiceRequest> result, ServiceRequest.ServiceRequestIntent intent) {
