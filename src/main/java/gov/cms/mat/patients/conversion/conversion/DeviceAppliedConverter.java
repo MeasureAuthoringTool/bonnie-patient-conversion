@@ -39,7 +39,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         procedure.setSubject(createPatientReference(fhirPatient));
 
         procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
-        procedure.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        procedure.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         //Todo difference between Procedure.usedCode and Procedure.code
         procedure.setCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         procedure.setId(qdmDataElement.getId());

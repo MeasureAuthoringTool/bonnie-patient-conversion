@@ -51,8 +51,6 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
-        familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
 
         familyMemberHistory.setId(qdmDataElement.getId());
 
