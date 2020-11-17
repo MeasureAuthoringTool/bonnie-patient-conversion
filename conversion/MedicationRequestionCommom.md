@@ -4,7 +4,7 @@
       <th><strong>QDM Context</strong></th>
       <th><strong>QI-Core R4</strong></th>
       <th><strong>Comments</strong></th>
-       <th><strong>Conversion</strong></th>
+      <th><strong>Conversion</strong></th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +33,7 @@
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -100,13 +101,13 @@
       <td>relevant dateTime</td>
       <td>MedicationRequest.dosageInstruction.timing with Timing.event dateTime</td>
       <td>&nbsp;</td>
-     <td> qdmDataElement.getRelevantDatetime()</td>
+      <td> qdmDataElement.getRelevantDatetime()</td>
     </tr>
     <tr>
       <td>relevant Period</td>
       <td>MedicationRequest.dosageInstruction.timing with Timing.repeat.bounds[x] Period</td>
       <td>The anticipated time from starting to stopping an ordered or dispensed medication can also be computed in an expression and derived from the duration attribute</td>
-       <td>qdmDataElement.getRelevantPeriod() </td>
+      <td>qdmDataElement.getRelevantPeriod() </td>
     </tr>
     <tr>
       <td>author dateTime</td>
@@ -118,18 +119,23 @@
       <td>Negation Rationale</td>
       <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8175-medication-order"> Click Here </a> </td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Prescriber</td>
       <td>MedicationRequest.requester</td>
       <td>Note - MedicationRequest.performer indicates the performer expected to administer the medication</td>
-        <td>**No** data found in qdmDataElement.getPrescriber() </td>
+      <td>**No** data found in qdmDataElement.getPrescriber() </td>
     </tr>
     <tr>
       <td>Requester</td>
       <td>MedicationRequest.requester</td>
       <td>Note - MedicationRequest.performer indicates the performer expected to administer the medication</td>
-       <td>**No** value in qdmDataElement for Requester </td>
+      <td>**No** value in qdmDataElement for Requester </td>
     </tr>
   </tbody>
 </table>
+
+<pre>
+medicationRequest.setSubject(createPatientReference(fhirPatient));
+</pre>

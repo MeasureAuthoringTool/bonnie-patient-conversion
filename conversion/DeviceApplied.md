@@ -24,7 +24,7 @@
       <td>&nbsp;</td>
       <td>Procedure.usedCode</td>
       <td>Specify the device (direct reference code or value set) used as part of the procedure</td>
-      <td>&nbsp;</td>
+      <td>Difference between Procedure.usedCode and Procedure.code ?</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
@@ -48,7 +48,7 @@
       <td>Anatomical Location Site</td>
       <td>Procedure.bodySite</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
+      <td>Not mapped</td>
     </tr>
     <tr>
       <td>Reason</td>
@@ -78,7 +78,11 @@
       <td>Performer</td>
       <td>Procedure.performer.actor</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
+      <td>No data</td>
     </tr>
   </tbody>
 </table>
+
+<pre>
+procedure.setSubject(createPatientReference(fhirPatient));
+</pre>

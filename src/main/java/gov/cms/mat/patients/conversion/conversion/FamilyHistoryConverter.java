@@ -51,6 +51,13 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
+        FamilyMemberHistory.FamilyMemberHistoryConditionComponent  familyMemberHistoryConditionComponent =familyMemberHistory.getConditionFirstRep();
+        familyMemberHistoryConditionComponent.setCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+
+        familyMemberHistory.setId(qdmDataElement.getId());
+
+        familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
+
         if (qdmDataElement.getRelationship() != null) {
             //https://terminology.hl7.org/1.0.0/CodeSystem-v3-RoleCode.html
             // we only have AUNT as an example, we could convert if knew the input set and no system

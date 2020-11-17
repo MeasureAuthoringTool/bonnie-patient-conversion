@@ -76,3 +76,7 @@
     </tr>
   </tbody>
 </table>
+
+<pre>
+adverseEvent.setSubject(createPatientReference(fhirPatient));
+</pre>

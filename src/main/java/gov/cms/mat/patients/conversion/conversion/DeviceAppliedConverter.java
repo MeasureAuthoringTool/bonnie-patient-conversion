@@ -39,6 +39,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         procedure.setSubject(createPatientReference(fhirPatient));
 
         procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
+        procedure.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
         //Todo difference between Procedure.usedCode and Procedure.code
         procedure.setCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         procedure.setId(qdmDataElement.getId());
@@ -46,6 +47,12 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
             procedure.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getReason())));
         }
         procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
+
+        if (qdmDataElement.getPerformer() != null) {
+            //no data
+            //qdmDataElement.getPerformer()
+            log.debug("We have Performer");
+        }
 
         if (!processNegation(qdmDataElement, procedure)) {
             procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);

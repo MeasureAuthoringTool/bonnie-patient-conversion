@@ -24,6 +24,7 @@
       <td><strong>QDM Attributes</strong></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>code</td>
@@ -71,6 +72,7 @@
       <td>&nbsp;</td>
       <td>MedicationRequest.dispenseRequest.numberOfRepeatsAllowed</td>
       <td>Timing schedule (e.g., every 8 hours).MedicationDispense.authorizingPrescription provides reference to the applicable MedicationRequest for this information.</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>route</td>
@@ -82,12 +84,13 @@
       <td>setting</td>
       <td>MedicationDispense.category</td>
       <td>Inpatient, Outpatient, Community, Discharge</td>
-       <td>No Data in for element for qdmDataElement.getSetting() & and not present in qdm-modelinfo  </td>
+      <td>No Data in for element for qdmDataElement.getSetting() & and not present in qdm-modelinfo  </td>
     </tr>
     <tr>
       <td>reason</td>
       <td>MedicationDispense.statusReason[x]</td>
       <td>The reason for ordering or not ordering the medication</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>relevant dateTime</td>
@@ -99,6 +102,7 @@
       <td>relevant Period</td>
       <td>MedicationRequest.dosageInstruction.timing with Timing.repeat.bounds[x] Period</td>
       <td>The anticipated time from starting to stopping an ordered or dispensed medication can also be computed in an expression and derived from the duration attribute</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>author dateTime</td>
@@ -109,6 +113,7 @@
     <tr>
       <td>Negation Rationale</td>
       <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8174-medication-dispensed"> Click Here </a> </td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -121,16 +126,18 @@
       <td>&nbsp;</td>
       <td>MedicationRequest.requester</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Dispenser</td>
       <td>MedicationDispense.performer.actor</td>
       <td>&nbsp;</td>
-       <td>No data for dmDataElement.getDispenser() </td>
+      <td>No data for dmDataElement.getDispenser() </td>
     </tr>
   </tbody>
 </table>
 
 ----
-
+<pre>
 medicationDispense.setSubject(createReference(fhirPatient));
+</pre>

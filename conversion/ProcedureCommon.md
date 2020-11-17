@@ -149,6 +149,10 @@
   </tbody>
 </table>
 
+<pre>
+procedure.setSubject(createPatientReference(fhirPatient));
+</pre>
+
 <head>
     <strong>Comments from Stan Ratkins</strong>``
 </head>
