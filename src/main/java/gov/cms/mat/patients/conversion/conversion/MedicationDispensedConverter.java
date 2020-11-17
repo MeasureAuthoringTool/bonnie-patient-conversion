@@ -9,9 +9,7 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Dosage;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MedicationDispense;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Quantity;
@@ -45,7 +43,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         MedicationDispense medicationDispense = new MedicationDispense();
         medicationDispense.setSubject(createPatientReference(fhirPatient));
 
-        medicationDispense.setMedication(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+        medicationDispense.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         medicationDispense.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
@@ -112,9 +110,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         medicationDispense.setStatusReason(codeableConcept);
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            Extension extension = new Extension(QICORE_RECORDED);
-            extension.setValue(new DateTimeType(qdmDataElement.getAuthorDatetime()));
-            medicationDispense.setExtension(List.of(extension));
+            medicationDispense.setExtension(List.of(createRecordedExtension(qdmDataElement.getAuthorDatetime())));
         }
     }
 }

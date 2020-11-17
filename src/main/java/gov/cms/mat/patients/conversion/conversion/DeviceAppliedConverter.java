@@ -59,8 +59,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         }
 
         if (!processNegation(qdmDataElement, procedure)) {
-            procedure.setStatus(Procedure.ProcedureStatus.UNKNOWN);
-            conversionMessages.add(ConverterBase.NO_STATUS_MAPPING);
+            procedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
         }
 
         return QdmToFhirConversionResult.<Procedure>builder()

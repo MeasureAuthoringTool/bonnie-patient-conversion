@@ -35,15 +35,14 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
         QdmToFhirConversionResult<Procedure> result = deviceAppliedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
-        assertEquals(Procedure.ProcedureStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(Procedure.ProcedureStatus.INPROGRESS, result.getFhirResource().getStatus());
 
         checkDataElementCode(result.getFhirResource().getCode());
         checkReason(result.getFhirResource().getReasonCodeFirstRep());
         checkRelevantPeriod(result.getFhirResource().getPerformedPeriod());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        assertEquals(0, result.getConversionMessages().size());
     }
 
     @Test
@@ -60,6 +59,9 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
 
         assertEquals(1, result.getFhirResource().getModifierExtension().size());
         checkNotDoneExtension(result.getFhirResource().getModifierExtension().get(0));
+
+        checkRecordedExtension(result.getFhirResource().getExtension().get(0));
+
     }
 
         @Test
@@ -67,9 +69,9 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
         QdmToFhirConversionResult<Procedure> result = deviceAppliedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(Procedure.ProcedureStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(Procedure.ProcedureStatus.INPROGRESS, result.getFhirResource().getStatus());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        assertEquals(0, result.getConversionMessages().size());
+
     }
 }

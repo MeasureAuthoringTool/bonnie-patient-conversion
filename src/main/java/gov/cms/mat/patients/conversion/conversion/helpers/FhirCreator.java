@@ -10,6 +10,7 @@ import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
@@ -21,10 +22,12 @@ import org.hl7.fhir.r4.model.StringType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
 
 public interface FhirCreator {
     default Reference createPatientReference(Patient fhirPatient) {
@@ -103,7 +106,7 @@ public interface FhirCreator {
 
     default String convertUnitToCode(String unit) {
         // https://ucum.nlm.nih.gov/ucum-lhc/demo.html Nice tool for codes
-        // Let bonnie decide what valid
+        // Let bonnie decide what valid for now and do not validate
         return unit;
     }
 
@@ -116,5 +119,10 @@ public interface FhirCreator {
     default Extension createNotDoneExtension() {
         return new Extension(QICORE_NOT_DONE)
                 .setValue(new BooleanType(true));
+    }
+
+    default Extension createRecordedExtension(Date date) {
+        return new Extension(QICORE_RECORDED)
+                .setValue(new DateTimeType(date));
     }
 }

@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.ELEMENT_ID;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.FAMILY_NAME;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.GIVEN_NAMES;
@@ -446,12 +447,21 @@ public interface FhirConversionTest {
         assertEquals(createReceivedDatetime(), received);
     }
 
-  default void checkNotDoneExtension(Extension extension) {
-      assertThat(extension.getValue(), instanceOf(BooleanType.class));
-      BooleanType booleanType = (BooleanType) extension.getValue();
+    default void checkNotDoneExtension(Extension extension) {
+        assertThat(extension.getValue(), instanceOf(BooleanType.class));
+        BooleanType booleanType = (BooleanType) extension.getValue();
+
         assertTrue(booleanType.booleanValue());
 
-      assertEquals(QICORE_NOT_DONE,   extension.getUrl() );
+        assertEquals(QICORE_NOT_DONE, extension.getUrl());
     }
 
+    default void checkRecordedExtension(Extension extension) {
+        assertThat(extension.getValue(), instanceOf(DateTimeType.class));
+        DateTimeType dateTimeType = (DateTimeType) extension.getValue();
+
+        assertEquals(createAuthorDatetime(), dateTimeType.getValue());
+
+        assertEquals(QICORE_RECORDED, extension.getUrl());
+    }
 }

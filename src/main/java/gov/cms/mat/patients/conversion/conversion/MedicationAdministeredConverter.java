@@ -101,9 +101,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         medicationAdministration.setStatusReason(List.of(codeableConcept));
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            Extension extension = new Extension(QICORE_RECORDED);
-            extension.setValue(new DateTimeType(qdmDataElement.getAuthorDatetime()));
-            medicationAdministration.setExtension(List.of(extension));
+            medicationAdministration.setExtension(List.of(createRecordedExtension(qdmDataElement.getAuthorDatetime())));
         }
     }
 }

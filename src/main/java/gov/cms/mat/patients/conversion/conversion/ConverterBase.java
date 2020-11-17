@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Observation;
@@ -50,7 +49,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     public static final String QICORE_DO_NOT_PERFORM_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-doNotPerformReason";
     public static final String QICORE_NOT_DONE = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDone";
     public static final String QICORE_NOT_DONE_REASON = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-notDoneReason";
-    static final String QICORE_RECORDED = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-recorded";
+    public static final String QICORE_RECORDED = "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-recorded";
 
     private final FhirContext fhirContext;
     private final ObjectMapper objectMapper;
@@ -187,7 +186,9 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     void convertNegationObservation(QdmDataElement qdmDataElement, Observation observation) {
         observation.setStatus(Observation.ObservationStatus.FINAL);
 
-        observation.setModifierExtension(List.of(createNotDoneExtension()));
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            observation.setModifierExtension(List.of(createNotDoneExtension()));
+        }
 
         Extension extensionNotDoneReason = new Extension(QICORE_NOT_DONE_REASON);
         extensionNotDoneReason.setValue(convertToCoding(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
@@ -201,9 +202,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
 
         procedure.setModifierExtension(List.of(createNotDoneExtension()));
 
-        Extension extensionNotDoneReason = new Extension(QICORE_RECORDED);
-        extensionNotDoneReason.setValue(new DateTimeType(qdmDataElement.getAuthorDatetime()));
-        procedure.setExtension(List.of(extensionNotDoneReason));
+        procedure.setExtension(List.of(createRecordedExtension(qdmDataElement.getAuthorDatetime())));
 
         procedure.setStatusReason(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
     }
