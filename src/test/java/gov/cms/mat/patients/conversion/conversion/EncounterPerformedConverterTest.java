@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @ActiveProfiles("test")
 class EncounterPerformedConverterTest extends BaseConversionTest implements FhirConversionTest {
-
     @Autowired
     private EncounterPerformedConverter encounterPerformedConverter;
 

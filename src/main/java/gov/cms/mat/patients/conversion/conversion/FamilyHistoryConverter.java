@@ -8,6 +8,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.FamilyMemberHistory;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -39,8 +40,10 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
         familyMemberHistory.setPatient(createPatientReference(fhirPatient));
 
-        FamilyMemberHistory.FamilyMemberHistoryConditionComponent familyMemberHistoryConditionComponent = familyMemberHistory.getConditionFirstRep();
-        familyMemberHistoryConditionComponent.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        if(CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            FamilyMemberHistory.FamilyMemberHistoryConditionComponent familyMemberHistoryConditionComponent = familyMemberHistory.getConditionFirstRep();
+            familyMemberHistoryConditionComponent.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
         familyMemberHistory.setId(qdmDataElement.getId());
 
@@ -51,10 +54,6 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
-
-        familyMemberHistory.setId(qdmDataElement.getId());
-
-        familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
 
         if (qdmDataElement.getRelationship() != null) {
             //https://terminology.hl7.org/1.0.0/CodeSystem-v3-RoleCode.html
