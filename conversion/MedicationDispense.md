@@ -42,7 +42,7 @@
       <td>dosage</td>
       <td>MedicationDispense.dosageInstruction</td>
       <td>ordered, calculated</td>
-      <td>qdmDataElement.getDosage() is a QdmQuantity converted to  dosageDoseAndRateComponent.setDose(convertQuantity(qdmDataElement.getDosage())) </td>
+      <td>**NOT MAPPED** qdmDataElement.getDosage() is a QdmQuantity converted to  dosageDoseAndRateComponent.setDose(convertQuantity(qdmDataElement.getDosage())) </td>
     </tr>
     <tr>
       <td>supply</td>
@@ -66,7 +66,7 @@
       <td>refills</td>
       <td>MedicationDispense.authorizingPrescription</td>
       <td>Reference authorizing prescription MedicationRequest which contains Medication.Request.dispsenseRequest.numberOfRepeatsAllowed</td>
-      <td> (int) qdmDataElement.getRefills() No data for element </td>
+      <td>**NOT MAPPED** (int) qdmDataElement.getRefills() No data for element </td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -78,7 +78,7 @@
       <td>route</td>
       <td>MedicationDispense.dosageInstruction.route</td>
       <td>See dosageInstruction</td>
-      <td>qdmDataElement.getRoute()</td>
+      <td>**NOT MAPPED** No data found</td>
     </tr>
     <tr>
       <td>setting</td>

@@ -12,6 +12,7 @@
       <td><strong>Used By Many</strong></td>
       <td>MedicationRequest</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Medication, Order active</td>

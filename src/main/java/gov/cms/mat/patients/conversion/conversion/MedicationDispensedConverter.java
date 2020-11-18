@@ -70,9 +70,6 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             }
         }
 
-        //No Refills mapped
-        //Route not mapped
-
         if (qdmDataElement.getSetting() != null) {
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "setting");
         }
@@ -81,7 +78,12 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
         }
 
-        //Relevent Period
+        //Todo Mike Relevent Period
+        if (qdmDataElement.getRelevantPeriod() != null) {
+            Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
+            Timing timing = dosage.getTiming();
+            timing.getRepeat().setBounds(convertPeriod(qdmDataElement.getRelevantPeriod()));
+        }
 
         if (qdmDataElement.getPrescriber() != null) {
             medicationDispense.addAuthorizingPrescription(createPractitionerReference(qdmDataElement.getPrescriber()));

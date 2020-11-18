@@ -12,6 +12,7 @@
       <td><strong>Symptom</strong></td>
       <td>Observation</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -23,9 +24,11 @@
       <td>&nbsp;</td>
       <td>Observation.category</td>
       <td>add symptom concept</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -57,7 +60,7 @@
       <td>recorder</td>
       <td>Observation.performer</td>
       <td>&nbsp;</td>
-       <td>&nbsp;Not mapped </td>
+      <td>&nbsp;Not mapped </td>
     </tr>
   </tbody>
 </table>

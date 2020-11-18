@@ -38,23 +38,24 @@ public class SymptomConverter extends ConverterBase<Observation> {
         List<String> conversionMessages = new ArrayList<>();
 
         Observation observation = new Observation();
-        observation.setId(qdmDataElement.getId());
         observation.setSubject(createPatientReference(fhirPatient));
+        conversionMessages.add(NO_STATUS_MAPPING);
 
         observation.setStatus(Observation.ObservationStatus.UNKNOWN);
-        conversionMessages.add(NO_STATUS_MAPPING);
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             observation.setValue(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
         }
 
-        if (qdmDataElement.getPrevalencePeriod() != null) {
-            observation.setEffective(convertPeriod(qdmDataElement.getPrevalencePeriod()));
-        }
+        observation.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getSeverity() != null) {
             observation.addInterpretation(convertToCodeableConcept( qdmDataElement.getSeverity()));
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity");
+        }
+
+        if (qdmDataElement.getPrevalencePeriod() != null) {
+            observation.setEffective(convertPeriod(qdmDataElement.getPrevalencePeriod()));
         }
 
         processNegation(qdmDataElement, observation);
