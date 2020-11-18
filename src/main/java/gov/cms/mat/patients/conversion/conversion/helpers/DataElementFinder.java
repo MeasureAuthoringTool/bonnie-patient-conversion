@@ -20,17 +20,13 @@ import java.util.stream.Collectors;
 public interface DataElementFinder {
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService,
                                                      @Nonnull List<QdmCodeSystem> dataElementCodes) {
-        if (dataElementCodes.isEmpty()) {
-            return null;
-        } else {
-            CodeableConcept codeableConcept = new CodeableConcept();
+        CodeableConcept codeableConcept = new CodeableConcept();
 
-            List<Coding> codings = dataElementCodes.stream()
-                    .map(c -> convertToCoding(codeSystemEntriesService, c))
-                    .collect(Collectors.toList());
+        List<Coding> codings = dataElementCodes.stream()
+                .map(c -> convertToCoding(codeSystemEntriesService, c))
+                .collect(Collectors.toList());
 
-            return codeableConcept.setCoding(codings);
-        }
+        return codeableConcept.setCoding(codings);
     }
 
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {

@@ -4,7 +4,7 @@ import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.exceptions.InvalidUnitException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Dosage;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYSTEM;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
 public interface MedicationRequestConverter extends FhirCreator, DataElementFinder {
@@ -33,16 +34,19 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         medicationRequest.setSubject(createPatientReference(fhirPatient));
 
         medicationRequest.setIntent(intent);
-        medicationRequest.setMedication(getMedicationCodeableConcept(qdmDataElement.getDataElementCodes(), converterBase));
+
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            medicationRequest.setMedication(getMedicationCodeableConcept(qdmDataElement.getDataElementCodes(), converterBase));
+        }
 
         medicationRequest.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
-            createDosage(qdmDataElement, conversionMessages, medicationRequest);
+            createDosage(qdmDataElement, medicationRequest);
         }
 
         if (qdmDataElement.getSupply() != null) {
-            createSupply(qdmDataElement, conversionMessages, medicationRequest);
+            medicationRequest.getDispenseRequest().setQuantity(convertQuantity(qdmDataElement.getSupply()));
         }
 
         if (qdmDataElement.getDaysSupplied() != null) {
@@ -63,7 +67,6 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
             dosage.setRoute(converterBase.convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
-
         // if we had data would be hard to convert code to enum
         if (qdmDataElement.getSetting() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "setting");
@@ -71,7 +74,8 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getReason() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "reason");
-            medicationRequest.setReasonCode(List.of(converterBase.convertToCodeableConcept(qdmDataElement.getReason())));
+            medicationRequest.getReasonCode()
+                    .add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
 
@@ -110,49 +114,36 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
                 .build();
     }
 
-    private void createFrequency(QdmDataElement qdmDataElement, ConverterBase<MedicationRequest> converterBase, List<String> conversionMessages, MedicationRequest medicationRequest) {
+    private void createFrequency(QdmDataElement qdmDataElement,
+                                 ConverterBase<MedicationRequest> converterBase,
+                                 List<String> conversionMessages,
+                                 MedicationRequest medicationRequest) {
         if (qdmDataElement.getFrequency().getCode() == null) {
             conversionMessages.add("Frequency code is null");
         } else {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
             Timing timing = dosage.getTiming();
-            timing.setCode(converterBase.convertToCodeableConcept( qdmDataElement.getFrequency()));
+            timing.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getFrequency()));
         }
     }
 
-    private void createSupply(QdmDataElement qdmDataElement, List<String> conversionMessages, MedicationRequest medicationRequest) {
-        try {
-            Quantity quantity = convertQuantity(qdmDataElement.getSupply());
-            medicationRequest.getDispenseRequest().setQuantity(quantity);
-        } catch (InvalidUnitException e) {
-            conversionMessages.add(e.getMessage());
-        }
-    }
+    private void createDosage(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
+        Quantity quantity = convertQuantity(qdmDataElement.getDosage());
 
-    private void createDosage(QdmDataElement qdmDataElement, List<String> conversionMessages, MedicationRequest medicationRequest) {
-        try {
-            Quantity quantity = convertQuantity(qdmDataElement.getDosage());
-
-            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-            dosage.getDoseAndRateFirstRep().setDose(quantity);
-        } catch (InvalidUnitException e) {
-            conversionMessages.add(e.getMessage());
-        }
+        Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+        dosage.getDoseAndRateFirstRep().setDose(quantity);
     }
 
     private void createDuration(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
         MedicationRequest.MedicationRequestDispenseRequestComponent dispenseRequest = medicationRequest.getDispenseRequest();
         Duration duration = new Duration();
         duration.setUnit("d");
-        duration.setSystem("http://unitsofmeasure.org");
+        duration.setSystem(UCUM_SYSTEM);
         duration.setValue(qdmDataElement.getDaysSupplied());
         dispenseRequest.setExpectedSupplyDuration(duration);
     }
 
     private CodeableConcept getMedicationCodeableConcept(List<QdmCodeSystem> dataElementCodes, ConverterBase<MedicationRequest> converterBase) {
-        CodeableConcept codeableConcept = new CodeableConcept();
-        codeableConcept.addCoding(converterBase.convertToCoding( dataElementCodes));
-
-        return codeableConcept;
+      return new CodeableConcept().addCoding(converterBase.convertToCoding(dataElementCodes));
     }
 }

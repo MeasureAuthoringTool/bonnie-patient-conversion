@@ -7,6 +7,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Patient;
@@ -53,15 +54,15 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         immunization.setStatus(Immunization.ImmunizationStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        immunization.setVaccineCode(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+        if(CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            immunization.setVaccineCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
         immunization.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
             immunization.setDoseQuantity(convertQuantity(qdmDataElement.getDosage()));
         }
-
-        processNegation(qdmDataElement, immunization);
 
         if (qdmDataElement.getRoute() != null) {
             immunization.setRoute(convertToCodeableConcept( qdmDataElement.getRoute()));
@@ -88,12 +89,5 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
                 .fhirResource(immunization)
                 .conversionMessages(conversionMessages)
                 .build();
-    }
-
-    @Override
-    void convertNegation(QdmDataElement qdmDataElement, Immunization immunization) {
-        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered
-        log.warn("QdmDataElement id: {} - for converting {} to Fhir Immunization,  Will create a MedicationRequest in another class.",
-                qdmDataElement.getId(), qdmDataElement.getQdmType());
     }
 }

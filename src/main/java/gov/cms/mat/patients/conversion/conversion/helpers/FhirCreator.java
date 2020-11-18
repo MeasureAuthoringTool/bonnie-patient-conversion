@@ -6,6 +6,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYSTEM;
 
 public interface FhirCreator {
     default Reference createPatientReference(Patient fhirPatient) {
@@ -59,7 +61,11 @@ public interface FhirCreator {
                     .map(StringType::getValueNotNull)
                     .collect(Collectors.joining(" "));
 
-            return given + " " + humanName.getFamily();
+            if(StringUtils.isEmpty(given)) {
+                return humanName.getFamily();
+            } else {
+                return given + " " + humanName.getFamily();
+            }
         }
     }
 
@@ -93,9 +99,9 @@ public interface FhirCreator {
             quantity.setValue(value);
         }
 
-        quantity.setSystem("http://unitsofmeasure.org");
+        quantity.setSystem(UCUM_SYSTEM);
 
-        quantity.setCode(convertUnitToCode(unit)); // will throw if bad unit
+        quantity.setCode(convertUnitToCode(unit));
 
         return quantity;
     }

@@ -15,6 +15,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -28,6 +29,7 @@ import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
+import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Type;
@@ -41,6 +43,7 @@ import java.util.stream.Collectors;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.SNOMED_OID;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYSTEM;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.ELEMENT_ID;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.FAMILY_NAME;
 import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.GIVEN_NAMES;
@@ -374,6 +377,13 @@ public interface FhirConversionTest {
         return qdmPractitioner;
     }
 
+    default QdmPractitioner createPrescriber() {
+        QdmPractitioner qdmPractitioner = new QdmPractitioner();
+        qdmPractitioner.setId("9012345678");
+
+        return qdmPractitioner;
+    }
+
     default void checkRecipient(Reference reference) {
         assertEquals("Practitioner/7890123456", reference.getReference());
     }
@@ -441,12 +451,57 @@ public interface FhirConversionTest {
     }
 
     default QdmCodeSystem createDischargeDisposition() {
-        return createSNOMEDCode("430567009", " Ready for discharge");
+        return createSNOMEDCode("430567009", "Ready for discharge");
     }
 
     default void checkDischargeDisposition(CodeableConcept codeableConcept) {
-        checkSNOMEDCodeableConcept(codeableConcept, "430567009", " Ready for discharge");
+        checkSNOMEDCodeableConcept(codeableConcept, "430567009", "Ready for discharge");
+    }
+
+    default QdmQuantity createDosage() {
+        QdmQuantity qdmQuantity = new QdmQuantity();
+        qdmQuantity.setUnit("mg");
+        qdmQuantity.setValue(1000);
+        return qdmQuantity;
+    }
+
+    default void checkDosage(Quantity doseQuantity) {
+        assertEquals("mg", doseQuantity.getCode());
+        assertEquals(1000, doseQuantity.getValue().intValue());
     }
 
 
+    default QdmCodeSystem createRoute() {
+        return createSNOMEDCode("430567009", "Buccal route");
+    }
+
+    default void checkRoute(CodeableConcept route) {
+        checkSNOMEDCodeableConcept(route, "430567009", "Buccal route");
+    }
+
+    default QdmQuantity createSupply() {
+        QdmQuantity qdmQuantity = new QdmQuantity();
+        qdmQuantity.setUnit("g");
+        qdmQuantity.setValue(100);
+        return qdmQuantity;
+    }
+
+    default void checkSupply(Quantity quantity) {
+        assertEquals(UCUM_SYSTEM, quantity.getSystem());
+        assertEquals("g", quantity.getCode());
+        assertEquals(100, quantity.getValue().intValue());
+    }
+
+
+    default QdmCodeSystem createFrequency() {
+        return createSNOMEDCode("229799001", "Twice a day");
+    }
+
+    default void checkFrequency(CodeableConcept codeableConcept) {
+        checkSNOMEDCodeableConcept(codeableConcept, "229799001", "Twice a day");
+    }
+
+    default QdmCodeSystem createSetting() {
+        return createSNOMEDCode("450511000124101", "High intensity");
+    }
 }
