@@ -41,8 +41,7 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
         checkAuthorDatetime(result.getFhirResource().getDate());
         checkRelationShip(result.getFhirResource().getRelationship());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 
     @Test
@@ -80,7 +79,6 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
         QdmToFhirConversionResult<FamilyMemberHistory> result = familyHistoryConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 }

@@ -2,6 +2,7 @@ package gov.cms.mat.patients.conversion.conversion;
 
 import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
+import gov.cms.mat.patients.conversion.conversion.helpers.MedicationRequestTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.MedicationRequest;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ImmunizationAdministeredNegationConverterTest extends BaseConversionTest implements FhirConversionTest {
+class ImmunizationAdministeredNegationConverterTest extends BaseConversionTest implements FhirConversionTest, MedicationRequestTest {
     @Autowired
     private ImmunizationAdministeredNegationConverter immunizationAdministeredNegationConverter;
 
@@ -38,6 +39,8 @@ class ImmunizationAdministeredNegationConverterTest extends BaseConversionTest i
 
         QdmToFhirConversionResult<MedicationRequest> result = immunizationAdministeredNegationConverter.convertToFhir(fhirPatient, qdmDataElement);
 
+        assertEquals(MedicationRequest.MedicationRequestIntent.ORDER, result.getFhirResource().getIntent());
+
         checkNegation(result);
     }
 
@@ -45,60 +48,15 @@ class ImmunizationAdministeredNegationConverterTest extends BaseConversionTest i
     void convertToFhirNegationEmptyObjects() {
         qdmDataElement.setNegationRationale(createNegationRationale());
 
-        qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
-        qdmDataElement.setDosage(createDosage());
-        qdmDataElement.setSupply(createSupply());
-        qdmDataElement.setDaysSupplied(10);
-        qdmDataElement.setFrequency(createFrequency());
-        qdmDataElement.setRefills(5);
-        qdmDataElement.setRoute(createRoute());
-
-        qdmDataElement.setSetting(createSetting());
-
-        qdmDataElement.setReason(createReason());
-        qdmDataElement.setRelevantDatetime(createRelevantDatetime());
-        qdmDataElement.setRelevantPeriod(createRelevantPeriod());
-        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
-        qdmDataElement.setPrescriber(createPrescriber());
-
+        createMedicationRequestElement(qdmDataElement);
 
         QdmToFhirConversionResult<MedicationRequest> result = immunizationAdministeredNegationConverter.convertToFhir(fhirPatient, qdmDataElement);
 
+        assertEquals(MedicationRequest.MedicationRequestIntent.ORDER, result.getFhirResource().getIntent());
+        assertEquals(2, result.getFhirResource().getReasonCode().size());
         checkNegation(result);
 
-        checkDataElementCodeableConcept(result.getFhirResource().getMedicationCodeableConcept());
-        checkDosageType(result.getFhirResource().getDosageInstructionFirstRep().getDoseAndRateFirstRep().getDose());
-
-        checkSupply(result.getFhirResource().getDispenseRequest().getQuantity());
-        checkDaysSupplied(result.getFhirResource().getDispenseRequest().getExpectedSupplyDuration());
-        checkFrequency(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getCode());
-        checkRefills(result.getFhirResource().getDispenseRequest().getNumberOfRepeatsAllowed());
-        checkRoute(result.getFhirResource().getDosageInstructionFirstRep().getRoute());
-
-        assertEquals(2, result.getFhirResource().getReasonCode().size());
-        checkReason(result.getFhirResource().getReasonCode().get(0));
-
-        checkRelevantDateTime(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getEvent().get(0).getValue());
-        checkRelevantPeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
-        checkAuthorDatetime(result.getFhirResource().getAuthoredOn());
-        checkNegationRationaleTypeCodeableConcept(result.getFhirResource().getReasonCode().get(1));
-
-    }
-
-    private void checkRefills(int numberOfRepeatsAllowed) {
-        assertEquals(5, numberOfRepeatsAllowed);
-    }
-
-    private void checkDaysSupplied(Duration duration) {
-        assertEquals(10, duration.getValue().intValue());
-        assertEquals("d", duration.getUnit());
-        assertEquals(UCUM_SYSTEM, duration.getSystem());
-    }
-
-    private void checkDosageType(Type dose) {
-        assertThat(dose, instanceOf(Quantity.class));
-        Quantity quantity = (Quantity) dose;
-        checkDosage(quantity);
+        checkMedicationRequest(result);
     }
 
     @Test
@@ -107,13 +65,5 @@ class ImmunizationAdministeredNegationConverterTest extends BaseConversionTest i
         QdmToFhirConversionResult<MedicationRequest> result = immunizationAdministeredNegationConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNull(result);
     }
-
-    private void checkNegation(QdmToFhirConversionResult<MedicationRequest> result) {
-        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
-        assertEquals(MedicationRequest.MedicationRequestStatus.COMPLETED, result.getFhirResource().getStatus());
-        assertEquals(0, result.getConversionMessages().size());
-        assertTrue(result.getFhirResource().getDoNotPerform());
-    }
-
 
 }

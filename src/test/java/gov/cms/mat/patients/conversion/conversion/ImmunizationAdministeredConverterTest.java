@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -44,8 +43,7 @@ class ImmunizationAdministeredConverterTest extends BaseConversionTest implement
 
         assertEquals(Immunization.ImmunizationStatus.NULL, result.getFhirResource().getStatus());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 
     @Test
@@ -62,7 +60,6 @@ class ImmunizationAdministeredConverterTest extends BaseConversionTest implement
 
         assertEquals(Immunization.ImmunizationStatus.NULL, result.getFhirResource().getStatus());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 }

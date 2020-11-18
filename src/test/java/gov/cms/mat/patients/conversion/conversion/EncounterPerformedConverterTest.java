@@ -44,8 +44,7 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         checkLengthOfStay(result.getFhirResource().getLength());
         checkDischargeDisposition(result.getFhirResource().getHospitalization());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 
     @Test
@@ -65,8 +64,7 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 
     private void checkDischargeDisposition(Encounter.EncounterHospitalizationComponent hospitalization) {

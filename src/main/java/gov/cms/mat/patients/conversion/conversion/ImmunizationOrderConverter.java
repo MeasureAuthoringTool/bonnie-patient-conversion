@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ImmunizationOrderConverter extends ConverterBase<MedicationRequest> implements MedicationRequestConverter {
-
     public static final String QDM_TYPE = "QDM::ImmunizationOrder";
 
     public ImmunizationOrderConverter(CodeSystemEntriesService codeSystemEntriesService,

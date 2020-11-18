@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.SNOMED_OID;
@@ -492,7 +493,6 @@ public interface FhirConversionTest {
         assertEquals(100, quantity.getValue().intValue());
     }
 
-
     default QdmCodeSystem createFrequency() {
         return createSNOMEDCode("229799001", "Twice a day");
     }
@@ -503,5 +503,10 @@ public interface FhirConversionTest {
 
     default QdmCodeSystem createSetting() {
         return createSNOMEDCode("450511000124101", "High intensity");
+    }
+
+    default void checkNoStatusMappingOnly(List<String> conversionMessages) {
+        assertEquals(1, conversionMessages.size());
+        assertEquals(NO_STATUS_MAPPING, conversionMessages.get(0));
     }
 }
