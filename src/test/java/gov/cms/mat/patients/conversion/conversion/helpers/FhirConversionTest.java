@@ -509,4 +509,12 @@ public interface FhirConversionTest {
         assertEquals(1, conversionMessages.size());
         assertEquals(NO_STATUS_MAPPING, conversionMessages.get(0));
     }
+
+    default Date createIncisionDatetime() {
+        return new Date(now.toEpochMilli() - 2222);
+    }
+
+    default void checkIncisionDatetime(Date date) {
+        assertEquals(createIncisionDatetime(), date);
+    }
 }

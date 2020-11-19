@@ -32,6 +32,7 @@ class ImmunizationAdministeredConverterTest extends BaseConversionTest implement
         qdmDataElement.setRoute(createRoute());
         qdmDataElement.setReason(createReason());
         qdmDataElement.setRelevantDatetime(createRelevantDatetime());
+        qdmDataElement.setPerformer(createPerformer());
 
         QdmToFhirConversionResult<Immunization> result = immunizationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());

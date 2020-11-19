@@ -24,7 +24,10 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         Procedure procedure = new Procedure();
         procedure.setSubject(createPatientReference(fhirPatient));
 
-        procedure.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            procedure.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+
         procedure.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getRank() != null) {
@@ -36,7 +39,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getReason() != null) {
-            procedure.setReasonCode(List.of(converterBase.convertToCodeableConcept(qdmDataElement.getReason())));
+            procedure.getReasonCode().add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
         if (qdmDataElement.getResult() != null) {
@@ -63,7 +66,8 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getIncisionDatetime() != null) {
-            procedure.setExtension(List.of(new Extension(INCISION_DATE_TIME_URL)));
+            procedure.getExtension()
+                    .add(new Extension(INCISION_DATE_TIME_URL));
             Extension extension = procedure.getExtension().get(0);
             extension.setValue(new DateTimeType(qdmDataElement.getIncisionDatetime()));
         }
