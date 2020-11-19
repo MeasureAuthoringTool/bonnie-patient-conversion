@@ -27,13 +27,13 @@ class ParticipationConverterTest extends BaseConversionTest implements FhirConve
     @Test
     void convertToFhir() {
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
-        qdmDataElement.setParticipationPeriod(createPrevalencePeriod());
+        qdmDataElement.setParticipationPeriod(createParticipationPeriod());
 
         QdmToFhirConversionResult<Coverage> result = participationConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getBeneficiary());
 
         checkDataElementCodeableConcept(result.getFhirResource().getType());
-        checkPrevalencePeriod(result.getFhirResource().getPeriod());
+        checkParticipationPeriod(result.getFhirResource().getPeriod());
 
         assertEquals(Coverage.CoverageStatus.ACTIVE, result.getFhirResource().getStatus());
     }
