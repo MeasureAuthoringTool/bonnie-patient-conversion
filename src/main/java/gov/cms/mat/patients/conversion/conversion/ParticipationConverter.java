@@ -8,6 +8,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Coverage;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -42,11 +43,14 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
 
         coverage.setStatus(Coverage.CoverageStatus.ACTIVE);
 
-        coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
-
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
         coverage.setId(qdmDataElement.getId());
 
-        convertParticipationPeriod(coverage, qdmDataElement);
+        if (qdmDataElement.getParticipationPeriod() != null) {
+            convertParticipationPeriod(coverage, qdmDataElement);
+        }
 
         return QdmToFhirConversionResult.<Coverage>builder()
                 .fhirResource(coverage)
