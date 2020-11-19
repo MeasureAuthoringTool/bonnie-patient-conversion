@@ -30,8 +30,9 @@ public interface DataElementFinder {
     }
 
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
-        return new CodeableConcept()
-                .setCoding(List.of(convertToCoding(codeSystemEntriesService, qdmCodeSystem)));
+        CodeableConcept codeableConcept = new CodeableConcept();
+        codeableConcept.getCoding().add(convertToCoding(codeSystemEntriesService, qdmCodeSystem));
+        return codeableConcept;
     }
 
     default Coding convertToCoding(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {

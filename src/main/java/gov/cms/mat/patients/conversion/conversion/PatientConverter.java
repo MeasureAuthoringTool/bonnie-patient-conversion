@@ -76,11 +76,13 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
     public Patient process(BonniePatient bonniePatient) {
         Patient fhirPatient = new Patient();
         fhirPatient.setId(bonniePatient.getId());
-        fhirPatient.setExtension(List.of(new Extension(US_CORE_RACE_URL), new Extension(DETAILED_RACE_URL)));
-        fhirPatient.setActive(true); // ??
 
-        //  bonniePatient.getNotes(); // ??
-        fhirPatient.setName(List.of(createName(bonniePatient)));
+        fhirPatient.getExtension().add(new Extension(US_CORE_RACE_URL));
+        fhirPatient.getExtension().add(new Extension(DETAILED_RACE_URL));
+
+        fhirPatient.setActive(true);
+
+        fhirPatient.getName().add(createName(bonniePatient));
 
         // ?? "_type": "QDM::PatientCharacteristicBirthdate", 2 birthDates which one wins
         fhirPatient.setBirthDate(bonniePatient.getQdmPatient().getBirthDatetime());

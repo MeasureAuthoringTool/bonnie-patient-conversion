@@ -4,7 +4,6 @@ import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.MedicationRequestTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
-import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -55,6 +53,6 @@ class ImmunizationOrderConverterTest extends BaseConversionTest implements FhirC
 
         assertEquals(MedicationRequest.MedicationRequestIntent.ORDER, result.getFhirResource().getIntent());
 
-       checkNoStatusMappingOnly(result.getConversionMessages());
+        checkNoStatusMappingOnly(result.getConversionMessages());
     }
 }

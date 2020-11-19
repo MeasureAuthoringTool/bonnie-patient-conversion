@@ -23,7 +23,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         NutritionOrder nutritionOrder = new NutritionOrder();
         nutritionOrder.setPatient(createPatientReference(fhirPatient));
 
-        nutritionOrder.setIntent(NutritionOrder.NutritiionOrderIntent.NULL); // todo NO intent for SubstanceAdministered todo find
+        nutritionOrder.setIntent(NutritionOrder.NutritiionOrderIntent.NULL);
 
         //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#821-substance
         //Constrain to Active, on-hold, Completed
@@ -57,7 +57,9 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             Timing timing = new Timing();
-            timing.setEvent(List.of(new DateTimeType(qdmDataElement.getRelevantPeriod().getLow())));
+
+            timing.getEvent().add(new DateTimeType(qdmDataElement.getRelevantPeriod().getLow()));
+
             nutritionOrder.getEnteralFormula().getAdministrationFirstRep().setSchedule(timing);
         }
 

@@ -13,8 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class PatientsApplicationTests {
     @Autowired
     PatientConversionService patientConversionService;
+
     @Test
     void contextLoads() {
-        assertNotNull( patientConversionService);
+        assertNotNull(patientConversionService);
     }
 }

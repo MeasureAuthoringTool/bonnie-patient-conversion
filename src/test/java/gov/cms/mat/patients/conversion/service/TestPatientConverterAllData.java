@@ -39,7 +39,7 @@ class TestPatientConverterAllData implements ResourceFileUtil {
 
         for (String split : splits) {
             try {
-                BonniePatient      bonniePatient = objectMapper.readValue(split, BonniePatient.class);
+                BonniePatient bonniePatient = objectMapper.readValue(split, BonniePatient.class);
                 System.out.println(bonniePatient.getId());
                 ConversionResult conversionResult = patientConversionService.processOne(bonniePatient);
                 assertNotNull(conversionResult);
@@ -58,7 +58,7 @@ class TestPatientConverterAllData implements ResourceFileUtil {
         ObjectMapper objectMapper = new ObjectMapper();
         BonniePatient[] patients = objectMapper.readValue(all, BonniePatient[].class);
 
-        List<ConversionResult>  results =   patientConversionService.processMany(Arrays.asList(patients));
-        assertEquals( patients.length, results.size());
+        List<ConversionResult> results = patientConversionService.processMany(Arrays.asList(patients));
+        assertEquals(patients.length, results.size());
     }
 }

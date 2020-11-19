@@ -45,7 +45,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         goal.setId(qdmDataElement.getId());
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            goal.getTargetFirstRep().setMeasure(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+            goal.getTargetFirstRep().setMeasure(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getTargetOutcome() != null) {

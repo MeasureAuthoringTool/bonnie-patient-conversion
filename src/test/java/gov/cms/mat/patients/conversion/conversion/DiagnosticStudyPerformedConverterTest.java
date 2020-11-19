@@ -6,7 +6,6 @@ import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.ObservationCommonTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Type;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +51,6 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
 
         checkCodeableConceptObjectNode(result.getFhirResource().getValue());
     }
-
 
 
     @Test

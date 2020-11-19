@@ -40,7 +40,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
         FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
         familyMemberHistory.setPatient(createPatientReference(fhirPatient));
 
-        if(CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             FamilyMemberHistory.FamilyMemberHistoryConditionComponent familyMemberHistoryConditionComponent = familyMemberHistory.getConditionFirstRep();
             familyMemberHistoryConditionComponent.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }

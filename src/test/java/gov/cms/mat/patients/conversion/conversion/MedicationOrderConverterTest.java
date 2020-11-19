@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class MedicationOrderConverterTest  extends BaseConversionTest implements FhirConversionTest, MedicationRequestTest {
+class MedicationOrderConverterTest extends BaseConversionTest implements FhirConversionTest, MedicationRequestTest {
 
     @Autowired
     private MedicationOrderConverter medicationOrderConverter;
@@ -28,7 +28,7 @@ class MedicationOrderConverterTest  extends BaseConversionTest implements FhirCo
     void convertToFhir() {
         createMedicationRequestElement(qdmDataElement);
 
-        QdmToFhirConversionResult<MedicationRequest> result =medicationOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<MedicationRequest> result = medicationOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         assertEquals(MedicationRequest.MedicationRequestIntent.ORDER, result.getFhirResource().getIntent());
         assertEquals(MedicationRequest.MedicationRequestStatus.UNKNOWN, result.getFhirResource().getStatus());

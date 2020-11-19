@@ -18,9 +18,9 @@ public class ImmunizationOrderConverter extends ConverterBase<MedicationRequest>
     public static final String QDM_TYPE = "QDM::ImmunizationOrder";
 
     public ImmunizationOrderConverter(CodeSystemEntriesService codeSystemEntriesService,
-                                        FhirContext fhirContext,
-                                        ObjectMapper objectMapper,
-                                        ValidationService validationService) {
+                                      FhirContext fhirContext,
+                                      ObjectMapper objectMapper,
+                                      ValidationService validationService) {
         super(codeSystemEntriesService, fhirContext, objectMapper, validationService);
     }
 

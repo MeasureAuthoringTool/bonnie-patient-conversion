@@ -44,13 +44,13 @@ public class SymptomConverter extends ConverterBase<Observation> {
         observation.setStatus(Observation.ObservationStatus.UNKNOWN);
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            observation.setValue(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+            observation.setValue(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         observation.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getSeverity() != null) {
-            observation.addInterpretation(convertToCodeableConcept( qdmDataElement.getSeverity()));
+            observation.addInterpretation(convertToCodeableConcept(qdmDataElement.getSeverity()));
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity");
         }
 

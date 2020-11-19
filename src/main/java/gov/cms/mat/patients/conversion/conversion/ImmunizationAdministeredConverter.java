@@ -54,7 +54,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         immunization.setStatus(Immunization.ImmunizationStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        if(CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             immunization.setVaccineCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
@@ -65,13 +65,13 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         }
 
         if (qdmDataElement.getRoute() != null) {
-            immunization.setRoute(convertToCodeableConcept( qdmDataElement.getRoute()));
+            immunization.setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
         if (qdmDataElement.getReason() != null) {
-            // No data
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "reason");
-            immunization.setReasonCode(List.of(convertToCodeableConcept( qdmDataElement.getReason())));
+            immunization.getReasonCode()
+                    .add(convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
@@ -80,7 +80,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
         immunization.setRecorded(qdmDataElement.getAuthorDatetime());
 
-        if( qdmDataElement.getPerformer() != null) {
+        if (qdmDataElement.getPerformer() != null) {
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
             immunization.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
         }

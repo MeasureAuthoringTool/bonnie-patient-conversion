@@ -6,7 +6,6 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Dosage;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.MedicationRequest;
@@ -81,7 +80,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-            dosage.getTiming().setEvent(List.of(new DateTimeType(qdmDataElement.getRelevantDatetime())));
+            dosage.getTiming().addEvent(qdmDataElement.getRelevantDatetime());
         }
 
 
@@ -144,6 +143,6 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
     }
 
     private CodeableConcept getMedicationCodeableConcept(List<QdmCodeSystem> dataElementCodes, ConverterBase<MedicationRequest> converterBase) {
-      return new CodeableConcept().addCoding(converterBase.convertToCoding(dataElementCodes));
+        return new CodeableConcept().addCoding(converterBase.convertToCoding(dataElementCodes));
     }
 }

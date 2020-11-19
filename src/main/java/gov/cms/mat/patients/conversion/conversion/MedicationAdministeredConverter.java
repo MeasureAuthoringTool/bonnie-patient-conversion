@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MedicationAdministration;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         MedicationAdministration medicationAdministration = new MedicationAdministration();
         medicationAdministration.setSubject(createPatientReference(fhirPatient));
 
-        medicationAdministration.setMedication(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+        medicationAdministration.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
 
         medicationAdministration.setId(qdmDataElement.getId());
 
@@ -65,7 +64,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (qdmDataElement.getReason() != null) {
-            medicationAdministration.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getReason())));
+            medicationAdministration.getReasonCode().add(convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
@@ -98,10 +97,11 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.NOTDONE);
 
         CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
-        medicationAdministration.setStatusReason(List.of(codeableConcept));
+
+        medicationAdministration.getStatusReason().add(codeableConcept);
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            medicationAdministration.setExtension(List.of(createRecordedExtension(qdmDataElement.getAuthorDatetime())));
+            medicationAdministration.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
         }
     }
 }

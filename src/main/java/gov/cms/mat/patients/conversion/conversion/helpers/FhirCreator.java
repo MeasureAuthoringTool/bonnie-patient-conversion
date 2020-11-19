@@ -61,7 +61,7 @@ public interface FhirCreator {
                     .map(StringType::getValueNotNull)
                     .collect(Collectors.joining(" "));
 
-            if(StringUtils.isEmpty(given)) {
+            if (StringUtils.isEmpty(given)) {
                 return humanName.getFamily();
             } else {
                 return given + " " + humanName.getFamily();
@@ -70,9 +70,9 @@ public interface FhirCreator {
     }
 
     default Period convertPeriod(QdmPeriod relevantPeriod) {
-            return new Period()
-                    .setStart(relevantPeriod.getLow())
-                    .setEnd(relevantPeriod.getHigh() == null ? null : relevantPeriod.getHigh());
+        return new Period()
+                .setStart(relevantPeriod.getLow())
+                .setEnd(relevantPeriod.getHigh() == null ? null : relevantPeriod.getHigh());
     }
 
     default String toJson(FhirContext fhirContext, IBaseResource theResource) {

@@ -45,17 +45,21 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         }
 
         if (qdmDataElement.getCategory() != null) {
-            communication.setCategory(List.of(convertToCodeableConcept( qdmDataElement.getCategory())));
+            communication.getCategory().add(convertToCodeableConcept(qdmDataElement.getCategory()));
         }
+
         if (qdmDataElement.getMedium() != null) {
-            communication.setMedium(List.of(convertToCodeableConcept( qdmDataElement.getMedium())));
+            communication.getMedium().add(convertToCodeableConcept(qdmDataElement.getMedium()));
         }
+
         if (qdmDataElement.getSentDatetime() != null) {
             communication.setSent(qdmDataElement.getSentDatetime());
         }
+
         if (qdmDataElement.getReceivedDatetime() != null) {
             communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
+
         if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
             communication.setBasedOn(convertRelatedTo(qdmDataElement.getRelatedTo()));
         }
@@ -65,7 +69,7 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         }
 
         if (qdmDataElement.getRecipient() != null) {
-            communication.setRecipient(List.of(createPractitionerReference(qdmDataElement.getRecipient())));
+            communication.getRecipient().add(createPractitionerReference(qdmDataElement.getRecipient()));
         }
 
         if (!processNegation(qdmDataElement, communication)) {
@@ -83,8 +87,8 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
     void convertNegation(QdmDataElement qdmDataElement, Communication communication) {
         communication.setStatus(Communication.CommunicationStatus.NOTDONE);
 
-        communication.setModifierExtension(List.of(createNotDoneExtension()));
+        communication.getModifierExtension().add(createNotDoneExtension());
 
-        communication.setStatusReason(convertToCodeableConcept( qdmDataElement.getNegationRationale()));
+        communication.setStatusReason(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
     }
 }

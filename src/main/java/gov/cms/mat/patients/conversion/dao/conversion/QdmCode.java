@@ -15,5 +15,5 @@ public class QdmCode {
     @JsonProperty("_type")
     String type;
 
-   String  descriptor;
+    String descriptor;
 }

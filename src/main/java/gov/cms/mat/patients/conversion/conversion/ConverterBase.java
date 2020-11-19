@@ -182,19 +182,19 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
 
         Extension extensionDoNotPerformReason = new Extension(QICORE_DO_NOT_PERFORM_REASON);
         extensionDoNotPerformReason.setValue(convertToCoding(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
-        serviceRequest.setExtension(List.of(extensionDoNotPerformReason));
+        serviceRequest.getExtension().add(extensionDoNotPerformReason);
     }
 
     void convertNegationObservation(QdmDataElement qdmDataElement, Observation observation) {
         observation.setStatus(Observation.ObservationStatus.FINAL);
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            observation.setModifierExtension(List.of(createNotDoneExtension()));
+            observation.getModifierExtension().add(createNotDoneExtension());
         }
 
         Extension extensionNotDoneReason = new Extension(QICORE_NOT_DONE_REASON);
         extensionNotDoneReason.setValue(convertToCoding(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
-        observation.setExtension(List.of(extensionNotDoneReason));
+        observation.getExtension().add(extensionNotDoneReason);
     }
 
 
@@ -202,9 +202,9 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         // http://hl7.org/fhir/us/qicore/Procedure-negation-example.json.html
         procedure.setStatus(Procedure.ProcedureStatus.NOTDONE);
 
-        procedure.setModifierExtension(List.of(createNotDoneExtension()));
+        procedure.getModifierExtension().add(createNotDoneExtension());
 
-        procedure.setExtension(List.of(createRecordedExtension(qdmDataElement.getAuthorDatetime())));
+        procedure.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
 
         procedure.setStatusReason(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
     }

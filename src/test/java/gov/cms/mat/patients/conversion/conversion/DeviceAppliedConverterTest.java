@@ -63,7 +63,7 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
 
     }
 
-        @Test
+    @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Procedure> result = deviceAppliedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());

@@ -31,7 +31,7 @@ class SymptomConverterTest extends BaseConversionTest implements FhirConversionT
         qdmDataElement.setPrevalencePeriod(createPrevalencePeriod());
         qdmDataElement.setSeverity(createSeverity());
 
-        QdmToFhirConversionResult<Observation> result =symptomConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = symptomConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -42,7 +42,7 @@ class SymptomConverterTest extends BaseConversionTest implements FhirConversionT
 
     @Test
     void convertToFhirEmptyObjects() {
-        QdmToFhirConversionResult<Observation> result =symptomConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Observation> result = symptomConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 

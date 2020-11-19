@@ -42,7 +42,7 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
 
         coverage.setStatus(Coverage.CoverageStatus.ACTIVE);
 
-        coverage.setType(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+        coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
 
         coverage.setId(qdmDataElement.getId());
 

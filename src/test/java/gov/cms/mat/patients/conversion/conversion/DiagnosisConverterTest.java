@@ -3,7 +3,6 @@ package gov.cms.mat.patients.conversion.conversion;
 import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
-import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Condition;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest

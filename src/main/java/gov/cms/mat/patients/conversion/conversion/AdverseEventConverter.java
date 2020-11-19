@@ -37,7 +37,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         adverseEvent.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            adverseEvent.setEvent(convertToCodeableConcept( qdmDataElement.getDataElementCodes()));
+            adverseEvent.setEvent(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getType() != null) {
@@ -47,7 +47,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
 
         if (qdmDataElement.getSeverity() != null) {
             adverseEvent.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));
-            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity" );
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity");
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
@@ -57,12 +57,12 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
             //no data
             // adverseEvent.setLocation(); // reference how to map
-            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "facilityLocations" );
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "facilityLocations");
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
             adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
-            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "authorDatetime" );
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "authorDatetime");
         }
 
         adverseEvent.setId(qdmDataElement.getId());

@@ -78,7 +78,6 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
         }
 
-        //Todo Mike Relevent Period
         if (qdmDataElement.getRelevantPeriod() != null) {
             Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
             Timing timing = dosage.getTiming();
@@ -112,7 +111,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         medicationDispense.setStatusReason(codeableConcept);
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            medicationDispense.setExtension(List.of(createRecordedExtension(qdmDataElement.getAuthorDatetime())));
+            medicationDispense.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
         }
     }
 }

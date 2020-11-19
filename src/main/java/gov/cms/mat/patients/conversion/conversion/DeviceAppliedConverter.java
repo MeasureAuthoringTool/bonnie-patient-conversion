@@ -46,7 +46,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         procedure.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getReason() != null) {
-            procedure.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getReason())));
+            procedure.getReasonCode().add(convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
