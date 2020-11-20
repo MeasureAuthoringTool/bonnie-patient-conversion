@@ -150,6 +150,20 @@ public interface FhirConversionTest {
         assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
     }
 
+    default QdmPeriod createParticipationPeriod() {
+        QdmPeriod qdmPeriod = new QdmPeriod();
+        qdmPeriod.setLow(new Date(now.toEpochMilli() - 1000000));
+        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 100));
+        return qdmPeriod;
+    }
+
+    default void checkParticipationPeriod(Period fhirPeriod) {
+        QdmPeriod qdmPeriod = createPrevalencePeriod();
+
+        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
+        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
+    }
+
     default Date createAuthorDatetime() {
         return new Date(now.toEpochMilli() - 50);
     }
