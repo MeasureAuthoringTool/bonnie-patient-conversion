@@ -26,6 +26,7 @@ import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.HumanName;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
@@ -361,7 +362,7 @@ public interface FhirConversionTest {
 
     default QdmPractitioner createPerformer() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
-        qdmPractitioner.setId("987654321");
+        qdmPractitioner.setId("PERFORMER");
 
         QdmCodeSystem role = createSNOMEDCode("158965000", "Medical practitioner");
         qdmPractitioner.setRole(role);
@@ -371,35 +372,60 @@ public interface FhirConversionTest {
 
         QdmCodeSystem qualification = createSNOMEDCode("164618002", "General sign qualifications");
         qdmPractitioner.setQualification(qualification);
-        QdmIdentifier  qdmIdentifier = new QdmIdentifier();
-        qdmIdentifier.setValue("0000000001");
 
+        QdmIdentifier qdmIdentifier = new QdmIdentifier();
+        qdmIdentifier.setValue("0000000001");
         qdmPractitioner.setIdentifier(qdmIdentifier);
 
         return qdmPractitioner;
     }
 
+    default void checkIdentifier(Identifier identifier) {
+        assertEquals("0000000001", identifier.getValue());
+    }
+
+    default void checkRole(CodeableConcept codeableConcept) {
+        checkSNOMEDCodeableConcept(codeableConcept, "158965000", "Medical practitioner");
+    }
+
+    default void checkSpecialty(CodeableConcept codeableConcept) {
+        checkSNOMEDCodeableConcept(codeableConcept, "309338004", "Intensive care specialist");
+    }
+
+    default void checkQualification(CodeableConcept codeableConcept) {
+        checkSNOMEDCodeableConcept(codeableConcept, "164618002", "General sign qualifications");
+    }
+
+
+    default void checkPerformer(Reference reference) {
+        assertEquals("Practitioner/PERFORMER", reference.getReference());
+    }
+
     default QdmPractitioner createSender() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
-        qdmPractitioner.setId("54678901234");
+        qdmPractitioner.setId("SENDER");
 
         return qdmPractitioner;
     }
 
     default void checkSender(Reference reference) {
-        assertEquals("Practitioner/54678901234", reference.getReference());
+        assertEquals("Practitioner/SENDER", reference.getReference());
     }
 
     default QdmPractitioner createRecipient() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
-        qdmPractitioner.setId("7890123456");
+        qdmPractitioner.setId("RECIPIENT");
 
         return qdmPractitioner;
     }
 
+    default void checkRecipient(Reference reference) {
+        assertEquals("Practitioner/RECIPIENT", reference.getReference());
+    }
+
     default QdmPractitioner createDispenser() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
-        qdmPractitioner.setId("7890123456");
+        qdmPractitioner.setId("DISPENSER");
 
         return qdmPractitioner;
     }
@@ -407,18 +433,11 @@ public interface FhirConversionTest {
 
     default QdmPractitioner createPrescriber() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
-        qdmPractitioner.setId("9012345678");
+        qdmPractitioner.setId("PRESCRIBER");
 
         return qdmPractitioner;
     }
 
-    default void checkRecipient(Reference reference) {
-        assertEquals("Practitioner/7890123456", reference.getReference());
-    }
-
-    default void checkPerformer(Reference reference) {
-        assertEquals("Practitioner/987654321", reference.getReference());
-    }
 
     default QdmCodeSystem createCategory() {
         return createSNOMEDCode("183095004", "Usual warning given");

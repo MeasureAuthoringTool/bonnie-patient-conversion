@@ -6,6 +6,8 @@ import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
+import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.Practitioner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,18 +55,43 @@ class PractitionerConverterTest extends BaseConversionTest implements FhirConver
 
     @Test
     void createDataElements() {
+        createAndAddElement("PERFORMER").setPerformer(createPerformer());
+
         createAndAddElement("SENDER").setSender(createSender());
         createAndAddElement("RECIPIENT").setRecipient(createRecipient());
         createAndAddElement("DISPENSER").setDispenser(createDispenser());
-        createAndAddElement("PERFORMER").setDispenser(createPerformer());
-        createAndAddElement("PRESCRIBER").setDispenser(createPrescriber());
+        createAndAddElement("PRESCRIBER").setPrescriber(createPrescriber());
 
         List<FhirDataElement> elementList = practitionerConverter.createDataElements(bonniePatient, fhirPatient);
 
         assertEquals(5, elementList.size());
 
+        var optional = elementList.stream()
+                .filter(p -> p.getValueSetTitle().equals("PERFORMER"))
+                .findFirst();
 
+        assertTrue(optional.isPresent());
+
+        checkPerformer(optional.get());
     }
+
+    private void checkPerformer(FhirDataElement fhirDataElement) {
+        assertEquals(0, fhirDataElement.getOutcome().getConversionMessages().size());
+        assertEquals(0, fhirDataElement.getOutcome().getValidationMessages().size());
+        assertThat(fhirDataElement.getFhirObject(), instanceOf(Practitioner.class));
+
+        Practitioner practitioner = (Practitioner) fhirDataElement.getFhirObject();
+
+        assertEquals(3, practitioner.getQualification().size());
+
+        checkRole(practitioner.getQualification().get(0).getCode());
+        checkSpecialty(practitioner.getQualification().get(1).getCode());
+        checkQualification(practitioner.getQualification().get(2).getCode());
+
+        checkIdentifier(practitioner.getIdentifierFirstRep());
+    }
+
+
 
 
     @Test
