@@ -40,14 +40,12 @@ import gov.cms.mat.patients.conversion.conversion.SymptomConverter;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirPatientResult;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import gov.cms.mat.patients.conversion.dao.results.ConvertedPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.helpers.RelatedToProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Service;
@@ -383,16 +381,6 @@ public class PatientConversionService implements FhirCreator {
         }
     }
 
-    public Set<String> collectQdmTypes(BonniePatient bonniePatient) {
-        if (bonniePatient.getQdmPatient() == null || CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
-            log.warn("Bonnie Patient id: {} has no data elements", bonniePatient.getId());
-            return Collections.emptySet();
-        } else {
-            return bonniePatient.getQdmPatient().getDataElements().stream()
-                    .map(QdmDataElement::getQdmType)
-                    .collect(Collectors.toSet());
-        }
-    }
 
     private void processFuture(BonniePatient bonniePatient,
                                Patient fhirPatient,

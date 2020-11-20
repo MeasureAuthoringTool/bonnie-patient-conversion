@@ -73,7 +73,7 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         return String.format(NOT_MAPPED_MESSAGE, count, type);
     }
 
-    public Patient process(BonniePatient bonniePatient) {
+    private Patient process(BonniePatient bonniePatient) {
         Patient fhirPatient = new Patient();
         fhirPatient.setId(bonniePatient.getId());
 

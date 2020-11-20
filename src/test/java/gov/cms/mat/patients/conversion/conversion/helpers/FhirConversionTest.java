@@ -430,12 +430,19 @@ public interface FhirConversionTest {
         return qdmPractitioner;
     }
 
+    default void checkDispenser(Reference reference) {
+        assertEquals("Practitioner/DISPENSER", reference.getReference());
+    }
 
     default QdmPractitioner createPrescriber() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();
         qdmPractitioner.setId("PRESCRIBER");
 
         return qdmPractitioner;
+    }
+
+    default void checkPrescriber(Reference reference) {
+        assertEquals("Practitioner/PRESCRIBER", reference.getReference());
     }
 
 

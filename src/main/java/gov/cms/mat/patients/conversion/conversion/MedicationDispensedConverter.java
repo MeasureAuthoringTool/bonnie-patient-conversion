@@ -8,6 +8,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Dosage;
 import org.hl7.fhir.r4.model.MedicationDispense;
@@ -43,7 +44,10 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         MedicationDispense medicationDispense = new MedicationDispense();
         medicationDispense.setSubject(createPatientReference(fhirPatient));
 
-        medicationDispense.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            medicationDispense.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+
         medicationDispense.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {

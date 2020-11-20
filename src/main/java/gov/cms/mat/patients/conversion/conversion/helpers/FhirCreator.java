@@ -2,7 +2,9 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.JsonNode;
+import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
@@ -25,6 +27,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
@@ -126,5 +129,15 @@ public interface FhirCreator {
     default Extension createRecordedExtension(Date date) {
         return new Extension(QICORE_RECORDED)
                 .setValue(new DateTimeType(date));
+    }
+
+    default Set<String> collectQdmTypes(BonniePatient bonniePatient) {
+        if (bonniePatient.getQdmPatient() == null || org.apache.commons.collections4.CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
+            return Collections.emptySet();
+        } else {
+            return bonniePatient.getQdmPatient().getDataElements().stream()
+                    .map(QdmDataElement::getQdmType)
+                    .collect(Collectors.toSet());
+        }
     }
 }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class PatientConverterTest implements ResourceFileUtil {
+class PatientConversionServiceTest implements ResourceFileUtil {
     @Autowired
     PatientConversionService patientConversionService;
 
