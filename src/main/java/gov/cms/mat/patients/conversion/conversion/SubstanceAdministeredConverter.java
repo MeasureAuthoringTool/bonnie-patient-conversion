@@ -34,5 +34,4 @@ public class SubstanceAdministeredConverter extends ConverterBase<NutritionOrder
     public QdmToFhirConversionResult<NutritionOrder> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         return convertToFhirNutritionOrder(fhirPatient, qdmDataElement, this);
     }
-
 }

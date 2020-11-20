@@ -123,7 +123,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
 
     private String findValueSetTitle(String description) {
         if (StringUtils.isBlank(description)) {
-            return description;
+            return "";
         } else {
             int index = description.indexOf(":");
 

@@ -79,28 +79,28 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public FhirDataElement convertToFhirPractitioner(QdmPractitioner sender, QdmDataElement qdmDataElement) {
+    public FhirDataElement convertToFhirPractitioner(QdmPractitioner qdmPractitioner, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
         Practitioner practitioner = new Practitioner();
-        practitioner.setId(sender.getId());
+        practitioner.setId(qdmPractitioner.getId());
 
-        if (sender.getRole() != null) {
-            creeateFhirQualification(sender.getRole(), practitioner);
+        if (qdmPractitioner.getRole() != null) {
+            createFhirQualification(qdmPractitioner.getRole(), practitioner);
         }
 
-        if (sender.getSpecialty() != null) {
-            creeateFhirQualification(sender.getSpecialty(), practitioner);
+        if (qdmPractitioner.getSpecialty() != null) {
+            createFhirQualification(qdmPractitioner.getSpecialty(), practitioner);
         }
 
-        if (sender.getQualification() != null) {
-            creeateFhirQualification(sender.getQualification(), practitioner);
+        if (qdmPractitioner.getQualification() != null) {
+            createFhirQualification(qdmPractitioner.getQualification(), practitioner);
         }
 
-        if (sender.getIdentifier() != null) {
+        if (qdmPractitioner.getIdentifier() != null) {
             //https://www.hl7.org/fhir/identifier-registry.html
             practitioner.getIdentifierFirstRep()
-                    .setValue(sender.getIdentifier().getValue())
+                    .setValue(qdmPractitioner.getIdentifier().getValue())
                     .setSystem(UNITED_STATES_NATIONAL_PROVIDER_IDENTIFIER);
         }
 
@@ -112,7 +112,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
         return validate(qdmDataElement, conversionResult);
     }
 
-    private void creeateFhirQualification(QdmCodeSystem qdmCodeSystem, Practitioner practitioner) {
+    private void createFhirQualification(QdmCodeSystem qdmCodeSystem, Practitioner practitioner) {
         var qualificationComponent = new Practitioner.PractitionerQualificationComponent();
         qualificationComponent.setCode(convertToCodeableConcept(qdmCodeSystem));
         practitioner.getQualification().add(qualificationComponent);

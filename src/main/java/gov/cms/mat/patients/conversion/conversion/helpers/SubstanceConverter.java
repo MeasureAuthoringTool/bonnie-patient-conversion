@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.NutritionOrder;
 import org.hl7.fhir.r4.model.Patient;
@@ -30,7 +31,9 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         nutritionOrder.setStatus(NutritionOrder.NutritionOrderStatus.UNKNOWN); // Constrain to Active, on-hold, Completed
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        nutritionOrder.getOralDiet().addType(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            nutritionOrder.getOralDiet().addType(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
         nutritionOrder.setId(qdmDataElement.getId());
 
@@ -53,7 +56,6 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
             nutritionOrder.getEnteralFormula().getAdministrationFirstRep()
                     .setQuantity(convertQuantity(qdmDataElement.getDosage()));
         }
-
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             Timing timing = new Timing();

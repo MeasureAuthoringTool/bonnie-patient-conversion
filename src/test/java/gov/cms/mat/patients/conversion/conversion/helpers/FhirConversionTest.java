@@ -13,6 +13,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmIdentifier;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
@@ -356,6 +357,10 @@ public interface FhirConversionTest {
 
         QdmCodeSystem qualification = createSNOMEDCode("164618002", "General sign qualifications");
         qdmPractitioner.setQualification(qualification);
+        QdmIdentifier  qdmIdentifier = new QdmIdentifier();
+        qdmIdentifier.setValue("0000000001");
+
+        qdmPractitioner.setIdentifier(qdmIdentifier);
 
         return qdmPractitioner;
     }
@@ -377,6 +382,14 @@ public interface FhirConversionTest {
 
         return qdmPractitioner;
     }
+
+    default QdmPractitioner createDispenser() {
+        QdmPractitioner qdmPractitioner = new QdmPractitioner();
+        qdmPractitioner.setId("7890123456");
+
+        return qdmPractitioner;
+    }
+
 
     default QdmPractitioner createPrescriber() {
         QdmPractitioner qdmPractitioner = new QdmPractitioner();

@@ -7,8 +7,8 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.MedicationAdministration;
 import org.hl7.fhir.r4.model.Patient;
@@ -41,7 +41,9 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         MedicationAdministration medicationAdministration = new MedicationAdministration();
         medicationAdministration.setSubject(createPatientReference(fhirPatient));
 
-        medicationAdministration.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            medicationAdministration.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
         medicationAdministration.setId(qdmDataElement.getId());
 
@@ -67,12 +69,15 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
             medicationAdministration.getReasonCode().add(convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
-        if (qdmDataElement.getRelevantDatetime() != null) {
-            medicationAdministration.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
-        }
+        boolean havePeriod = false;
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             medicationAdministration.setEffective(convertPeriod(qdmDataElement.getRelevantPeriod()));
+            havePeriod = true;
+        }
+
+        if (!havePeriod && qdmDataElement.getRelevantDatetime() != null) {
+            medicationAdministration.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
         }
 
         if (qdmDataElement.getPerformer() != null) {
@@ -89,16 +94,13 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
                 .fhirResource(medicationAdministration)
                 .conversionMessages(conversionMessages)
                 .build();
-
     }
 
     @Override
     void convertNegation(QdmDataElement qdmDataElement, MedicationAdministration medicationAdministration) {
         medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.NOTDONE);
 
-        CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
-
-        medicationAdministration.getStatusReason().add(codeableConcept);
+        medicationAdministration.getStatusReason().add(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
 
         if (qdmDataElement.getAuthorDatetime() != null) {
             medicationAdministration.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));

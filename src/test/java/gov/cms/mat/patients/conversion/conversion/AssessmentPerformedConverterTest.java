@@ -24,7 +24,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
     }
 
     @Test
-    void convertToFhirWithoutNegation() {
+    void convertToFhir() {
         createObservationDataElement(qdmDataElement);
 
         qdmDataElement.setResult(createIntegerTypeResult());
