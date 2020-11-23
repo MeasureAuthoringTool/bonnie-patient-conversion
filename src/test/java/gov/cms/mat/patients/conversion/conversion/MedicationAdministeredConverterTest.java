@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -60,7 +61,7 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
 
         QdmToFhirConversionResult<MedicationAdministration> result =
                 medicationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType().getValue());
     }
 

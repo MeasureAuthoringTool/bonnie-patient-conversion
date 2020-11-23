@@ -80,7 +80,7 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<FamilyMemberHistory> result = familyHistoryConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
-
+        assertNotNull(result);
         checkNoStatusMappingOnly(result.getConversionMessages());
     }
 }

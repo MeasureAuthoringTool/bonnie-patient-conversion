@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,6 +31,7 @@ class PatientCharacteristicPayerConverterTest extends BaseConversionTest impleme
         qdmDataElement.setRelevantPeriod(createRelevantPeriod());
 
         QdmToFhirConversionResult<Coverage> result = patientCharacteristicPayerConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getBeneficiary());
 
         checkDataElementCodeableConcept(result.getFhirResource().getType());
@@ -39,6 +41,7 @@ class PatientCharacteristicPayerConverterTest extends BaseConversionTest impleme
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Coverage> result = patientCharacteristicPayerConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getBeneficiary());
     }
 }

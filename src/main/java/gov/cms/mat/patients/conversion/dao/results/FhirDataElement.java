@@ -10,21 +10,20 @@ import org.hl7.fhir.instance.model.api.IBaseResource;
 @Data
 @Builder
 public class FhirDataElement {
-
-    String codeListId;
-    String valueSetTitle;
-    String description;
+    private String codeListId;
+    private String valueSetTitle;
+    private String description;
 
     @JsonProperty("fhir_resource")
-    JsonNode fhirResource;
+    private JsonNode fhirResource;
 
-    ConversionOutcome outcome;
-
-    @JsonIgnore
-    String fhirType;
-    @JsonIgnore
-    String fhirId;
+    private ConversionOutcome outcome;
 
     @JsonIgnore
-    IBaseResource fhirObject;
+    private String fhirType;
+    @JsonIgnore
+    private String fhirId;
+
+    @JsonIgnore
+    private IBaseResource fhirObject;
 }
