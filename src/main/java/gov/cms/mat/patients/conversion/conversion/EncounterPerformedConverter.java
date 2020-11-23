@@ -112,7 +112,7 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
                 return null;
             } else {
                 diagnosisComponent.setUse(createCodeableConcept(diagnoses.getCode(),
-                        "urn:oid:" + diagnoses.getCode().getCodeSystem()));
+                        "urn:oid:" + diagnoses.getCode().getSystem()));
             }
         }
 

@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -52,6 +53,16 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
         assertEquals(MedicationAdministration.MedicationAdministrationStatus.UNKNOWN, result.getFhirResource().getStatus());
 
         checkNoStatusMappingOnly(result.getConversionMessages());
+    }
+
+    @Test
+    void convertToFhirSetEffectiveDate() {
+        qdmDataElement.setRelevantDatetime(createRelevantDatetime());
+
+        QdmToFhirConversionResult<MedicationAdministration> result =
+                medicationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
+
+        checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType().getValue());
     }
 
     @Test

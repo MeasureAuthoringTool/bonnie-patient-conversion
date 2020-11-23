@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion;
 import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import org.hl7.fhir.r4.model.MedicationDispense;
 import org.hl7.fhir.r4.model.Quantity;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,18 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
 
         assertEquals(MedicationDispense.MedicationDispenseStatus.DECLINED, result.getFhirResource().getStatus());
         assertEquals(0, result.getConversionMessages().size());
+    }
+
+    @Test
+    void convertToFhirBadFrequency() {
+        qdmDataElement.setFrequency(new QdmCodeSystem());
+
+        QdmToFhirConversionResult<MedicationDispense> result =
+                medicationDispensedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+
+        assertEquals(2, result.getConversionMessages().size());
+        assertEquals("Frequency code is null", result.getConversionMessages().get(0));
     }
 
     private void checkDaysSupply(Quantity daysSupply) {

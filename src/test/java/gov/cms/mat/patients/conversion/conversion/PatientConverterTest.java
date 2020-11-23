@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -65,7 +66,14 @@ class PatientConverterTest implements ResourceFileUtil, FhirCreator, DataElement
         assertEquals("QdmPatient is null", result.getOutcome().getConversionMessages().get(0));
 
         bonniePatient.setQdmPatient(new QdmPatient());
+        result = patientConverter.convert(bonniePatient, qdmTypes);
+        assertEquals(1, result.getOutcome().getConversionMessages().size());
+        assertEquals("QdmPatient's data elements array is empty", result.getOutcome().getConversionMessages().get(0));
 
+        bonniePatient.getQdmPatient().setDataElements(new ArrayList<>());
+        bonniePatient.getQdmPatient().getDataElements().add(create("QDM::BadType"));
+        result = patientConverter.convert(bonniePatient, qdmTypes);
+        assertEquals(0, result.getOutcome().getConversionMessages().size());
     }
 
 

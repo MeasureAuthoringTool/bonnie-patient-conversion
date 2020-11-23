@@ -48,6 +48,24 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
     }
 
     @Test
+    void convertToFhirBadDiagnoses() {
+        Diagnoses bad1 = createBadDiagnose();
+        Diagnoses bad2 = createBadDiagnose();
+        bad2.setCode(null);
+        qdmDataElement.setDiagnoses(List.of(bad1, bad2));
+
+
+        QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+        assertEquals(1, result.getFhirResource().getDiagnosis().size());
+
+        assertEquals("badCode", result.getFhirResource().getDiagnosisFirstRep().getUse().getCoding().get(0).getCode());
+        assertEquals("urn:oid:badSystem", result.getFhirResource().getDiagnosisFirstRep().getUse().getCoding().get(0).getSystem());
+
+        checkNoStatusMappingOnly(result.getConversionMessages());
+    }
+
+    @Test
     void convertToFhirNegation() {
         qdmDataElement.setNegationRationale(createNegationRationale());
 
@@ -84,6 +102,17 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         diagnoses.setCode(code);
 
         diagnoses.setRank(22);
+
+        return diagnoses;
+    }
+
+    private Diagnoses createBadDiagnose() {
+        Diagnoses diagnoses = new Diagnoses();
+
+        QdmCodeSystem code = new QdmCodeSystem();
+        code.setCode("badCode");
+        code.setSystem("badSystem");
+        diagnoses.setCode(code);
 
         return diagnoses;
     }
