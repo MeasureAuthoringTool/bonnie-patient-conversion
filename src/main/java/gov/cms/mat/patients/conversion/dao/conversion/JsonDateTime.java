@@ -10,5 +10,5 @@ import java.util.Date;
 @NoArgsConstructor
 public class JsonDateTime {
     @JsonProperty("$date")
-    Date date;
+    private Date date;
 }

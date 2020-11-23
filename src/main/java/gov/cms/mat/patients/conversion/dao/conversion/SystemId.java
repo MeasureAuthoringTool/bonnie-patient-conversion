@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SystemId {
     @JsonProperty("$oid")
-    String oid;
+    private    String oid;
 }

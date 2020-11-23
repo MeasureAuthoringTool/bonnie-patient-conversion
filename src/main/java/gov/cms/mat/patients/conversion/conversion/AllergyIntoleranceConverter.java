@@ -13,7 +13,6 @@ import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -35,15 +34,16 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
     @Override
     public QdmToFhirConversionResult<AllergyIntolerance> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
+        List<String> conversionMessages = new ArrayList<>();
 
         AllergyIntolerance allergyIntolerance = new AllergyIntolerance();
-        allergyIntolerance.setPatient(createReference(fhirPatient));
+        allergyIntolerance.setPatient(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            allergyIntolerance.setCode(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+            allergyIntolerance.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
-        allergyIntolerance.setId(qdmDataElement.get_id());
+        allergyIntolerance.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             allergyIntolerance.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
@@ -51,30 +51,23 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
         allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
 
-
-        if (qdmDataElement.getSeverity() != null) {
-          AllergyIntolerance.AllergyIntoleranceReactionComponent  component = allergyIntolerance.getReactionFirstRep();
-            //todo Stan/Ashok Based on what factors we have to map it to AllergyIntolerance.reaction.severity or AllergyIntolerance.criticality
-            // How do we map code to enum
-        }
-
-
         if (qdmDataElement.getType() != null) {
             List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();
 
             var component = new AllergyIntolerance.AllergyIntoleranceReactionComponent();
-            component.setSubstance(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType()));
+            component.setSubstance(convertToCodeableConcept(qdmDataElement.getType()));
             list.add(component);
         }
-        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#83-allergyintolerance
-        // active, inactive, resolved
-        // allergyIntolerance.setClinicalStatus() 	this is codeable Concept
+
+        if (qdmDataElement.getSeverity() != null) {
+            conversionMessages.add("Cannot convert severity to the enum AllergyIntolerance.reaction.severity");
+        }
 
         processNegation(qdmDataElement, allergyIntolerance);
 
         return QdmToFhirConversionResult.<AllergyIntolerance>builder()
                 .fhirResource(allergyIntolerance)
-                .conversionMessages(Collections.emptyList())
+                .conversionMessages(conversionMessages)
                 .build();
 
     }

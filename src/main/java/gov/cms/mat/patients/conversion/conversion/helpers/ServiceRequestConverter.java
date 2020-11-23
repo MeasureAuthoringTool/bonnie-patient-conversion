@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.ServiceRequest;
 
@@ -18,16 +19,18 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
         List<String> conversionMessages = new ArrayList<>();
 
         ServiceRequest serviceRequest = new ServiceRequest();
-        serviceRequest.setSubject(createReference(fhirPatient));
+        serviceRequest.setSubject(createPatientReference(fhirPatient));
 
         serviceRequest.setIntent(intent);
 
-        serviceRequest.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
-        serviceRequest.setId(qdmDataElement.get_id());
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            serviceRequest.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+
+        serviceRequest.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getReason() != null) {
-            serviceRequest.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(),
-                    qdmDataElement.getReason())));
+            serviceRequest.getReasonCode().add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
         serviceRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());

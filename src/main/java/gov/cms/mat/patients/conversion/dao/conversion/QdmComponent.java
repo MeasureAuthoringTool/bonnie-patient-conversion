@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,16 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QdmComponent {
-    String qdmVersion;
-    String _type;
-    String _id;
+    private String qdmVersion;
 
+    @JsonProperty("_id")
+    private String id;
 
-    //  QdmComponentResult result; //  Patient "_id": "5b61b638b84846662484a6c2" has a timestamp
+    @JsonProperty("_type")
+    private String type;
 
-    JsonNode result;
-
-    QdmComponentCode code;
-
-    QdmInterval referenceRange;
+    private JsonNode result;
+    private QdmCode code;
+    private QdmPeriod referenceRange;
 }

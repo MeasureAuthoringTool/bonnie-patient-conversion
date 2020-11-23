@@ -36,13 +36,13 @@
       <td>type</td>
       <td>AdverseEvent.category</td>
       <td>&nbsp;</td>
-      <td>No data for Category</td>
+      <td>qdmDataElement.getType() - No data for Category</td>
     </tr>
     <tr>
       <td>severity</td>
       <td>AdverseEvent.severity</td>
       <td>&nbsp;</td>
-      <td>No data for severity</td>
+      <td>qdmDataElement.getSeverity() - No data for severity</td>
     </tr>
     <tr>
       <td>relevant dateTime</td>
@@ -54,13 +54,13 @@
       <td>FacilityLocations</td>
       <td>AdverseEvent.location</td>
       <td>&nbsp;</td>
-      <td>No data for Locations</td>
+      <td>No data for Locations and to map to fhir needs a reference</td>
     </tr>
     <tr>
       <td>Author dateTime</td>
       <td>AdverseEvent.recordedDate</td>
       <td>&nbsp;</td>
-      <td>No data for Author dateTime</td>
+      <td>getAuthorDatetime() -No data for Author dateTime</td>
     </tr>
     <tr>
       <td>id</td>
@@ -76,3 +76,7 @@
     </tr>
   </tbody>
 </table>
+
+<pre>
+adverseEvent.setSubject(createPatientReference(fhirPatient));
+</pre>

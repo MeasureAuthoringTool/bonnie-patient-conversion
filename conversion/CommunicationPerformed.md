@@ -12,6 +12,7 @@
       <td><strong>Communication, Performed</strong></td>
       <td>Communication</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -22,6 +23,7 @@
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -65,35 +67,41 @@
       <td>author dateTime</td>
       <td>N/A</td>
       <td>No timing exists in FHIR to address timing of negation (i.e., Communication.status = not-done</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>relatedTo</td>
       <td>Communication.basedOn</td>
       <td>An order, proposal or plan fulfilled in whole or in part by this Communication.</td>
-      <td>E.G.. this is example data in  5d63e5c8b848463cab3c7624 which is a QDM::InterventionPerformed  How to map. </td>
+      <td>qdmDataElement.getRelatedTo()</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Communication.inResponseTo</td>
       <td>Response to a communication</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>sender</td>
       <td>Communication.sender</td>
       <td>&nbsp;</td>
-         <td>qdmDataElement.getSender  returns a QDM::Practitioner, Fhir wants reference - how to map <br>
-          The sender/practitioner  **fwefwe** has this id not a momngo id </td>
+      <td>qdmDataElement.getSender()</td>
     </tr>
     <tr>
       <td>recipient</td>
       <td>Communication.recipient</td>
       <td>&nbsp;</td>
-      <td>qdmDataElement.getRecipient()  returns a QDM::Practitioner, Fhir wants reference - how to map </td>
+      <td>qdmDataElement.getRecipient()</td>
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
-       <td>&nbsp;</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#871-communication-performed"> Click Here</a></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
   </tbody>
 </table>
+
+<pre>
+communication.setSubject(createPatientReference(fhirPatient));
+</pre>

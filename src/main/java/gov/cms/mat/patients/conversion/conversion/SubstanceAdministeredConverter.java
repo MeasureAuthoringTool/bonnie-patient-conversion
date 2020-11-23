@@ -13,9 +13,6 @@ import org.hl7.fhir.r4.model.NutritionOrder;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 @Slf4j
 public class SubstanceAdministeredConverter extends ConverterBase<NutritionOrder> implements SubstanceConverter {
@@ -35,7 +32,6 @@ public class SubstanceAdministeredConverter extends ConverterBase<NutritionOrder
 
     @Override
     public QdmToFhirConversionResult<NutritionOrder> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
-       return convertToFhirNutritionOrder(fhirPatient, qdmDataElement, this);
+        return convertToFhirNutritionOrder(fhirPatient, qdmDataElement, this);
     }
-
 }

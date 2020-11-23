@@ -1,6 +1,5 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
-
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -12,32 +11,29 @@ import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface DataElementFinder {
+    default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService,
+                                                     @Nonnull List<QdmCodeSystem> dataElementCodes) {
+        CodeableConcept codeableConcept = new CodeableConcept();
 
-    default CodeableConcept convertToCodeSystems(CodeSystemEntriesService codeSystemEntriesService,
-                                                 List<QdmCodeSystem> dataElementCodes) {
-        if (dataElementCodes.isEmpty()) {
-            return null;
-        } else {
-            CodeableConcept codeableConcept = new CodeableConcept();
+        List<Coding> codings = dataElementCodes.stream()
+                .map(c -> convertToCoding(codeSystemEntriesService, c))
+                .collect(Collectors.toList());
 
-            List<Coding> codings = dataElementCodes.stream()
-                    .map(c -> convertToCoding(codeSystemEntriesService, c))
-                    .collect(Collectors.toList());
-
-            return codeableConcept.setCoding(codings);
-        }
+        return codeableConcept.setCoding(codings);
     }
 
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
-        return new CodeableConcept().setCoding(List.of(convertToCoding(codeSystemEntriesService, qdmCodeSystem)));
+        CodeableConcept codeableConcept = new CodeableConcept();
+        codeableConcept.getCoding().add(convertToCoding(codeSystemEntriesService, qdmCodeSystem));
+        return codeableConcept;
     }
-
 
     default Coding convertToCoding(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
         String theSystem;
@@ -46,15 +42,14 @@ public interface DataElementFinder {
             CodeSystemEntry codeSystemEntry = codeSystemEntriesService.findRequired(qdmCodeSystem.getSystem());
             theSystem = codeSystemEntry.getUrl();
         } catch (PatientConversionException e) {
-            theSystem = qdmCodeSystem.getSystem();
+            theSystem = "urn:oid:" + qdmCodeSystem.getSystem();
         }
 
         return new Coding(theSystem, qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay());
     }
 
-
-    default Coding createCodingFromDataElementCodes(CodeSystemEntriesService codeSystemEntriesService,
-                                                    List<QdmCodeSystem> dataElementCodes) {
+    default Coding convertToCoding(CodeSystemEntriesService codeSystemEntriesService,
+                                   List<QdmCodeSystem> dataElementCodes) {
         if (CollectionUtils.isEmpty(dataElementCodes)) {
             return null;
         } else {
@@ -70,7 +65,6 @@ public interface DataElementFinder {
             }
         }
     }
-
 
     default Optional<QdmDataElement> findOptionalDataElementsByType(BonniePatient bonniePatient, String type) {
         List<QdmDataElement> dataElements = findDataElementsByType(bonniePatient, type);
@@ -110,7 +104,7 @@ public interface DataElementFinder {
             return Collections.emptyList();
         } else {
             return qdmPatient.getDataElements().stream()
-                    .filter(d -> d.get_type().equals(type))
+                    .filter(d -> d.getQdmType().equals(type))
                     .collect(Collectors.toList());
         }
     }

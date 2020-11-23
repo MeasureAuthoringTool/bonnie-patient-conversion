@@ -18,14 +18,17 @@
       <td>&nbsp;</td>
       <td>MedicationAdministration.status</td>
       <td>Constrain status to “In-progress” or “completed”</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>MedicationAdministration.category</td>
       <td>Allows specification of Inpatient, Outpatient, Community</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -63,11 +66,13 @@
       <td>&nbsp;</td>
       <td>MedicationAdministration.dosage.rate[x]</td>
       <td>Identifies the speed with which the medication was or will be introduced into the patient (e.g., infusion rate).</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>MedicationRequest.dosageInstruction.timing</td>
       <td>Timing schedule (e.g., every 8 hours). MedicationAdministration.request provides reference to the applicable MedicationRequest for this information.</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>reason</td>
@@ -91,10 +96,12 @@
       <td>author dateTime</td>
       <td>N/A</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8172-medication-administered"> Click Here </a> </td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -105,3 +112,7 @@
     </tr>
   </tbody>
 </table>
+
+<pre>
+medicationAdministration.setSubject(createPatientReference(fhirPatient));
+</pre>

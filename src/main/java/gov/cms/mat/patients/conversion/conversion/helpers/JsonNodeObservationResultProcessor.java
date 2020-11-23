@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.exceptions.InvalidUnitException;
-import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -35,11 +34,6 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
 
 
     public Type findType(JsonNode result) {
-        if (result == null) {
-            log.debug("JsonNode is null");
-            return null;
-        }
-
         if (result instanceof ObjectNode) {
             return processObjectNode((ObjectNode) result);
         } else if (result instanceof NullNode) {
@@ -50,11 +44,15 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         } else if (result instanceof IntNode) {
             return processIntMode((IntNode) result);
         } else if (result instanceof DoubleNode) {
-            conversionMessages.add("Observation result does not handle doubles value: " + result.asText());
+            String message = "Observation result does not handle doubles value: " + result.asText();
+            log.warn(message);
+            conversionMessages.add(message);
             return null;
         } else {
-            log.warn("Unknown json node type: {}", result.getClass().getName());
-            throw new PatientConversionException("Unknown json node type: " + result.getClass().getName());
+            String message = "Observation result does not handle " + result.getClass().getSimpleName() + " value: " + result.asText();
+            log.warn(message);
+            conversionMessages.add(message);
+            return null;
         }
     }
 

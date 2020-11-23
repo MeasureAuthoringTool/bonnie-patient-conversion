@@ -1,6 +1,5 @@
 package gov.cms.mat.patients.conversion.conversion;
 
-
 import ca.uhn.fhir.validation.ValidationResult;
 import gov.cms.mat.patients.conversion.conversion.helpers.DataElementFinder;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
@@ -22,29 +21,41 @@ import org.hl7.fhir.r4.model.StringType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-
 
 @Slf4j
 @Component
 public class PatientConverter implements DataElementFinder, FhirCreator {
     public static final String US_CORE_RACE_URL = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     public static final String DETAILED_RACE_URL = "http://hl7.org/fhir/us/core/ValueSet/detailed-race";
+    private static final String[] NOT_MAPPED_QDM_TYPES = {"QDM::DeviceOrder", "QDM::SubstanceOrder", "QDM::SubstanceRecommended"};
 
+    private static final String NOT_MAPPED_MESSAGE = "Did not convert %d dataElements with type %s";
 
     private final ValidationService validationService;
 
-
     public PatientConverter(ValidationService validationService) {
-
         this.validationService = validationService;
     }
 
-    public QdmToFhirPatientResult convert(BonniePatient bonniePatient) {
-        List<String> conversionMessages = new ArrayList<>();
-        Patient patient = process(bonniePatient, conversionMessages);
+    public QdmToFhirPatientResult convert(BonniePatient bonniePatient, Set<String> qdmTypes) {
+        if( bonniePatient == null   ) {
+            return buildError("Bonnie patient is null");
+        } else if( bonniePatient.getQdmPatient() ==  null ) {
+            return buildError("QdmPatient is null");
+        } else if( CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements() )) {
+            return buildError("QdmPatient's data elements array is empty");
+        } else {
+            return getQdmToFhirPatientResult(bonniePatient, qdmTypes);
+        }
+    }
+
+    public QdmToFhirPatientResult getQdmToFhirPatientResult(BonniePatient bonniePatient, Set<String> qdmTypes) {
+        List<String> conversionMessages = createNotMappedMessages(bonniePatient.getQdmPatient().getDataElements(), qdmTypes);
+        Patient patient = process(bonniePatient);
 
         ValidationResult validationResult = validationService.validate(patient);
 
@@ -59,16 +70,42 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
                 .build();
     }
 
-    public Patient process(BonniePatient bonniePatient, List<String> conversionMessages) {
+    public QdmToFhirPatientResult buildError(String message) {
+        ConversionOutcome outcome = ConversionOutcome.builder()
+                .conversionMessages(List.of(message))
+                .build();
+
+        return QdmToFhirPatientResult.builder()
+                .outcome(outcome)
+                .build();
+    }
+
+    private List<String> createNotMappedMessages(List<QdmDataElement> dataElements, Set<String> qdmTypes) {
+        return Arrays.stream(NOT_MAPPED_QDM_TYPES)
+                .filter(qdmTypes::contains)
+                .map(type -> createNotMappedMessage(type, dataElements))
+                .collect(Collectors.toList());
+    }
+
+    private String createNotMappedMessage(String type, List<QdmDataElement> dataElements) {
+        long count = dataElements.stream()
+                .filter(d -> d.getQdmType().equals(type))
+                .count();
+
+        return String.format(NOT_MAPPED_MESSAGE, count, type);
+    }
+
+    private Patient process(BonniePatient bonniePatient) {
         Patient fhirPatient = new Patient();
-        fhirPatient.setId(bonniePatient.get_id());
-        fhirPatient.setExtension(List.of(new Extension(US_CORE_RACE_URL), new Extension(DETAILED_RACE_URL)));
-        fhirPatient.setActive(true); // ??
+        fhirPatient.setId(bonniePatient.getId());
 
-        //  bonniePatient.getNotes(); // ??
-        fhirPatient.setName(List.of(createName(bonniePatient)));
+        fhirPatient.getExtension().add(new Extension(US_CORE_RACE_URL));
+        fhirPatient.getExtension().add(new Extension(DETAILED_RACE_URL));
 
-        // ?? "_type": "QDM::PatientCharacteristicBirthdate", 2 birhtdatas which one wins
+        fhirPatient.setActive(true);
+
+        fhirPatient.getName().add(createName(bonniePatient));
+
         fhirPatient.setBirthDate(bonniePatient.getQdmPatient().getBirthDatetime());
 
         fhirPatient.setGender(processSex(bonniePatient));
@@ -85,10 +122,10 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
         if (optional.isPresent()) {
             QdmDataElement dataElement = optional.get();
-            log.debug("Patient is dead");
+            log.trace("Patient is dead");
             return new DateTimeType(dataElement.getExpiredDatetime());
         } else {
-            log.debug("Patient is alive");
+            log.trace("Patient is alive");
             return null;
         }
     }

@@ -12,14 +12,17 @@
       <td><strong>Care Goal</strong></td>
       <td>Goal</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Goal.achievementStatus</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -33,6 +36,7 @@
       <td>&nbsp;</td>
       <td>Goal.target.detail[x]</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>id</td>
@@ -43,8 +47,8 @@
     <tr>
       <td>statusDate</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td></td>
+      <td>&nbsp;</td>     
+      <td>&nbsp;</td>     
     </tr>
     <tr>
       <td>Target outcome</td>
@@ -62,6 +66,7 @@
       <td>&nbsp;</td>
       <td>Goal.target.due[x]</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>statusDate</td>
@@ -73,15 +78,18 @@
       <td>relatedTo</td>
       <td>Goal.addresses</td>
       <td>&nbsp;</td>
+      <td>qdmDataElement.getRelatedTo()</td>
     </tr>
     <tr>
       <td>Performer</td>
       <td>Goal.expressedBy</td>
       <td>&nbsp;</td>
-      <td>No data for Performer</td>
+      <td>No data for Performer qdmDataElement.getPerformer() </td>
     </tr>
   </tbody>
 </table>
 
 -----------
+<pre>
 goal.setSubject(createReference(fhirPatient))
+</pre>

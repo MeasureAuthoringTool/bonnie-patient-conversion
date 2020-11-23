@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.INCISION_DATE_TIME_URL;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
 public interface ProcedureConverter extends DataElementFinder, FhirCreator {
 
@@ -21,10 +22,13 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
                                                                         ConverterBase<Procedure> converterBase) {
         List<String> conversionMessages = new ArrayList<>();
         Procedure procedure = new Procedure();
-        procedure.setSubject(createReference(fhirPatient));
+        procedure.setSubject(createPatientReference(fhirPatient));
 
-        procedure.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
-        procedure.setId(qdmDataElement.get_id());
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            procedure.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+
+        procedure.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getRank() != null) {
             conversionMessages.add("Cannot convert QDM attribute rank");
@@ -35,7 +39,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getReason() != null) {
-            procedure.setReasonCode(List.of(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getReason())));
+            procedure.getReasonCode().add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
         if (qdmDataElement.getResult() != null) {
@@ -62,7 +66,8 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getIncisionDatetime() != null) {
-            procedure.setExtension(List.of(new Extension(INCISION_DATE_TIME_URL)));
+            procedure.getExtension()
+                    .add(new Extension(INCISION_DATE_TIME_URL));
             Extension extension = procedure.getExtension().get(0);
             extension.setValue(new DateTimeType(qdmDataElement.getIncisionDatetime()));
         }
@@ -71,9 +76,10 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
             conversionMessages.add("Cannot convert QDM attribute components");
         }
 
-//        if (qdmDataElement.getPerformer() != null) {
-//            // No data
-//        }
+        if (qdmDataElement.getPerformer() != null) {
+            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "performer");
+            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
 
         return QdmToFhirConversionResult.<Procedure>builder()
                 .fhirResource(procedure)

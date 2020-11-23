@@ -7,6 +7,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Patient;
@@ -34,33 +35,44 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
     @Override
     public QdmToFhirConversionResult<Immunization> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
+        if (qdmDataElement.getNegationRationale() != null) {
+            log.debug("Not creating Immunization due to negation");
+            return null;
+        } else {
+            return convertToFhirNoNegation(fhirPatient, qdmDataElement);
+        }
+    }
+
+    private QdmToFhirConversionResult<Immunization> convertToFhirNoNegation(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
         Immunization immunization = new Immunization();
+        immunization.setPatient(createPatientReference(fhirPatient));
 
         // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered
         // Constrain to Completed, entered-in-error, not-done
         immunization.setStatus(Immunization.ImmunizationStatus.NULL);
         conversionMessages.add(NO_STATUS_MAPPING);
 
-        immunization.setVaccineCode(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            immunization.setVaccineCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
-        immunization.setId(qdmDataElement.get_id());
+        immunization.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getDosage() != null) {
             immunization.setDoseQuantity(convertQuantity(qdmDataElement.getDosage()));
         }
 
-        processNegation(qdmDataElement, immunization);
-
         if (qdmDataElement.getRoute() != null) {
-            immunization.setRoute(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getRoute()));
+            immunization.setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
-//        if (qdmDataElement.getReason() != null) {
-//            // No data todo can we expect data
-//            immunization.setReasonCode(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getReason())));
-//        }
+        if (qdmDataElement.getReason() != null) {
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "reason");
+            immunization.getReasonCode()
+                    .add(convertToCodeableConcept(qdmDataElement.getReason()));
+        }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             immunization.setOccurrence(new DateTimeType(qdmDataElement.getRelevantDatetime()));
@@ -68,22 +80,14 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
         immunization.setRecorded(qdmDataElement.getAuthorDatetime());
 
-//        if( qdmDataElement.getPerformer() != null) {
-//             // No data todo can we expect data
-//        }
-
-        immunization.setPatient(createReference(fhirPatient));
+        if (qdmDataElement.getPerformer() != null) {
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
+            immunization.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
 
         return QdmToFhirConversionResult.<Immunization>builder()
                 .fhirResource(immunization)
                 .conversionMessages(conversionMessages)
                 .build();
-    }
-
-    @Override
-    void convertNegation(QdmDataElement qdmDataElement, Immunization immunization) {
-        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered
-        log.warn("QdmDataElement id: {} - for converting {} to Fhir Immunization,  Will create a MedicationRequest in another class.",
-                qdmDataElement.get_id(), qdmDataElement.get_type());
     }
 }

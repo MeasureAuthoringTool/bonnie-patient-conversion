@@ -1,16 +1,18 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public class QdmCodeSystem {
-    String code;
-    String system;
-    String display;
-    String version;
-    String _type;
+    private String code;
+    private String system;
+    private String display;
+    private String version;
+    @JsonProperty("_type")
+    private String type;
 
-    String codeSystem;
+    private String codeSystem;
 }

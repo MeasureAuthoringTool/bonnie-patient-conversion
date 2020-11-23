@@ -30,6 +30,7 @@
       <td><strong>QDM Attributes</strong></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Code</td>
@@ -47,17 +48,17 @@
       <td>Reason</td>
       <td>ServiceRequest.reasonCode</td>
       <td>&nbsp;</td>
-         <td>qdmDataElement.getReason() </td>
+      <td>qdmDataElement.getReason() </td>
     </tr>
     <tr>
       <td>Author dateTime</td>
       <td>ServiceRequest.authoredOn</td>
       <td>When the request transitioned to being actionable.</td>
-         <td>qdmDataElement.getAuthorDatetime()</td>
+      <td>qdmDataElement.getAuthorDatetime()</td>
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8205-procedure-order"> Click Here </a> </td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -65,7 +66,7 @@
       <td>Requester</td>
       <td>ServiceRequest.requester</td>
       <td>&nbsp;</td>
-        <td>Not mapped</td>
+      <td>Not mapped</td>
     </tr>
   </tbody>
 </table>

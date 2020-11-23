@@ -197,6 +197,8 @@ Where patient id: 5d65454e1c76ba7ea32d98f2 it has the OBSERV properties in expec
 
 ## QDM::PatientCharacteristic
 
+
+**FIXED Ignore Generic elements wih QDM::PatientCharacteristic**
 This first attribute seems out of place with the description **Patient Characteristic: Male**
 
 The second attribute is the way that most all patients determine sex. We need to remove these.
@@ -240,13 +242,13 @@ The second attribute is the way that most all patients determine sex. We need to
       }
 
 ```
-
+**FIXED Ignore Generic elements wih QDM::PatientCharacteristic**
 This first attribute seems out of place with the description **Patient Characteristic: Payer**
 
 A type already exists for date elements QDM::PatientCharacteristicPayer
 
 Can we ignore ....
-
+//Stan Recommends not to map it
 ```javascript
   {
         "_id": "5aeb77d4b848463d625b5f84",
@@ -267,7 +269,7 @@ Can we ignore ....
       },
 ```
 ---
-
+**FIXED Ignore Generic elements wih QDM::PatientCharacteristic**
 Does **Patient Characteristic: Medicare ID** indicate the patient is on medicaire - How to map?
 
 ```javascript
@@ -290,9 +292,9 @@ Does **Patient Characteristic: Medicare ID** indicate the patient is on medicair
        }
 ```
 ---
+**FIXED Ignore Generic elements wih QDM::PatientCharacteristic**
 
 https://trifolia-fhir.lantanagroup.com/igs/lantana_hapi_r4/vrdr/Observation-9676ae27-2a89-4295-913c-0d6847300a3a.json.html
-
 Does **Patient Characteristic: Education** How to map?
 
 - Patient Characteristic: College Education

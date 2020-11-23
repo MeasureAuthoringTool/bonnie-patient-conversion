@@ -18,6 +18,7 @@
       <td>&nbsp;</td>
       <td>Observation.category</td>
       <td>Since Assessment is a broad concept, the measure developer will need to select the appropriate category.</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -27,6 +28,7 @@
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -58,15 +60,18 @@
       <td>&nbsp;</td>
       <td>Observation.partOf</td>
       <td>A larger event of which this particular Observation is a component or step. For example, an observation as part of a procedure.</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Observation.derivedFrom</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#842-assessment-performed"> Click Here </a> </td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -84,6 +89,7 @@
     <tr>
       <td>&nbsp;</td>
       <td>Observation.interpretation</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -114,6 +120,7 @@
       <td>&nbsp;</td>
       <td>Observation.component.id</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Component code</td>
@@ -131,10 +138,12 @@
       <td>&nbsp;</td>
       <td>Observation.component.interpretation</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>Observation.component.dataAbsentReason</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -147,4 +156,6 @@
 </table>
 
 ----
+<pre>
 observation.setSubject(createReference(fhirPatient));
+</pre>

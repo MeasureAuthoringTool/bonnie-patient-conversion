@@ -20,14 +20,16 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
 
     default QdmToFhirConversionResult<Observation> convertToFhirObservation(Patient fhirPatient,
                                                                             QdmDataElement qdmDataElement,
+
                                                                             ConverterBase<Observation> converterBase) {
-
-        Observation observation = new Observation();
         List<String> conversionMessages = new ArrayList<>();
+        Observation observation = new Observation();
+        observation.setId(qdmDataElement.getId());
+        observation.setSubject(createPatientReference(fhirPatient));
 
-        observation.setId(qdmDataElement.get_id());
-        observation.setSubject(createReference(fhirPatient));
-        observation.setCode(convertToCodeSystems(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            observation.setCode(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        }
 
         if (qdmDataElement.getResult() != null) {
             JsonNodeObservationResultProcessor resultProcessor =
@@ -87,7 +89,6 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
 
             component.setCode(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
         }
-
 
         if (qdmComponent.getResult() != null) {
             JsonNodeObservationResultProcessor resultProcessor =

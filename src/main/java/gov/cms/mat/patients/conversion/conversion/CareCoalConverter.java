@@ -18,7 +18,6 @@ import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -42,17 +41,18 @@ public class CareCoalConverter extends ConverterBase<Goal> {
     public QdmToFhirConversionResult<Goal> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
         Goal goal = new Goal();
-        goal.setSubject(createReference(fhirPatient));
+        goal.setSubject(createPatientReference(fhirPatient));
+        goal.setId(qdmDataElement.getId());
 
-        goal.getTargetFirstRep().setMeasure(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-
-        goal.setId(qdmDataElement.get_id());
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            goal.getTargetFirstRep().setMeasure(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
         if (qdmDataElement.getTargetOutcome() != null) {
             QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(qdmDataElement.getTargetOutcome());
 
             if (qdmCodeSystem != null) {
-                goal.getTargetFirstRep().setDetail(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
+                goal.getTargetFirstRep().setDetail(convertToCodeableConcept(qdmCodeSystem));
             }
         }
 
@@ -61,13 +61,13 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             goal.setStatusDate(qdmDataElement.getRelevantPeriod().getHigh());
         }
 
-//        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
-//            //todo Ashook qdmDataElement.getRelatedTo() is returning back Id's How to map it
-//        }
-//
-//        if (qdmDataElement.getPerformer() != null) {
-//            // no data
-//        }
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
+            goal.setAddresses(convertRelatedTo(qdmDataElement.getRelatedTo()));
+        }
+
+        if (qdmDataElement.getPerformer() != null) {
+            goal.setExpressedBy(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
 
         processNegation(qdmDataElement, goal); // no negations expected
 
@@ -77,25 +77,8 @@ public class CareCoalConverter extends ConverterBase<Goal> {
                 .build();
     }
 
-    private List<Goal.GoalTargetComponent> createTarget(TargetOutcome targetOutcome) {
-        QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(targetOutcome);
-
-        if (qdmCodeSystem == null) {
-            return Collections.emptyList();
-        } else {
-            Goal.GoalTargetComponent targetComponent = new Goal.GoalTargetComponent();
-
-            targetComponent.setMeasure(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
-
-            return List.of(targetComponent);
-        }
-    }
-
     private QdmCodeSystem convertToQdmCodeSystem(TargetOutcome targetOutcome) {
-        if (targetOutcome == null) {
-            log.warn("targetOutcome is null");
-            return null;
-        } else if (StringUtils.isBlank(targetOutcome.getSystem()) || StringUtils.isBlank(targetOutcome.getCode())) {
+        if (StringUtils.isBlank(targetOutcome.getSystem()) || StringUtils.isBlank(targetOutcome.getCode())) {
             log.warn("targetOutcome is invalid: {}", targetOutcome);
             return null;
         } else {
@@ -106,6 +89,4 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             return qdmCodeSystem;
         }
     }
-
-
 }

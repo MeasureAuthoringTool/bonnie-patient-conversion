@@ -12,7 +12,6 @@ import org.hl7.fhir.r4.model.AdverseEvent;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 @Component
@@ -35,37 +34,40 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
     @Override
     public QdmToFhirConversionResult<AdverseEvent> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         AdverseEvent adverseEvent = new AdverseEvent();
+        adverseEvent.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            adverseEvent.setEvent(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+            adverseEvent.setEvent(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
-//        if (qdmDataElement.getType() != null) {
-//            adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getType())));
-//            log.info("We have category"); //todo no data
-//        }
+        if (qdmDataElement.getType() != null) {
+            adverseEvent.setCategory(Collections.singletonList(convertToCodeableConcept(qdmDataElement.getType())));
+            log.info("We finally have category"); //no data
+        }
 
-//        if (qdmDataElement.getSeverity() != null) {//
-            //todo no data
-//            adverseEvent.setSeverity(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getSeverity()));
-//        }
+        if (qdmDataElement.getSeverity() != null) {
+            adverseEvent.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "severity");
+        }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             adverseEvent.setDate(qdmDataElement.getRelevantDatetime());
         }
 
-//        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
-//            log.info("We have Locations"); //todo no data
-//        }
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
+            //no data
+            // adverseEvent.setLocation(); // reference how to map
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "facilityLocations");
+        }
 
-//        if (qdmDataElement.getAuthorDatetime() != null) {
-//            todo no data
-//            adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
-//        }
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "authorDatetime");
+        }
 
-        adverseEvent.setId(qdmDataElement.get_id());
+        adverseEvent.setId(qdmDataElement.getId());
 
-        // todo There is no Recorder attribute in qdmDataelements
+        // There is no Recorder attribute in qdmDataElement but could be mapped to one of  QdmPractitioner objects
 
         processNegation(qdmDataElement, adverseEvent);
 

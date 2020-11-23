@@ -16,7 +16,7 @@ springdoc:
 
 json:
   data:
-    code-system-entry-url: https://spreadsheets.google.com/feeds/list/1_heoWR09X3UnyEvyyHLzVXT_D1Hhdt3OPztpgr1hW_k/od6/public/values?alt=json
+    code-system-entry-url: https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values?alt=json
 
 swagger-server:
 
@@ -27,12 +27,12 @@ bonnie-thread-pools:
       max-pool-size: 100
       queue-capacity: 150
 
-mat-api-key: ${MAT_API_KEY}
+mat-api-key: DISABLED
 
 logging:
   level:
     root: WARN
-    gov.cms.mat: WARN
+    gov.cms.mat: INFO
     org.hl7.fhir.r4.hapi.ctx: WARN
     org.hl7.fhir.r4.hapi.validation: WARN
   pattern:

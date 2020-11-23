@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.dao.conversion;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,116 +11,103 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-// @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QdmDataElement {
-    String _id;
-    List<QdmCodeSystem> dataElementCodes;
+    @JsonProperty("_id")
+    private String id;
 
-    String _type;
+    private List<QdmCodeSystem> dataElementCodes;
 
-    QdmCodeSystem type; //in there  "_id": "5c95406eb8484612c37f1f57",
+    @JsonProperty("_type")
+    private String qdmType;
 
-    String facilityLocation;
+    private QdmCodeSystem type; //in there  "_id": "5c95406eb8484612c37f1f57",
 
-    List<FacilityLocation> facilityLocations;
-    String qdmTitle;
-    String hqmfOid;
-    String qrdaOid;
-    String qdmCategory;
-    String qdmStatus;
-    String qdmVersion;
+    private String facilityLocation;
 
-    QdmInterval participationPeriod;
+    private List<FacilityLocation> facilityLocations;
+    private String qdmTitle;
+    private String hqmfOid;
+    private String qrdaOid;
+    private String qdmCategory;
+    private String qdmStatus;
+    private String qdmVersion;
 
-    // ids of other patients??
-    /* "relatedTo": [
-          "5c7592f1b8484660416e290c"
-        ] */
-    List<String> relatedTo;
+    private QdmPeriod participationPeriod;
 
+    private List<String> relatedTo;
 
-    Date expiredDatetime;
-    Date activeDatetime;
-    Date birthDatetime;
+    private Date expiredDatetime;
+    private Date activeDatetime;
+    private Date birthDatetime;
 
-    Date authorDatetime;
-    Sender sender;
-    Sender recipient;
+    private Date authorDatetime;
 
-    Integer refills;
-    QdmQuantity dosage;
-    QdmQuantity supply;
-    QdmCodeSystem frequency;
-    Integer daysSupplied;
-    QdmCodeSystem setting;
-    QdmCodeSystem route;
+    private Integer refills;
+    private QdmQuantity dosage;
+    private QdmQuantity supply;
+    private QdmCodeSystem frequency;
+    private Integer daysSupplied;
+    private QdmCodeSystem setting;
+    private QdmCodeSystem route;
 
-    QdmCodeSystem admissionSource;
+    private QdmCodeSystem admissionSource;
 
-    QdmPeriod relevantPeriod;
+    private QdmPeriod relevantPeriod;
 
-    QdmPeriod prevalencePeriod;
+    private QdmPeriod prevalencePeriod;
 
-    QdmCodeSystem dischargeDisposition;
+    private QdmCodeSystem dischargeDisposition;
 
+    private List<Diagnoses> diagnoses;
 
-    List<Diagnoses> diagnoses;
+    private QdmCodeSystem reason;
 
-    QdmCodeSystem reason;  //"5ca62964b8484628b8de1f51", is a Qdm
+    private JsonNode result;
 
-    // @JsonIgnore  // "5aeb772fb848463d625b1dd7" is an int
-    JsonNode result;
+    private QdmReferenceRange referenceRange;
 
-    QdmReferenceRange referenceRange;
+    private QdmCodeSystem status;
+    private Date resultDatetime;
+    private QdmCodeSystem method;
 
-    QdmCodeSystem status;
-    Date resultDatetime;
-    QdmCodeSystem method;
+    private QdmCodeSystem negationRationale;
 
-    QdmCodeSystem negationRationale;
+    private QdmCodeSystem priority;
 
-    QdmCodeSystem priority;
+    private Participant participant;
 
-    Participant participant;
+    private LengthOfStay lengthOfStay;
+    private QdmCodeSystem anatomicalLocationSite;
+    private QdmCodeSystem severity;
+    private QdmCodeSystem relationship;
 
-    LengthOfStay lengthOfStay;
-    QdmCodeSystem anatomicalLocationSite;
-    QdmCodeSystem severity;
-    QdmCodeSystem relationship;
+    private Date incisionDatetime;
 
-    Date incisionDatetime;
+    private List<QdmComponent> components;
 
-    List<QdmComponent> components;
+    private String description;
 
-    String description;
+    private TargetOutcome targetOutcome;
 
-    /* "targetOutcome": {
-          "unit": "",
-          "value": 2
-        } */
-    //@JsonIgnore
-    //  QdmCode targetOutcome;  // "_id": "5d654ae61c76ba7ea32ed30c",
-    //JsonNode targetOutcome;
+    private String codeListId;
 
-    TargetOutcome targetOutcome;
+    private Date relevantDatetime;
 
-    String codeListId;
-    Prescriber prescriber;
+    private String rank;
 
-    Date relevantDatetime;
+    private QdmCodeSystem category;
+    private QdmCodeSystem medium;
+    private Date sentDatetime;
+    private Date receivedDatetime;
 
-    String rank;
-
-    QdmCodeSystem category;
-    QdmCodeSystem medium;
-    Date sentDatetime;
-    Date receivedDatetime;
-
-    Prescriber dispenser;
-    Prescriber performer;
+    private QdmPractitioner sender;
+    private QdmPractitioner recipient;
+    private QdmPractitioner prescriber;
+    private QdmPractitioner dispenser;
+    private QdmPractitioner performer;
 
     public String identifier() {
-        return _id;
+        return id;
     }
 }

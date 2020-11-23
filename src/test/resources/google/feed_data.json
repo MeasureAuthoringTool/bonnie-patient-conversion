@@ -1,0 +1,1015 @@
+{
+  "version": "1.0",
+  "encoding": "UTF-8",
+  "feed": {
+    "xmlns": "http://www.w3.org/2005/Atom",
+    "xmlns$openSearch": "http://a9.com/-/spec/opensearchrss/1.0/",
+    "xmlns$gsx": "http://schemas.google.com/spreadsheets/2006/extended",
+    "id": {
+      "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values"
+    },
+    "updated": {
+      "$t": "2020-11-13T00:11:33.228Z"
+    },
+    "category": [
+      {
+        "scheme": "http://schemas.google.com/spreadsheets/2006",
+        "term": "http://schemas.google.com/spreadsheets/2006#list"
+      }
+    ],
+    "title": {
+      "type": "text",
+      "$t": "Sheet1"
+    },
+    "link": [
+      {
+        "rel": "alternate",
+        "type": "application/atom+xml",
+        "href": "https://docs.google.com/spreadsheets/u/0/d/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/pubhtml"
+      },
+      {
+        "rel": "http://schemas.google.com/g/2005#feed",
+        "type": "application/atom+xml",
+        "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values"
+      },
+      {
+        "rel": "http://schemas.google.com/g/2005#post",
+        "type": "application/atom+xml",
+        "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values"
+      },
+      {
+        "rel": "self",
+        "type": "application/atom+xml",
+        "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values?alt=json"
+      }
+    ],
+    "author": [
+      {
+        "name": {
+          "$t": "rohit.kandimalla"
+        },
+        "email": {
+          "$t": "rohit.kandimalla@semanticbits.com"
+        }
+      }
+    ],
+    "openSearch$totalResults": {
+      "$t": "25"
+    },
+    "openSearch$startIndex": {
+      "$t": "1"
+    },
+    "entry": [
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cokwr"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.96"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://snomed.info/sct, codesystemname: SNOMEDCT"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cokwr"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.96"
+        },
+        "gsx$url": {
+          "$t": "http://snomed.info/sct"
+        },
+        "gsx$codesystemname": {
+          "$t": "SNOMEDCT"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cpzh4"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.5.1001"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/v3/ActMood, codesystemname: ActMood"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cpzh4"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.5.1001"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/v3/ActMood"
+        },
+        "gsx$codesystemname": {
+          "$t": "ActMood"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cre1l"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.5.1"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/v3/AdministrativeGender, codesystemname: AdministrativeGender"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cre1l"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.5.1"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/v3/AdministrativeGender"
+        },
+        "gsx$codesystemname": {
+          "$t": "AdministrativeGender"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/chk2m"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.88"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://www.nlm.nih.gov/research/umls/rxnorm, codesystemname: RXNORM"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/chk2m"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.88"
+        },
+        "gsx$url": {
+          "$t": "http://www.nlm.nih.gov/research/umls/rxnorm"
+        },
+        "gsx$codesystemname": {
+          "$t": "RXNORM"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/ciyn3"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.1"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://loinc.org, codesystemname: LOINC"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/ciyn3"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.1"
+        },
+        "gsx$url": {
+          "$t": "http://loinc.org"
+        },
+        "gsx$codesystemname": {
+          "$t": "LOINC"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/ckd7g"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.12"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://www.ama-assn.org/go/cpt, codesystemname: CPT"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/ckd7g"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.12"
+        },
+        "gsx$url": {
+          "$t": "http://www.ama-assn.org/go/cpt"
+        },
+        "gsx$codesystemname": {
+          "$t": "CPT"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/clrrx"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.12.292"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/sid/cvx, codesystemname: CVX"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/clrrx"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.12.292"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/sid/cvx"
+        },
+        "gsx$codesystemname": {
+          "$t": "CVX"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cyevm"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.238"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://cts.nlm.nih.gov/fhir/cs/cdcrec, codesystemname: CDCREC"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cyevm"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.238"
+        },
+        "gsx$url": {
+          "$t": "http://cts.nlm.nih.gov/fhir/cs/cdcrec"
+        },
+        "gsx$codesystemname": {
+          "$t": "CDCREC"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cztg3"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.259"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://cts.nlm.nih.gov/fhir/cs/hsloc, codesystemname: HSLOC"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cztg3"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.259"
+        },
+        "gsx$url": {
+          "$t": "http://cts.nlm.nih.gov/fhir/cs/hsloc"
+        },
+        "gsx$codesystemname": {
+          "$t": "HSLOC"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d180g"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.12.112"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/v2/0112, codesystemname: DischargeDisposition"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d180g"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.12.112"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/v2/0112"
+        },
+        "gsx$codesystemname": {
+          "$t": "DischargeDisposition"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d2mkx"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.285"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://www.nlm.nih.gov/research/umls/hcpcs, codesystemname: HCPCS"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d2mkx"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.285"
+        },
+        "gsx$url": {
+          "$t": "http://www.nlm.nih.gov/research/umls/hcpcs"
+        },
+        "gsx$codesystemname": {
+          "$t": "HCPCS"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cssly"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.90"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/sid/icd-10-cm, codesystemname: ICD10CM"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cssly"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.90"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/sid/icd-10-cm"
+        },
+        "gsx$codesystemname": {
+          "$t": "ICD10CM"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cu76f"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.3.221.5"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://www.nlm.nih.gov/research/umls/sop, codesystemname: SOP"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cu76f"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.3.221.5"
+        },
+        "gsx$url": {
+          "$t": "http://www.nlm.nih.gov/research/umls/sop"
+        },
+        "gsx$codesystemname": {
+          "$t": "SOP"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cvlqs"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.1"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/v3/RoleCode, codesystemname: RoleCode"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cvlqs"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.1"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/v3/RoleCode"
+        },
+        "gsx$codesystemname": {
+          "$t": "RoleCode"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cx0b9"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.2"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/condition-clinical, codesystemname: ConditionClinicalStatusCodes"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/cx0b9"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.2"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+        },
+        "gsx$codesystemname": {
+          "$t": "ConditionClinicalStatusCodes"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d9ney"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.3"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical, codesystemname: AllergyIntoleranceClinicalStatusCodes"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d9ney"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.3"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical"
+        },
+        "gsx$codesystemname": {
+          "$t": "AllergyIntoleranceClinicalStatusCodes"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/db1zf"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.4"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/allergyintolerance-verification, codesystemname: AllergyIntoleranceVerificationStatusCodes"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/db1zf"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.4"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"
+        },
+        "gsx$codesystemname": {
+          "$t": "AllergyIntoleranceVerificationStatusCodes"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/dcgjs"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.5"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/condition-verification, codesystemname: ConditionVerificationStatusCodes"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/dcgjs"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.5"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/condition-verification"
+        },
+        "gsx$codesystemname": {
+          "$t": "ConditionVerificationStatusCodes"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/ddv49"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.6"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/medicationrequest-category, codesystemname: MedicationRequestCategory"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/ddv49"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.6"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/medicationrequest-category"
+        },
+        "gsx$codesystemname": {
+          "$t": "MedicationRequestCategory"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d415a"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.7"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/diagnosis-role, codesystemname: Diagnosis Role"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d415a"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.7"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/diagnosis-role"
+        },
+        "gsx$codesystemname": {
+          "$t": "Diagnosis Role"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d5fpr"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:NOT.IN.VSAC.8"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/request-intent, codesystemname: RequestIntent"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d5fpr"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:NOT.IN.VSAC.8"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/request-intent"
+        },
+        "gsx$codesystemname": {
+          "$t": "RequestIntent"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d6ua4"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.103"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/sid/icd-9-cm, codesystemname: ICD9CM"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d6ua4"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.103"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/sid/icd-9-cm"
+        },
+        "gsx$codesystemname": {
+          "$t": "ICD9CM"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d88ul"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.104"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://hl7.org/fhir/sid/icd-9-cm, codesystemname: ICD9CM"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/d88ul"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.104"
+        },
+        "gsx$url": {
+          "$t": "http://hl7.org/fhir/sid/icd-9-cm"
+        },
+        "gsx$codesystemname": {
+          "$t": "ICD9CM"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/dkvya"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.4"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://www.icd10data.com/icd10pcs, codesystemname: ICD-10 PCS Codes (CMS)"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/dkvya"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.4"
+        },
+        "gsx$url": {
+          "$t": "http://www.icd10data.com/icd10pcs"
+        },
+        "gsx$codesystemname": {
+          "$t": "ICD-10 PCS Codes (CMS)"
+        }
+      },
+      {
+        "id": {
+          "$t": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/dmair"
+        },
+        "updated": {
+          "$t": "2020-11-13T00:11:33.228Z"
+        },
+        "category": [
+          {
+            "scheme": "http://schemas.google.com/spreadsheets/2006",
+            "term": "http://schemas.google.com/spreadsheets/2006#list"
+          }
+        ],
+        "title": {
+          "type": "text",
+          "$t": "urn:oid:2.16.840.1.113883.6.13"
+        },
+        "content": {
+          "type": "text",
+          "$t": "url: http://terminology.hl7.org/CodeSystem/CD2, codesystemname: CDT-2 Codes"
+        },
+        "link": [
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://spreadsheets.google.com/feeds/list/1POrP7vIKANlmY1IiUQZf4oXK2dwtgMHAz7vQJeLYMnw/od6/public/values/dmair"
+          }
+        ],
+        "gsx$oid": {
+          "$t": "urn:oid:2.16.840.1.113883.6.13"
+        },
+        "gsx$url": {
+          "$t": "http://terminology.hl7.org/CodeSystem/CD2"
+        },
+        "gsx$codesystemname": {
+          "$t": "CDT-2 Codes"
+        }
+      }
+    ]
+  }
+}

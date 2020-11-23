@@ -8,10 +8,9 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Dosage;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MedicationDispense;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Quantity;
@@ -43,13 +42,21 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         List<String> conversionMessages = new ArrayList<>();
 
         MedicationDispense medicationDispense = new MedicationDispense();
-        medicationDispense.setId(qdmDataElement.get_id());
-        medicationDispense.setSubject(createReference(fhirPatient));
+        medicationDispense.setSubject(createPatientReference(fhirPatient));
 
-        medicationDispense.setMedication(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            medicationDispense.setMedication(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
-        if (qdmDataElement.getRelevantDatetime() != null) {
-            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
+        medicationDispense.setId(qdmDataElement.getId());
+
+        if (qdmDataElement.getDosage() != null) {
+            log.info("Dosage is found and not mapped");
+            conversionMessages.add("Cannot convert QDM dosage (quantity) to a Fhir dosage instruction");
+        }
+
+        if (qdmDataElement.getSupply() != null) {
+            medicationDispense.setQuantity(convertQuantity(qdmDataElement.getSupply()));
         }
 
         if (qdmDataElement.getDaysSupplied() != null) {
@@ -63,54 +70,52 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             } else {
                 Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
                 Timing timing = dosage.getTiming();
-                timing.setCode(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getFrequency()));
+                timing.setCode(convertToCodeableConcept(qdmDataElement.getFrequency()));
             }
         }
 
         if (qdmDataElement.getSetting() != null) {
-            log.warn("Not mapping -> qdmDataElement.getSetting()");
+            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "setting");
+        }
+
+        if (qdmDataElement.getRelevantDatetime() != null) {
+            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
+        }
+
+        if (qdmDataElement.getRelevantPeriod() != null) {
+            Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
+            Timing timing = dosage.getTiming();
+            timing.getRepeat().setBounds(convertPeriod(qdmDataElement.getRelevantPeriod()));
         }
 
         if (qdmDataElement.getPrescriber() != null) {
-            log.warn("Not mapping -> qdmDataElement.getPrescriber()");
-             // todo ashok how to map
-            // medicationDispense.addAuthorizingPrescription()
+            medicationDispense.addAuthorizingPrescription(createPractitionerReference(qdmDataElement.getPrescriber()));
         }
 
         if (qdmDataElement.getDispenser() != null) {
-            // todo ashok how to map
-            log.warn("Not mapping -> qdmDataElement.getDispenser() ");
+            medicationDispense.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getDispenser()));
         }
-
-        if (qdmDataElement.getSupply() != null) {
-            medicationDispense.setQuantity(convertQuantity(qdmDataElement.getSupply()));
-        }
-
 
         if (!processNegation(qdmDataElement, medicationDispense)) {
-            medicationDispense.setStatus("unknown");
+            medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
-
 
         return QdmToFhirConversionResult.<MedicationDispense>builder()
                 .fhirResource(medicationDispense)
                 .conversionMessages(conversionMessages)
                 .build();
-
     }
 
     @Override
     void convertNegation(QdmDataElement qdmDataElement, MedicationDispense medicationDispense) {
-        medicationDispense.setStatus("declined");
+        medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.DECLINED);
 
-        CodeableConcept codeableConcept = convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale());
+        CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
         medicationDispense.setStatusReason(codeableConcept);
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            Extension extension = new Extension(QICORE_RECORDED);
-            extension.setValue(new DateTimeType(qdmDataElement.getAuthorDatetime()));
-            medicationDispense.setExtension(List.of(extension));
+            medicationDispense.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
         }
     }
 }

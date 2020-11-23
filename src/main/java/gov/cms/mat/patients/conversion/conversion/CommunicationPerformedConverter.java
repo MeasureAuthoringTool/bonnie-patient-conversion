@@ -8,9 +8,8 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.BooleanType;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Communication;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
@@ -37,19 +36,20 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
     @Override
     public QdmToFhirConversionResult<Communication> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
-
         Communication communication = new Communication();
+        communication.setId(qdmDataElement.getId());
+        communication.setSubject(createPatientReference(fhirPatient));
 
-        communication.setStatusReason(convertToCodeSystems(codeSystemEntriesService, qdmDataElement.getDataElementCodes()));
-
-        communication.setId(qdmDataElement.get_id());
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            communication.setStatusReason(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
 
         if (qdmDataElement.getCategory() != null) {
-            communication.setCategory(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getCategory())));
+            communication.getCategory().add(convertToCodeableConcept(qdmDataElement.getCategory()));
         }
 
         if (qdmDataElement.getMedium() != null) {
-            communication.setMedium(List.of(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getMedium())));
+            communication.getMedium().add(convertToCodeableConcept(qdmDataElement.getMedium()));
         }
 
         if (qdmDataElement.getSentDatetime() != null) {
@@ -60,23 +60,19 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
             communication.setReceived(qdmDataElement.getReceivedDatetime());
         }
 
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
+            communication.setBasedOn(convertRelatedTo(qdmDataElement.getRelatedTo()));
+        }
 
-//        if (qdmDataElement.getRelatedTo() != null) {
-//            //communication.setBasedOn(qdmDataElement.getRelatedTo());
-//        }
+        if (qdmDataElement.getSender() != null) {
+            communication.setSender(createPractitionerReference(qdmDataElement.getSender()));
+        }
 
-//        if (qdmDataElement.getSender() != null) {
-//            Todo Mike http://hl7.org/fhir/us/qicore/Communication-example.json.html
-//            what will be value of sender.reference
-//           communication.setSender(qdmDataElement.getSender());
-//        }
+        if (qdmDataElement.getRecipient() != null) {
+            communication.getRecipient().add(createPractitionerReference(qdmDataElement.getRecipient()));
+        }
 
-//        if (qdmDataElement.getRecipient() != null) {
-//            //            what will be value of recipient.reference
-//            //communication.setRecipient(qdmDataElement.getRecipient());
-//        }
-
-        if (processNegation(qdmDataElement, communication)) {
+        if (!processNegation(qdmDataElement, communication)) {
             communication.setStatus(Communication.CommunicationStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
@@ -87,25 +83,12 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
                 .build();
     }
 
-
     @Override
     void convertNegation(QdmDataElement qdmDataElement, Communication communication) {
         communication.setStatus(Communication.CommunicationStatus.NOTDONE);
 
-        Extension extensionNotDone = new Extension(QICORE_NOT_DONE);
-        extensionNotDone.setValue(new BooleanType(true));
-        communication.setModifierExtension(List.of(extensionNotDone));
+        communication.getModifierExtension().add(createNotDoneExtension());
 
-        if (qdmDataElement.getSender() != null) {
-            log.debug("We have Sender");
-        }
-
-        if (qdmDataElement.getSentDatetime() != null) {
-            log.debug("We have SendDateTime");
-        }
-
-        communication.setStatusReason(convertToCodeableConcept(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
+        communication.setStatusReason(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
     }
-
-
 }

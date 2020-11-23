@@ -2,8 +2,7 @@ package gov.cms.mat.patients.conversion.config;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.validation.FhirValidator;
-import org.hl7.fhir.r4.hapi.ctx.IValidationSupport;
-import org.hl7.fhir.r4.hapi.validation.FhirInstanceValidator;
+import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,20 +12,18 @@ import static gov.cms.mat.patients.conversion.conversion.PatientConverter.US_COR
 
 @Configuration
 public class ValidationConfig {
-
     private final FhirContext fhirContext;
 
     public ValidationConfig(FhirContext fhirContext) {
         this.fhirContext = fhirContext;
     }
 
-
     @Bean
     FhirValidator fhirValidator() {
         FhirValidator validator = fhirContext.newValidator();
 
-        FhirInstanceValidator instanceValidator = new FhirInstanceValidator();
-        instanceValidator.setValidationSupport((IValidationSupport) fhirContext.getValidationSupport());
+        FhirInstanceValidator instanceValidator = new FhirInstanceValidator(fhirContext);
+        instanceValidator.setValidationSupport(fhirContext.getValidationSupport());
         instanceValidator.setNoTerminologyChecks(true);
 
         instanceValidator.setCustomExtensionDomains(US_CORE_RACE_URL, DETAILED_RACE_URL, INCISION_DATE_TIME_URL);

@@ -94,7 +94,7 @@
     </tr>
     <tr>
       <td>Negation Rationale</td>
-      <td>See Below</td>
+      <td><a href="http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8204-procedure-performed"> Click Here </a> </td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -148,6 +148,10 @@
     </tr>
   </tbody>
 </table>
+
+<pre>
+procedure.setSubject(createPatientReference(fhirPatient));
+</pre>
 
 <head>
     <strong>Comments from Stan Ratkins</strong>``

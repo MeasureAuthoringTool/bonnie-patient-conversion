@@ -12,7 +12,7 @@
       <td><strong>Family History</strong></td>
       <td>FamilyMemberHistory</td>
       <td>&nbsp;</td>
-       <td>QDM::FamilyHistory</td>
+      <td>QDM::FamilyHistory</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -22,6 +22,7 @@
     </tr>
     <tr>
       <td><strong>QDM Attributes</strong></td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
@@ -53,6 +54,11 @@
       <td>recorder</td>
       <td>N/A</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
   </tbody>
 </table>
+
+<pre>
+familyMemberHistory.setPatient(createPatientReference(fhirPatient));
+</pre>

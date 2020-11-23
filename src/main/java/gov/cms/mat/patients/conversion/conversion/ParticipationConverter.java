@@ -4,10 +4,11 @@ import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmInterval;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Coverage;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,9 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
     public static final String QDM_TYPE = "QDM::Participation";
 
     public ParticipationConverter(CodeSystemEntriesService codeSystemEntriesService,
-                                             FhirContext fhirContext,
-                                             ObjectMapper objectMapper,
-                                             ValidationService validationService) {
+                                  FhirContext fhirContext,
+                                  ObjectMapper objectMapper,
+                                  ValidationService validationService) {
         super(codeSystemEntriesService, fhirContext, objectMapper, validationService);
     }
 
@@ -38,15 +39,18 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
         List<String> conversionMessages = new ArrayList<>();
 
         Coverage coverage = new Coverage();
-        coverage.setBeneficiary(createReference(fhirPatient));
+        coverage.setBeneficiary(createPatientReference(fhirPatient));
 
         coverage.setStatus(Coverage.CoverageStatus.ACTIVE);
 
-        coverage.setType(convertToCodeSystems(getCodeSystemEntriesService(), qdmDataElement.getDataElementCodes()));
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
+            coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+        }
+        coverage.setId(qdmDataElement.getId());
 
-        coverage.setId(qdmDataElement.get_id());
-
-        convertParticipationPeriod(coverage, qdmDataElement);
+        if (qdmDataElement.getParticipationPeriod() != null) {
+            convertParticipationPeriod(coverage, qdmDataElement);
+        }
 
         return QdmToFhirConversionResult.<Coverage>builder()
                 .fhirResource(coverage)
@@ -55,7 +59,7 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
     }
 
     private void convertParticipationPeriod(Coverage coverage, QdmDataElement qdmDataElement) {
-        QdmInterval qdmInterval = qdmDataElement.getParticipationPeriod();
+        QdmPeriod qdmInterval = qdmDataElement.getParticipationPeriod();
         coverage.getPeriod().setStart(qdmInterval.getLow());
         coverage.getPeriod().setEnd(qdmInterval.getHigh());
     }

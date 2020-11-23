@@ -34,10 +34,7 @@ public class LaboratoryTestPerformedConverter extends ConverterBase<Observation>
     public QdmToFhirConversionResult<Observation> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8162-laboratory-test-performed
         //	Constrain status to -  final, amended, corrected
-        return convertToFhirObservation(fhirPatient,
-                qdmDataElement,
-                this);
-
+        return convertToFhirObservation(fhirPatient, qdmDataElement, this);
     }
 
     @Override
