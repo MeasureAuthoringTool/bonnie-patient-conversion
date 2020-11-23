@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QdmCode {
-    String code;
-    String system;
-    String display;
-    String version;
+    private  String code;
+    private  String system;
+    private  String display;
+    private  String version;
 
     @JsonProperty("_type")
-    String type;
+    private  String type;
 
-    String descriptor;
+    private  String descriptor;
 }

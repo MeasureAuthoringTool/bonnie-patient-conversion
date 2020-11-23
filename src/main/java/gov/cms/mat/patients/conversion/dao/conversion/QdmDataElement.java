@@ -11,107 +11,101 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-// @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QdmDataElement {
     @JsonProperty("_id")
-    String id;
+    private String id;
 
-    List<QdmCodeSystem> dataElementCodes;
+    private List<QdmCodeSystem> dataElementCodes;
 
     @JsonProperty("_type")
-    String qdmType;
+    private String qdmType;
 
-    QdmCodeSystem type; //in there  "_id": "5c95406eb8484612c37f1f57",
+    private QdmCodeSystem type; //in there  "_id": "5c95406eb8484612c37f1f57",
 
-    String facilityLocation;
+    private String facilityLocation;
 
-    List<FacilityLocation> facilityLocations;
-    String qdmTitle;
-    String hqmfOid;
-    String qrdaOid;
-    String qdmCategory;
-    String qdmStatus;
-    String qdmVersion;
+    private List<FacilityLocation> facilityLocations;
+    private String qdmTitle;
+    private String hqmfOid;
+    private String qrdaOid;
+    private String qdmCategory;
+    private String qdmStatus;
+    private String qdmVersion;
 
-    QdmPeriod participationPeriod;
+    private QdmPeriod participationPeriod;
 
-    // ids of other patients??
-    /* "relatedTo": [
-          "5c7592f1b8484660416e290c"
-        ] */
-    List<String> relatedTo;
+    private List<String> relatedTo;
 
-    Date expiredDatetime;
-    Date activeDatetime;
-    Date birthDatetime;
+    private Date expiredDatetime;
+    private Date activeDatetime;
+    private Date birthDatetime;
 
-    Date authorDatetime;
+    private Date authorDatetime;
 
+    private Integer refills;
+    private QdmQuantity dosage;
+    private QdmQuantity supply;
+    private QdmCodeSystem frequency;
+    private Integer daysSupplied;
+    private QdmCodeSystem setting;
+    private QdmCodeSystem route;
 
-    Integer refills;
-    QdmQuantity dosage;
-    QdmQuantity supply;
-    QdmCodeSystem frequency;
-    Integer daysSupplied;
-    QdmCodeSystem setting;
-    QdmCodeSystem route;
+    private QdmCodeSystem admissionSource;
 
-    QdmCodeSystem admissionSource;
+    private QdmPeriod relevantPeriod;
 
-    QdmPeriod relevantPeriod;
+    private QdmPeriod prevalencePeriod;
 
-    QdmPeriod prevalencePeriod;
+    private QdmCodeSystem dischargeDisposition;
 
-    QdmCodeSystem dischargeDisposition;
+    private List<Diagnoses> diagnoses;
 
-    List<Diagnoses> diagnoses;
+    private QdmCodeSystem reason;
 
-    QdmCodeSystem reason;
+    private JsonNode result;
 
-    JsonNode result;
+    private QdmReferenceRange referenceRange;
 
-    QdmReferenceRange referenceRange;
+    private QdmCodeSystem status;
+    private Date resultDatetime;
+    private QdmCodeSystem method;
 
-    QdmCodeSystem status;
-    Date resultDatetime;
-    QdmCodeSystem method;
+    private QdmCodeSystem negationRationale;
 
-    QdmCodeSystem negationRationale;
+    private QdmCodeSystem priority;
 
-    QdmCodeSystem priority;
+    private Participant participant;
 
-    Participant participant;
+    private LengthOfStay lengthOfStay;
+    private QdmCodeSystem anatomicalLocationSite;
+    private QdmCodeSystem severity;
+    private QdmCodeSystem relationship;
 
-    LengthOfStay lengthOfStay;
-    QdmCodeSystem anatomicalLocationSite;
-    QdmCodeSystem severity;
-    QdmCodeSystem relationship;
+    private Date incisionDatetime;
 
-    Date incisionDatetime;
+    private List<QdmComponent> components;
 
-    List<QdmComponent> components;
+    private String description;
 
-    String description;
+    private TargetOutcome targetOutcome;
 
-    TargetOutcome targetOutcome;
+    private String codeListId;
 
-    String codeListId;
+    private Date relevantDatetime;
 
-    Date relevantDatetime;
+    private String rank;
 
-    String rank;
+    private QdmCodeSystem category;
+    private QdmCodeSystem medium;
+    private Date sentDatetime;
+    private Date receivedDatetime;
 
-    QdmCodeSystem category;
-    QdmCodeSystem medium;
-    Date sentDatetime;
-    Date receivedDatetime;
-
-    QdmPractitioner sender;
-    QdmPractitioner recipient;
-    QdmPractitioner prescriber;
-    QdmPractitioner dispenser;
-    QdmPractitioner performer;
+    private QdmPractitioner sender;
+    private QdmPractitioner recipient;
+    private QdmPractitioner prescriber;
+    private QdmPractitioner dispenser;
+    private QdmPractitioner performer;
 
     public String identifier() {
         return id;

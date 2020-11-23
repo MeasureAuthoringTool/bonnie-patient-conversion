@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
@@ -31,7 +32,7 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
         qdmDataElement.setResult(createDoubleTypeResult());
 
         QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkWithoutNegationResult(result);
 
         assertNull(result.getFhirResource().getValue());
@@ -58,7 +59,7 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Observation> result = laboratoryTestPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertEquals(1, result.getConversionMessages().size());

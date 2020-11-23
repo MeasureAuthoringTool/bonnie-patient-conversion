@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
@@ -48,7 +49,7 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
 
         QdmToFhirConversionResult<Observation> result =
                 diagnosticStudyPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkCodeableConceptObjectNode(result.getFhirResource().getValue());
     }
 
@@ -57,7 +58,7 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Observation> result =
                 diagnosticStudyPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
     }
 }

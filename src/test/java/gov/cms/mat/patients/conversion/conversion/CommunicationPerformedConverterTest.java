@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -37,7 +38,7 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         qdmDataElement.setRecipient(createRecipient());
 
         QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertEquals(Communication.CommunicationStatus.UNKNOWN, result.getFhirResource().getStatus());
@@ -59,7 +60,7 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         qdmDataElement.setNegationRationale(createNegationRationale());
 
         QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertEquals(Communication.CommunicationStatus.NOTDONE, result.getFhirResource().getStatus());
@@ -74,6 +75,7 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkNoStatusMappingOnly(result.getConversionMessages());

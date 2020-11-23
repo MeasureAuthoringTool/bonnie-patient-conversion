@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -36,6 +37,7 @@ class SubstanceAdministeredConverterTest extends BaseConversionTest implements F
         qdmDataElement.setRefills(33);
 
         QdmToFhirConversionResult<NutritionOrder> result = substanceAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
         // DataElementCodes mapped twice

@@ -8,29 +8,21 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-// @JsonIgnoreProperties(ignoreUnknown = true)
 public class BonniePatient {
-    @JsonProperty("_id")
-    String id;
-
-    List<String> givenNames;
-    String familyName;
-    String bundleId;
-
+    private List<String> givenNames;
+    private String familyName;
+    private String bundleId;
     @JsonProperty("provider_ids")
-    String[] providerIds;
-
-    List<ExpectedValues> expectedValues;
-
-    String notes;
-
+    private String[] providerIds;
+    private List<ExpectedValues> expectedValues;
+    private String notes;
     @JsonProperty("measure_ids")
-    List<String> measureIds;
-
+    private List<String> measureIds;
     @JsonProperty("user_id")
-    String userId;
-
-    QdmPatient qdmPatient;
+    private String userId;
+    private QdmPatient qdmPatient;
+    @JsonProperty("_id")
+    private String id;
 
     public String identifier() {
         return id;

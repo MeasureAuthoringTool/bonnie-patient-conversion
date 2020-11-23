@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,7 +31,7 @@ class DiagnosticStudyOrderConverterTest extends BaseConversionTest implements Fh
         createServiceRequestDataElement(qdmDataElement);
 
         QdmToFhirConversionResult<ServiceRequest> result = diagnosticStudyOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkWithoutNegationResult(result, FHIR_INTENT);
     }
 
@@ -40,7 +41,7 @@ class DiagnosticStudyOrderConverterTest extends BaseConversionTest implements Fh
         qdmDataElement.setNegationRationale(createNegationRationale());
 
         QdmToFhirConversionResult<ServiceRequest> result = diagnosticStudyOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkNegation(result, FHIR_INTENT);
     }
 

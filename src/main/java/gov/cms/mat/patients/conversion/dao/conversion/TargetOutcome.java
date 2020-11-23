@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TargetOutcome {
-    String code;
-    String system;
-    String display;
-    String version;
-    String unit;
-    Integer value;
+    private String code;
+    private String system;
+    private String display;
+    private String version;
+    private String unit;
+    private Integer value;
 }

@@ -48,7 +48,7 @@ public class ImmunizationAdministeredNegationConverter extends ConverterBase<Med
     }
 
     @Override
-    void convertNegation(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
+    public void convertNegation(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
         convertNegationMedicationRequest(qdmDataElement, medicationRequest);
     }
 }

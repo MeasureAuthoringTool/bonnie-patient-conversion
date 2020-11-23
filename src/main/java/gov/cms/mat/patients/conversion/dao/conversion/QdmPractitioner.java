@@ -8,19 +8,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QdmPractitioner {
     @JsonProperty("_id")
-    String id;
+    private String id;
 
     @JsonProperty("_type")
-    String qdmType;
+    private String qdmType;
 
-    String qdmVersion;
-    String type;
+    private String qdmVersion;
+    private String type;
 
-    QdmCodeSystem role;
-    QdmCodeSystem specialty;
-    QdmCodeSystem qualification;
+    private QdmCodeSystem role;
+    private QdmCodeSystem specialty;
+    private QdmCodeSystem qualification;
 
-    QdmIdentifier identifier;
-    String hqmfOid;
-    String qrdaOid;
+    private QdmIdentifier identifier;
+    private String hqmfOid;
+    private String qrdaOid;
 }

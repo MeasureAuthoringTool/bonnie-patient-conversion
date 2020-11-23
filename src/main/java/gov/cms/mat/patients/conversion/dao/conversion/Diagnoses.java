@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Diagnoses {
     @JsonProperty("_id")
-    String id;
+    private String id;
     @JsonProperty("_type")
-    String type;
-    QdmCodeSystem code;
-    QdmCodeSystem presentOnAdmissionIndicator;
-    Integer rank;
-    String qdmVersion;
+    private String type;
+    private QdmCodeSystem code;
+    private QdmCodeSystem presentOnAdmissionIndicator;
+    private Integer rank;
+    private String qdmVersion;
 }

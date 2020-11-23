@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QdmComponent {
-    String qdmVersion;
+    private String qdmVersion;
 
     @JsonProperty("_id")
-    String id;
+    private String id;
 
     @JsonProperty("_type")
-    String type;
+    private String type;
 
-    JsonNode result;
-    QdmCode code;
-    QdmPeriod referenceRange;
+    private JsonNode result;
+    private QdmCode code;
+    private QdmPeriod referenceRange;
 }

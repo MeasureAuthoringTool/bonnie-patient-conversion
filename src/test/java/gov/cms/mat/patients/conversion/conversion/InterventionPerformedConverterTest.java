@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -28,7 +29,7 @@ class InterventionPerformedConverterTest extends BaseConversionTest implements F
         createNoNegation(qdmDataElement);
 
         QdmToFhirConversionResult<Procedure> result = interventionPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkNoNegation(result);
     }
 
@@ -37,7 +38,7 @@ class InterventionPerformedConverterTest extends BaseConversionTest implements F
         createNegation(qdmDataElement);
 
         QdmToFhirConversionResult<Procedure> result = interventionPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkNegation(result);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,7 +31,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
         qdmDataElement.setResult(createIntegerTypeResult());
 
         QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkWithoutNegationResult(result);
 
         checkIntegerTypeResult(result.getFhirResource().getValue());
@@ -44,7 +45,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
         qdmDataElement.setResult(createTextTypeResultDate());
 
         QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkNegationResult(result);
 
         checkTextTypeResultDate(result.getFhirResource().getValue());
@@ -53,7 +54,7 @@ class AssessmentPerformedConverterTest extends BaseConversionTest implements Fhi
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Observation> result = assessmentPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
     }
 }

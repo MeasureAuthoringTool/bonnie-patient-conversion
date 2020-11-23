@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -35,6 +36,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         qdmDataElement.setPerformer(createPerformer());
 
         QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkTargetOutCome(result.getFhirResource().getTargetFirstRep().getDetailCodeableConcept());
@@ -48,6 +50,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         qdmDataElement.setTargetOutcome(new TargetOutcome());
 
         QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertFalse(result.getFhirResource().hasTarget());
@@ -56,6 +59,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertEquals(0, result.getConversionMessages().size());

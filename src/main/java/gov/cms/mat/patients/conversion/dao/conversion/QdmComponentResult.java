@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QdmComponentResult {
-    String code;
-    String version;
-    String descriptor;
-    String system;
+    private String code;
+    private String version;
+    private String descriptor;
+    private String system;
 
-    String unit;
-    String value;
+    private String unit;
+    private String value;
 }

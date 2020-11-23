@@ -5,10 +5,10 @@ import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.BeforeEach;
 
 public class BaseConversionTest implements FhirConversionTest {
-    static final String PATIENT_ID = "1";
-    static final String ELEMENT_ID = "2";
-    static final String FAMILY_NAME = "Public";
-    static final String[] GIVEN_NAMES = {"Joe", "Q"};
+    protected static final String PATIENT_ID = "1";
+    protected static final String ELEMENT_ID = "2";
+    protected static final String FAMILY_NAME = "Public";
+    protected static final String[] GIVEN_NAMES = {"Joe", "Q"};
 
     protected Patient fhirPatient;
     protected QdmDataElement qdmDataElement;

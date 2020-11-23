@@ -6,7 +6,6 @@ import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
-import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Practitioner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 class PractitionerConverterTest extends BaseConversionTest implements FhirConversionTest {
     @Autowired
-    PractitionerConverter practitionerConverter;
+    private PractitionerConverter practitionerConverter;
     private BonniePatient bonniePatient;
 
     @BeforeEach
@@ -90,8 +89,6 @@ class PractitionerConverterTest extends BaseConversionTest implements FhirConver
 
         checkIdentifier(practitioner.getIdentifierFirstRep());
     }
-
-
 
 
     @Test

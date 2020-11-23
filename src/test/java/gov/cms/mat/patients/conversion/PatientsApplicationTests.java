@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("test")
 class PatientsApplicationTests {
     @Autowired
-    PatientConversionService patientConversionService;
+  private   PatientConversionService patientConversionService;
 
     @Test
     void contextLoads() {

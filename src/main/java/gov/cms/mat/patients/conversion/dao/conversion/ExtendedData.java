@@ -7,29 +7,28 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-// @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExtendedData {
-    String type; // always null
+    private String type; // always null
 
     @JsonProperty("is_shared")
-    Boolean isShared;
+    private Boolean isShared;
 
     @JsonProperty("origin_data")
-    JsonNode originData;
+    private JsonNode originData;
 
     @JsonProperty("test_id")
-    String testId; // always null
+    private String testId; // always null
     @JsonProperty("medical_record_number")
-    String medicalRecordNumber;
+    private String medicalRecordNumber;
     @JsonProperty("medical_record_assigner")
-    String medicalRecordAssigner; // always in Bonnie never used
-    String description; // always null
+    private String medicalRecordAssigner; // always in Bonnie never used
+    private String description; // always null
     @JsonProperty("description_category")
-    String descriptionCategory; // always null
+    private String descriptionCategory; // always null
 
     @JsonProperty("insurance_providers")
-    String insuranceProviders; // ignored
+    private String insuranceProviders; // ignored
 
     @JsonProperty("source_data_criteria")
-    JsonNode sourceDataCriteria; // ignored
+    private JsonNode sourceDataCriteria; // ignored
 }

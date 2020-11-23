@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QdmIdentifier {
     @JsonProperty("_id")
-    String id;
+    private String id;
 
     @JsonProperty("_type")
-    String type;
+    private String type;
 
-    String qdmVersion;
-    String namingSystem;
-    String value;
+    private String qdmVersion;
+    private String namingSystem;
+    private String value;
 }

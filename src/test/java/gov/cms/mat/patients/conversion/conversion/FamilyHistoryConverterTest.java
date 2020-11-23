@@ -16,6 +16,7 @@ import java.util.List;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -35,6 +36,7 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
         qdmDataElement.setRelationship(createRelationship());
 
         QdmToFhirConversionResult<FamilyMemberHistory> result = familyHistoryConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
         checkDataElementCodeableConcept(result.getFhirResource().getConditionFirstRep().getCode());

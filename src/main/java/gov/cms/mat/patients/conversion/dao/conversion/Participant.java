@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Participant {
     @JsonProperty("_id")
-    String id;
+    private String id;
 
-    String qdmVersion;
+    private String qdmVersion;
 
     @JsonProperty("_type")
-    String qdmType;
+    private String qdmType;
 
-    String hqmfOid;
-    String qrdaOid;
-    QdmCodeSystem relationship;
-    QdmIdentifier identifier;
-    String type;
+    private String hqmfOid;
+    private String qrdaOid;
+    private QdmCodeSystem relationship;
+    private QdmIdentifier identifier;
+    private String type;
 }

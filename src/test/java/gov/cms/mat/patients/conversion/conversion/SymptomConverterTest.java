@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -32,7 +33,7 @@ class SymptomConverterTest extends BaseConversionTest implements FhirConversionT
         qdmDataElement.setSeverity(createSeverity());
 
         QdmToFhirConversionResult<Observation> result = symptomConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkDataElementCodeableConcept(result.getFhirResource().getValueCodeableConcept());

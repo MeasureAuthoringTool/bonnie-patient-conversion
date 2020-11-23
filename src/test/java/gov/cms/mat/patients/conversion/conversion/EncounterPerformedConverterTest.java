@@ -16,6 +16,7 @@ import java.util.List;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static gov.cms.mat.patients.conversion.conversion.EncounterPerformedConverter.NEGATION_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -37,6 +38,7 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         qdmDataElement.setDischargeDisposition(createDischargeDisposition());
 
         QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkDataElementCoding(result.getFhirResource().getClass_());
@@ -80,6 +82,7 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkNoStatusMappingOnly(result.getConversionMessages());

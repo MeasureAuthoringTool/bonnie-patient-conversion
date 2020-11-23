@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class FacilityLocation {
-
-    String qdmVersion;
+    private String qdmVersion;
     @JsonProperty("_type")
-    String type;
+    private String type;
     @JsonProperty("_id")
-    String id;
-    QdmCodeSystem code;
+    private String id;
+    private QdmCodeSystem code;
 
-    QdmPeriod locationPeriod;
+    private QdmPeriod locationPeriod;
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -28,7 +29,7 @@ class ProcedurePerformedConverterTest extends BaseConversionTest implements Fhir
         createNoNegation(qdmDataElement);
 
         QdmToFhirConversionResult<Procedure> result = procedurePerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkNoNegation(result);
     }
 
@@ -37,13 +38,14 @@ class ProcedurePerformedConverterTest extends BaseConversionTest implements Fhir
         createNegation(qdmDataElement);
 
         QdmToFhirConversionResult<Procedure> result = procedurePerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkNegation(result);
     }
 
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<Procedure> result = procedurePerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertEquals(Procedure.ProcedureStatus.COMPLETED, result.getFhirResource().getStatus());

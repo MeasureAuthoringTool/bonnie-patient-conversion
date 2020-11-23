@@ -34,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ActiveProfiles("test")
 class PatientConverterTest implements ResourceFileUtil, FhirCreator, DataElementFinder {
-
-    Set<String> TYPES = Set.of("QDM::DeviceOrder", "QDM::SubstanceOrder", "QDM::SubstanceRecommended", "QDM::MedicationAdministered", "QDM::ImmunizationOrder");
     @Autowired
     ObjectMapper objectMapper;
     @Autowired

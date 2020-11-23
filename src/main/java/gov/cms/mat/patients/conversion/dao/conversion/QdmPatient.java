@@ -9,15 +9,14 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-// @JsonIgnoreProperties(ignoreUnknown = true)
 public class QdmPatient {
     @JsonProperty("_id")
-    String id;
+    private String id;
 
-    String qdmVersion;
+    private String qdmVersion;
 
-    Date birthDatetime;
-    ExtendedData extendedData;
+    private Date birthDatetime;
+    private ExtendedData extendedData;
 
-    List<QdmDataElement> dataElements;
+    private List<QdmDataElement> dataElements;
 }

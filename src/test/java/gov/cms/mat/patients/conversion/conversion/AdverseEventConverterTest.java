@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
@@ -48,7 +49,7 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
     @Test
     void convertToFhirEmptyObjects() {
         QdmToFhirConversionResult<AdverseEvent> result = adverseEventConverter.convertToFhir(fhirPatient, qdmDataElement);
-
+        assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
     }
 
@@ -56,19 +57,16 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
     void convertToFhirNoDataElements() {
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
 
-
         qdmDataElement.setType(createType());
         qdmDataElement.setSeverity(createSeverity());
         qdmDataElement.setFacilityLocations(List.of(createFacilityLocation()));
         qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         QdmToFhirConversionResult<AdverseEvent> result = adverseEventConverter.convertToFhir(fhirPatient, qdmDataElement);
+        assertNotNull(result);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkTypeList(result.getFhirResource().getCategory());
-
     }
-
-
 }

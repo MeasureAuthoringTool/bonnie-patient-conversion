@@ -9,12 +9,11 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class QdmPeriod {
-    Date low;
-    Date high;
-    Boolean lowClosed;
-    Boolean highClosed;
+    private Date low;
+    private Date high;
+    private Boolean lowClosed;
+    private Boolean highClosed;
 
     @JsonProperty("_type")
-    String type;
-
+    private String type;
 }

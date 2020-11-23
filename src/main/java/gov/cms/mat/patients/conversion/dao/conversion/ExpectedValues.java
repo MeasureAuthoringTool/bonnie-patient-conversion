@@ -11,36 +11,36 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExpectedValues {
     @JsonProperty("measure_id")
-    String measureId;
+    private String measureId;
     @JsonProperty("population_index")
-    Integer populationIndex;
+    private Integer populationIndex;
 
     @JsonProperty("STRAT")
-    Integer strat;
+    private Integer strat;
 
     @JsonProperty("IPP")
-    Integer initialPopulation;
+    private Integer initialPopulation;
     @JsonProperty("DENOM")
-    Integer denominator;
+    private Integer denominator;
     @JsonProperty("DENEX")
-    Integer denominatorExclusions;
+    private Integer denominatorExclusions;
     @JsonProperty("NUMER")
-    Integer numerator;
+    private Integer numerator;
     @JsonProperty("DENEXCEP")
-    Integer denominatorExceptions;
+    private Integer denominatorExceptions;
 
     @JsonProperty("NUMEX")
-    Integer numeratorExclusions;
+    private Integer numeratorExclusions;
 
     @JsonProperty("MSRPOPL")
-    Integer msrpopl;
+    private Integer msrpopl;
 
     @JsonProperty("MSRPOPLEX")
-    Integer msrPoplex;
+    private Integer msrPoplex;
 
     @JsonProperty("OBSERV_UNIT")
-    String observeUnit;
+    private String observeUnit;
 
     @JsonProperty("OBSERV")
-    JsonNode observ;
+    private JsonNode observ;
 }

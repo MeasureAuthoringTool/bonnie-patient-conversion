@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("test")
 class PatientConversionServiceTest implements ResourceFileUtil {
     @Autowired
-    PatientConversionService patientConversionService;
+    private PatientConversionService patientConversionService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @SneakyThrows
     @Test

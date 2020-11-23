@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class LengthOfStay {
-    Integer value;
-    String unit;
+    private Integer value;
+    private String unit;
     @JsonProperty("_type")
-    String type;
+    private String type;
 }
