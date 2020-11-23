@@ -42,6 +42,18 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
     }
 
     public QdmToFhirPatientResult convert(BonniePatient bonniePatient, Set<String> qdmTypes) {
+        if( bonniePatient == null   ) {
+            return buildError("Bonnie patient is null");
+        } else if( bonniePatient.getQdmPatient() ==  null ) {
+            return buildError("QdmPatient is null");
+        } else if( CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements() )) {
+            return buildError("QdmPatient's data elements array is empty");
+        } else {
+            return getQdmToFhirPatientResult(bonniePatient, qdmTypes);
+        }
+    }
+
+    public QdmToFhirPatientResult getQdmToFhirPatientResult(BonniePatient bonniePatient, Set<String> qdmTypes) {
         List<String> conversionMessages = createNotMappedMessages(bonniePatient.getQdmPatient().getDataElements(), qdmTypes);
         Patient patient = process(bonniePatient);
 
@@ -55,6 +67,16 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         return QdmToFhirPatientResult.builder()
                 .outcome(outcome)
                 .fhirPatient(patient)
+                .build();
+    }
+
+    public QdmToFhirPatientResult buildError(String message) {
+        ConversionOutcome outcome = ConversionOutcome.builder()
+                .conversionMessages(List.of(message))
+                .build();
+
+        return QdmToFhirPatientResult.builder()
+                .outcome(outcome)
                 .build();
     }
 
