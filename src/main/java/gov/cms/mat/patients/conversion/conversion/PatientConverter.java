@@ -106,7 +106,6 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
         fhirPatient.getName().add(createName(bonniePatient));
 
-        // ?? "_type": "QDM::PatientCharacteristicBirthdate", 2 birthDates which one wins
         fhirPatient.setBirthDate(bonniePatient.getQdmPatient().getBirthDatetime());
 
         fhirPatient.setGender(processSex(bonniePatient));
