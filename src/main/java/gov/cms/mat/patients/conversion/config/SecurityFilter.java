@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class SecurityFilter implements Filter {
-    public static final String MAT_API_KEY = "MAT-API-KEY";
+    public static final String HEADER_MAT_API_KEY = "MAT-API-KEY";
     private static final String DISABLED = "DISABLED";
     @Value("${mat-api-key}")
     private String matApiKey;
@@ -40,15 +40,15 @@ public class SecurityFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) servletResponse;
 
         if (!StringUtils.equals(matApiKey, DISABLED) && !isWhiteListUrl(req)) {
-            String keyValue = req.getHeader(MAT_API_KEY);
+            String keyValue = req.getHeader(HEADER_MAT_API_KEY);
             if (keyValue == null) {
-                log.error("Request did not contain header " + MAT_API_KEY);
+                log.error("Request did not contain header " + HEADER_MAT_API_KEY);
                 res.sendError(403);
             } else if (!StringUtils.equals(matApiKey, keyValue)) {
-                log.error("Invalid " + MAT_API_KEY + " header.");
+                log.error("Invalid " + HEADER_MAT_API_KEY + " header.");
                 res.sendError(403);
             } else {
-                log.info("Request contained valid " + MAT_API_KEY);
+                log.info("Request contained valid " + HEADER_MAT_API_KEY);
                 filterChain.doFilter(servletRequest, servletResponse);
             }
         } else {

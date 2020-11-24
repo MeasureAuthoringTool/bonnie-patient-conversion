@@ -13,7 +13,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
-import gov.cms.mat.patients.conversion.exceptions.MappingServiceException;
+import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.Getter;
@@ -117,7 +117,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
                     .build();
         } catch (JsonProcessingException e) {
             log.error("Cannot create DataElement", e);
-            throw new MappingServiceException(e.getMessage());
+            throw new PatientConversionException(e.getMessage());
         }
     }
 

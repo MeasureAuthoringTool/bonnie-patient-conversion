@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
-import gov.cms.mat.patients.conversion.exceptions.InvalidUnitException;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -75,12 +74,7 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         JsonNode valueNode = objectNode.get("value");
 
         if (unitNode != null && valueNode != null) {
-            try {
-                return createQuantity(valueNode.asInt(), unitNode.asText());
-            } catch (InvalidUnitException e) {
-                conversionMessages.add(e.getMessage());
-                return null;
-            }
+            return createQuantity(valueNode.asInt(), unitNode.asText());
         } else {
             return null;
         }
