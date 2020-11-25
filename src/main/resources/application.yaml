@@ -40,7 +40,9 @@ logging:
     file: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %mdc %logger{36}.%M - %msg%n"
   file:
     name: mat-fhir-services.log
-    clean-history-on-start: true
-    max-history: 1
+  logback:
+    rollingpolicy:
+      clean-history-on-start: true
+      max-history: 1
 
 cache-names: codeSystemEntries
