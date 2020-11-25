@@ -230,7 +230,7 @@ public class PatientConversionService implements FhirCreator {
 
         } catch (Exception e) {
             log.warn("Error ", e);
-            throw new PatientConversionException("Error", e);
+            throw new PatientConversionException("Error:" + e.getMessage());
         }
     }
 

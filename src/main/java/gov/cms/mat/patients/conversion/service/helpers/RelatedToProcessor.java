@@ -76,7 +76,10 @@ public class RelatedToProcessor implements FhirCreator {
         var splits = reference.getReference().split("/");
 
         if (splits.length != 2) {
-            log.error("Cannot parse reference: {}", reference.getReference());
+            String message = "Cannot parse reference: " + reference.getReference();
+            log.error(message);
+            dataElement.getOutcome().getConversionMessages()
+                    .add(message + ". Please adjust reference.");
         } else {
             String id = splits[1];
 

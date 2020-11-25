@@ -47,4 +47,14 @@ class PatientConversionServiceTest implements ResourceFileUtil {
         List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(patients));
         assertEquals(patients.length, conversionResults.size());
     }
+
+    @SneakyThrows
+    @Test
+    void processTypes() {
+        String fromResource = getStringFromResource("/patients_types.json");
+        BonniePatient[] patients = objectMapper.readValue(fromResource, BonniePatient[].class);
+
+        List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(patients));
+        assertEquals(patients.length, conversionResults.size());
+    }
 }

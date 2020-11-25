@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -33,13 +31,9 @@ public class FileDataService implements GoogleDataService {
         return convertGoogleDataToDao(data.getFeed().getEntry());
     }
 
+    @SneakyThrows
     private String getStringFromResource() {
         File inputXmlFile = new File(this.getClass().getResource("/google/feed_data.json").getFile());
-
-        try {
-            return new String(Files.readAllBytes(inputXmlFile.toPath()));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        return new String(Files.readAllBytes(inputXmlFile.toPath()));
     }
 }

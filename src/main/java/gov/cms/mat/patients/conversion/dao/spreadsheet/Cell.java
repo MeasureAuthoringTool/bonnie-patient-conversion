@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Cell {
-    String type;
     @JsonProperty("$t")
     String data;
 }

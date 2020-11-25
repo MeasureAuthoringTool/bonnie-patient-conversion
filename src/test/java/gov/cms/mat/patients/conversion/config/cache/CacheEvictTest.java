@@ -18,15 +18,16 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CacheEvictTest {
-
-    @Mock
-    Cache cache;
-    @Mock
-    GoogleDataService googleDataService;
-    @InjectMocks
-    CacheEvict cacheEvict;
     @Mock
     private CacheManager cacheManager;
+    @Mock
+    private GoogleDataService googleDataService;
+    @InjectMocks
+    private CacheEvict cacheEvict;
+
+    @Mock
+    private Cache cache;
+
 
     @Test
     void evictAll() {
