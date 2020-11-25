@@ -37,6 +37,6 @@ public class OpenApiConfig {
     private Info buildInfo() {
         return new Info()
                 .title("Bonnie Fhir API")
-                .description("This is a SpringBoot v2.3.x restful service for converting Boonie objects to FHIR.");
+                .description("This is a SpringBoot v2.4.x restful service for converting Boonie objects to FHIR.");
     }
 }
