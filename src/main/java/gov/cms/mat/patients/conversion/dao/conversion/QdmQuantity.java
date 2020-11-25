@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QdmQuantity {
-    private    Integer value;
-    private    String unit;
+    private Integer value;
+    private String unit;
 
     @JsonProperty("_type")
-    private    String type;
+    private String type;
 }

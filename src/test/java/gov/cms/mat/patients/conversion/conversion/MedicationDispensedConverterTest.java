@@ -46,9 +46,9 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         checkSupply(result.getFhirResource().getQuantity());
         checkDaysSupply(result.getFhirResource().getDaysSupply());
         checkFrequency(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getCode());
-        checkRelevantDateTime( result.getFhirResource().getWhenHandedOver());
+        checkRelevantDateTime(result.getFhirResource().getWhenHandedOver());
         checkRelevantPeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
-        checkPrescriber( result.getFhirResource().getAuthorizingPrescriptionFirstRep());
+        checkPrescriber(result.getFhirResource().getAuthorizingPrescriptionFirstRep());
         checkDispenser(result.getFhirResource().getPerformerFirstRep().getActor());
 
         assertEquals(MedicationDispense.MedicationDispenseStatus.UNKNOWN, result.getFhirResource().getStatus());

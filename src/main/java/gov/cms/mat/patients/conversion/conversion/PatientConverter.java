@@ -42,11 +42,11 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
     }
 
     public QdmToFhirPatientResult convert(BonniePatient bonniePatient, Set<String> qdmTypes) {
-        if( bonniePatient == null   ) {
+        if (bonniePatient == null) {
             return buildError("Bonnie patient is null");
-        } else if( bonniePatient.getQdmPatient() ==  null ) {
+        } else if (bonniePatient.getQdmPatient() == null) {
             return buildError("QdmPatient is null");
-        } else if( CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements() )) {
+        } else if (CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
             return buildError("QdmPatient's data elements array is empty");
         } else {
             return getQdmToFhirPatientResult(bonniePatient, qdmTypes);

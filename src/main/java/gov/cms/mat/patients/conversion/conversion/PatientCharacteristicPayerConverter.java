@@ -22,9 +22,9 @@ public class PatientCharacteristicPayerConverter extends ConverterBase<Coverage>
     public static final String QDM_TYPE = "QDM::PatientCharacteristicPayer";
 
     public PatientCharacteristicPayerConverter(CodeSystemEntriesService codeSystemEntriesService,
-                                  FhirContext fhirContext,
-                                  ObjectMapper objectMapper,
-                                  ValidationService validationService) {
+                                               FhirContext fhirContext,
+                                               ObjectMapper objectMapper,
+                                               ValidationService validationService) {
         super(codeSystemEntriesService, fhirContext, objectMapper, validationService);
     }
 

@@ -58,6 +58,6 @@ class MappingDataServiceTest implements ResourceFileUtil {
 
         List<CodeSystemEntry> codeSystemEntries = mappingDataService.getCodeSystemEntries();
 
-        assertTrue( codeSystemEntries.isEmpty());
+        assertTrue(codeSystemEntries.isEmpty());
     }
 }

@@ -24,15 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ActiveProfiles("test")
 class RelatedToProcessorTest implements FhirConversionTest {
-
     @Autowired
     private FhirContext fhirContext;
     @Autowired
     private ObjectMapper objectMapper;
 
-    Practitioner practitioner;
-
     private List<FhirDataElement> dataElements;
+    private Practitioner practitioner;
 
     @BeforeEach
     void setUp() {

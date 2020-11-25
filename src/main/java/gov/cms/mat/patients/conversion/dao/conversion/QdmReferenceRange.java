@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QdmReferenceRange {
-    private    QdmQuantity low;
-    private    QdmQuantity high;
-    private    Boolean lowClosed;
-    private     Boolean highClosed;
+    private QdmQuantity low;
+    private QdmQuantity high;
+    private Boolean lowClosed;
+    private Boolean highClosed;
 
     @JsonProperty("_type")
-    private     String type;
+    private String type;
 }
