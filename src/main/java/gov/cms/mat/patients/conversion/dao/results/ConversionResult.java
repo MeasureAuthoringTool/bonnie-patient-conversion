@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.dao.results;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import gov.cms.mat.patients.conversion.dao.conversion.ExpectedValues;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,11 @@ import java.util.List;
 public class ConversionResult {
     private final String id;
 
-    @JsonProperty("converted_patient")
-    private final ConvertedPatient convertedPatient;
+    @JsonProperty(" patient_outcome")
+    private final ConversionOutcome patientOutcome;
+
+    @JsonProperty("fhir_patient")
+    private final JsonNode fhirPatient;
 
     @JsonProperty("expected_values")
     List<ExpectedValues> expectedValues;

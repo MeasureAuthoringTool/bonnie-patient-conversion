@@ -16,7 +16,9 @@ import java.util.List;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static gov.cms.mat.patients.conversion.conversion.EncounterPerformedConverter.NEGATION_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -41,7 +43,12 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        checkDataElementCoding(result.getFhirResource().getClass_());
+        assertFalse(result.getFhirResource().hasClass_());
+
+        assertEquals(1, result.getFhirResource().getType().size());
+        checkDataElementCodeableConcept(result.getFhirResource().getType().get(0));
+
+
         checkDiagnose(result.getFhirResource().getDiagnosisFirstRep());
         checkLengthOfStay(result.getFhirResource().getLength());
         checkDischargeDisposition(result.getFhirResource().getHospitalization());

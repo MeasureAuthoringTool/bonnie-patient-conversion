@@ -48,7 +48,7 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
         encounter.setId(qdmDataElement.getId());
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            encounter.setClass_(convertToCoding(qdmDataElement.getDataElementCodes()));
+            encounter.setType(List.of(convertToCodeableConcept(qdmDataElement.getDataElementCodes())));
         }
 
         //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8114-encounter-performed
