@@ -10,6 +10,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.ValidationService;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 public class PatientConverter implements DataElementFinder, FhirCreator {
     public static final String US_CORE_RACE_URL = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     public static final String DETAILED_RACE_URL = "http://hl7.org/fhir/us/core/ValueSet/detailed-race";
+
+    public static final String BIRTH_TIME_URL = "http://hl7.org/fhir/StructureDefinition/patient-birthTime";
     private static final String[] NOT_MAPPED_QDM_TYPES = {"QDM::DeviceOrder", "QDM::SubstanceOrder", "QDM::SubstanceRecommended"};
 
     private static final String NOT_MAPPED_MESSAGE = "Did not convert %d dataElements with type %s";
@@ -107,6 +110,24 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         fhirPatient.getName().add(createName(bonniePatient));
 
         fhirPatient.setBirthDate(bonniePatient.getQdmPatient().getBirthDatetime());
+
+        /* awaiting inout from stan adding this creates a validation message:
+         * “The extension http://hl7.org/fhir/StructureDefinition/patient-birthTime is not allowed to be used at this
+         * point (allowed = e:Patient.birthDate; this element is [[Patient])“,
+         * */
+//        if( fhirPatient.hasBirthDate()) {
+//            fhirPatient.getExtension().add(new Extension(BIRTH_TIME_URL));
+//            Extension extension = fhirPatient.getExtensionByUrl(BIRTH_TIME_URL);
+//            extension.setValue(new DateTimeType(bonniePatient.getQdmPatient().getBirthDatetime()));
+//        }
+
+        if (bonniePatient.getQdmPatient().getExtendedData() != null &&
+                StringUtils.isNotBlank(bonniePatient.getQdmPatient().getExtendedData().getMedicalRecordNumber())) {
+            String medicalRecordNumber = bonniePatient.getQdmPatient().getExtendedData().getMedicalRecordNumber();
+
+            fhirPatient.getIdentifierFirstRep().setType(createCodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0203", "MR", null));
+            fhirPatient.getIdentifierFirstRep().setValue(medicalRecordNumber);
+        }
 
         fhirPatient.setGender(processSex(bonniePatient));
         processRace(bonniePatient, fhirPatient);
