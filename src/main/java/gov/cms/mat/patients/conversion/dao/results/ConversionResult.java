@@ -14,7 +14,7 @@ import java.util.List;
 public class ConversionResult {
     private final String id;
 
-    @JsonProperty(" patient_outcome")
+    @JsonProperty("patient_outcome")
     private final ConversionOutcome patientOutcome;
 
     @JsonProperty("fhir_patient")
