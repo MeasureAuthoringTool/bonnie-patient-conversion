@@ -45,7 +45,7 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
 
         checkNoStatusMappingOnly(result.getConversionMessages());
 
-        checkDataElementCodeableConcept(result.getFhirResource().getStatusReason());
+        checkDataElementCodeableConcept(result.getFhirResource().getReasonCodeFirstRep());
 
         checkMedium(result.getFhirResource().getMediumFirstRep());
         checkSentDatetime(result.getFhirResource().getSent());

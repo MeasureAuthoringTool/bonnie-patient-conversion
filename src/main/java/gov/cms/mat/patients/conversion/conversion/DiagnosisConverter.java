@@ -56,6 +56,10 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
             condition.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));
         }
 
+        if( qdmDataElement.getAnatomicalLocationSite() != null) {
+            condition.setBodySite(List.of( convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite())));
+        }
+
         processNegation(qdmDataElement, condition);
 
         return QdmToFhirConversionResult.<Condition>builder()

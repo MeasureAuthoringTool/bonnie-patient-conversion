@@ -1,6 +1,7 @@
-package gov.cms.mat.patients.conversion;
+package gov.cms.mat.patients.conversion.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.data.rest.webmvc.support.ExceptionMessage;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +27,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public ResponseEntity<ExceptionMessage>  handleAnyException(Exception e) {
-        return errorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseStatus foundAnnotation = AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class);
+
+        HttpStatus status = foundAnnotation != null ?   foundAnnotation.code() :  HttpStatus.INTERNAL_SERVER_ERROR;
+
+        return errorResponse(e, status);
     }
 
     /**

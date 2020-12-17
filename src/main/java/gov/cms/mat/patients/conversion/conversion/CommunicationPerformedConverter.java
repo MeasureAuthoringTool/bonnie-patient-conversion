@@ -41,7 +41,7 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         communication.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            communication.setStatusReason(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+            communication.setReasonCode(List.of(convertToCodeableConcept(qdmDataElement.getDataElementCodes())));
         }
 
         if (qdmDataElement.getCategory() != null) {
