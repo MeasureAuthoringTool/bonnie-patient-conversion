@@ -44,6 +44,8 @@ public interface ProcedureConversionTest extends FhirConversionTest {
         qdmDataElement.setRelevantDatetime(createRelevantDatetime());
         qdmDataElement.setIncisionDatetime(createIncisionDatetime());
         qdmDataElement.setPerformer(createPerformer());
+
+        qdmDataElement.setAnatomicalLocationSite(createAnatomicalLocationSite());
     }
 
     default void checkNoNegation(QdmToFhirConversionResult<Procedure> result) {
@@ -64,6 +66,8 @@ public interface ProcedureConversionTest extends FhirConversionTest {
 
         checkRelevantPeriod(result.getFhirResource().getPerformedPeriod());
         checkIncisionDatetime(checkIncision(result.getFhirResource().getExtension()));
+
+        checkAnatomicalLocationSite(result.getFhirResource().getBodySiteFirstRep());
     }
 
     default Date checkIncision(List<Extension> extensions) {

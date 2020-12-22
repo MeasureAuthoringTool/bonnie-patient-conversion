@@ -4,6 +4,7 @@ import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.apache.commons.collections4.CollectionUtils;
+import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
@@ -50,6 +51,11 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
             // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8152-intervention-performed
             // constrain to “completed”
             procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+        }
+
+        if (qdmDataElement.getAnatomicalLocationSite() != null) {
+            CodeableConcept codeableConcept = converterBase.convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite());
+            procedure.setBodySite(List.of(codeableConcept));
         }
 
         // Relevant getRelevantPeriod() and getRelevantDatetime() bot map to fhir as setPerformed(Type value)

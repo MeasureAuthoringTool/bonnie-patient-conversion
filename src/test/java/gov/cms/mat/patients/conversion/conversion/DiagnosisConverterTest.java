@@ -45,19 +45,6 @@ class DiagnosisConverterTest extends BaseConversionTest implements FhirConversio
         checkAnatomicalLocationSite( result.getFhirResource().getBodySiteFirstRep());
     }
 
-    private void checkAnatomicalLocationSite(CodeableConcept codeableConcept) {
-        assertEquals("431321000124109",  codeableConcept.getCodingFirstRep().getCode());
-        assertEquals("Body Site Value Set", codeableConcept.getCodingFirstRep().getDisplay());
-        assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
-    }
-
-    private QdmCodeSystem createAnatomicalLocationSite() {
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
-        qdmCodeSystem.setDisplay("Body Site Value Set");
-        qdmCodeSystem.setSystem("2.16.840.1.113883.6.96");
-        qdmCodeSystem.setCode("431321000124109");
-        return qdmCodeSystem;
-    }
 
     @Test
     void convertToFhirEmptyObjects() {

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProcedurePerformedConverter extends ConverterBase<Procedure> implements ProcedureConverter {
-
     public static final String QDM_TYPE = "QDM::ProcedurePerformed";
 
     public ProcedurePerformedConverter(CodeSystemEntriesService codeSystemEntriesService,

@@ -570,4 +570,18 @@ public interface FhirConversionTest {
     default void checkIncisionDatetime(Date date) {
         assertEquals(createIncisionDatetime(), date);
     }
+
+  default void checkAnatomicalLocationSite(CodeableConcept codeableConcept) {
+        assertEquals("431321000124109",  codeableConcept.getCodingFirstRep().getCode());
+        assertEquals("Body Site Value Set", codeableConcept.getCodingFirstRep().getDisplay());
+        assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
+    }
+
+    default QdmCodeSystem createAnatomicalLocationSite() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setDisplay("Body Site Value Set");
+        qdmCodeSystem.setSystem(SNOMED_OID);
+        qdmCodeSystem.setCode("431321000124109");
+        return qdmCodeSystem;
+    }
 }
