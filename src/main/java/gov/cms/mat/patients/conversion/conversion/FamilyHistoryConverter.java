@@ -56,13 +56,11 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
 
 
         if (qdmDataElement.getRelationship() != null) {
-            //https://terminology.hl7.org/1.0.0/CodeSystem-v3-RoleCode.html
-            // we only have AUNT as an example, we could convert if knew the input set and no system
             if (qdmDataElement.getRelationship().getSystem() == null) {
-                conversionMessages.add("RelationShip for code " + qdmDataElement.getRelationship().getCode() + " has no system");
-            } else {
-                familyMemberHistory.setRelationship(convertToCodeableConcept(qdmDataElement.getRelationship()));
+                qdmDataElement.getRelationship().setSystem("2.16.840.1.113883.5.111");
             }
+
+            familyMemberHistory.setRelationship(convertToCodeableConcept(qdmDataElement.getRelationship()));
         }
 
         processNegation(qdmDataElement, familyMemberHistory); // should never have any

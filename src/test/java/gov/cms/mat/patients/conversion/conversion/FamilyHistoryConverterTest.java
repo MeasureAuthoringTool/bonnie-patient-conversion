@@ -17,6 +17,7 @@ import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -49,16 +50,16 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
     @Test
     void convertToFhirBadRelationShip() {
 
-        qdmDataElement.setRelationship(createRelationshipNoSystem());
+        qdmDataElement.setRelationship(createRelationshipNoSystem()); // adapts now
 
         QdmToFhirConversionResult<FamilyMemberHistory> result = familyHistoryConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
-        assertFalse(result.getFhirResource().hasRelationship());
+        assertTrue(result.getFhirResource().hasRelationship());
 
-        assertEquals(2, result.getConversionMessages().size());
+        assertEquals(1, result.getConversionMessages().size());
         assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
-        assertEquals("RelationShip for code AUNT has no system", result.getConversionMessages().get(1));
+
     }
 
     private void checkRelationShip(CodeableConcept relationship) {

@@ -2,10 +2,15 @@ package gov.cms.mat.patients.conversion.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.ResourceFileUtil;
+import gov.cms.mat.patients.conversion.conversion.AllergyIntoleranceConverter;
+import gov.cms.mat.patients.conversion.conversion.AssessmentPerformedConverter;
+import gov.cms.mat.patients.conversion.conversion.DeviceAppliedConverter;
 import gov.cms.mat.patients.conversion.conversion.DiagnosticStudyPerformedConverter;
 import gov.cms.mat.patients.conversion.conversion.EncounterOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.ImmunizationOrderConverter;
 import gov.cms.mat.patients.conversion.conversion.LaboratoryTestPerformedConverter;
+import gov.cms.mat.patients.conversion.conversion.MedicationActiveConverter;
+import gov.cms.mat.patients.conversion.conversion.MedicationOrderConverter;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
@@ -54,8 +59,8 @@ class TestPatientConverterAllData implements ResourceFileUtil {
 
 
                 bonniePatient.getQdmPatient().getDataElements().stream()
-                        .filter(q -> q.getQdmType().equals( ImmunizationOrderConverter.QDM_TYPE))
-                        .filter(q -> q.getAuthorDatetime() != null)
+                        .filter(q -> q.getQdmType().equals( MedicationOrderConverter.QDM_TYPE))
+                     //   .filter(q -> q.getAuthorDatetime() != null)
                         .map(q -> processStan(q, bonniePatient))
                         .collect(Collectors.toList());
 
