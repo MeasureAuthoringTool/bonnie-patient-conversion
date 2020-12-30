@@ -2,7 +2,12 @@ package gov.cms.mat.patients.conversion.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.ResourceFileUtil;
+import gov.cms.mat.patients.conversion.conversion.DiagnosticStudyPerformedConverter;
+import gov.cms.mat.patients.conversion.conversion.EncounterOrderConverter;
+import gov.cms.mat.patients.conversion.conversion.ImmunizationOrderConverter;
+import gov.cms.mat.patients.conversion.conversion.LaboratoryTestPerformedConverter;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Disabled;
@@ -26,6 +31,12 @@ class TestPatientConverterAllData implements ResourceFileUtil {
     @Autowired
     private PatientConversionService patientConversionService;
 
+    private String processStan(QdmDataElement q, BonniePatient bonniePatient) {
+        System.out.println(bonniePatient.getId());
+
+        return bonniePatient.getId();
+    }
+
     @SneakyThrows
     @Test
     void process() {
@@ -40,12 +51,19 @@ class TestPatientConverterAllData implements ResourceFileUtil {
         for (String split : splits) {
             try {
                 BonniePatient bonniePatient = objectMapper.readValue(split, BonniePatient.class);
-                System.out.println(bonniePatient.getId());
+
+
+                bonniePatient.getQdmPatient().getDataElements().stream()
+                        .filter(q -> q.getQdmType().equals( ImmunizationOrderConverter.QDM_TYPE))
+                        .filter(q -> q.getAuthorDatetime() != null)
+                        .map(q -> processStan(q, bonniePatient))
+                        .collect(Collectors.toList());
+
+
                 ConversionResult conversionResult = patientConversionService.processOne(bonniePatient);
                 assertNotNull(conversionResult);
 
             } catch (Exception e) {
-                System.out.println(split);
                 e.printStackTrace();
             }
         }

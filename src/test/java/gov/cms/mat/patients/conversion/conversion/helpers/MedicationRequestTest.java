@@ -4,6 +4,7 @@ import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionRes
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.MedicationRequest;
+import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Type;
 
@@ -42,6 +43,8 @@ public interface MedicationRequestTest extends FhirConversionTest {
         qdmDataElement.setRelevantPeriod(createRelevantPeriod());
         qdmDataElement.setAuthorDatetime(createAuthorDatetime());
         qdmDataElement.setPrescriber(createPrescriber());
+
+       // qdmDataElement.setActiveDatetime(createActiveDatetime());
     }
 
     default void checkMedicationRequest(QdmToFhirConversionResult<MedicationRequest> result) {
@@ -60,6 +63,12 @@ public interface MedicationRequestTest extends FhirConversionTest {
         checkRelevantDateTime(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getEvent().get(0).getValue());
         checkRelevantPeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
         checkAuthorDatetime(result.getFhirResource().getAuthoredOn());
+
+      //  checkActiveDatetimePeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
+    }
+
+    default void checkActiveDatetimePeriod(Period boundsPeriod) {
+        checkActiveDatetime(boundsPeriod.getStart());
     }
 
     default void checkRefills(int numberOfRepeatsAllowed) {

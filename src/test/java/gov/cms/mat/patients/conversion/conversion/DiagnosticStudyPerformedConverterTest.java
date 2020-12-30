@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
@@ -38,7 +39,24 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
 
         checkWithoutNegationResult(result);
         assertNull(result.getFhirResource().getValue());
+
+        assertEquals(2, result.getConversionMessages().size());
+        assertEquals("No mapping for status", result.getConversionMessages().get(0));
+        assertTrue( result.getConversionMessages().get(1).startsWith( "Cannot convert reason to basedOn."));
     }
+
+    @Test
+    void convertToFhirWithoutNegationUseRelevantDatetime() {
+        createObservationDataElement(qdmDataElement);
+        // if relevantPeriod & relevantDatetime both exist, period will be mapped
+        qdmDataElement.setRelevantPeriod(null);
+
+        QdmToFhirConversionResult<Observation> result =
+                diagnosticStudyPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
+
+        checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType().getValue());
+    }
+
 
     @Test
     void convertToFhirNegation() {

@@ -35,8 +35,6 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
         assertNotNull(result);
         checkWithoutNegationResult(result);
 
-        assertNull(result.getFhirResource().getValue());
-
         assertEquals(2, result.getConversionMessages().size());
     }
 
@@ -53,7 +51,7 @@ class LaboratoryTestPerformedConverterTest extends BaseConversionTest implements
 
         assertNull(result.getFhirResource().getValue());
 
-        assertEquals(1, result.getConversionMessages().size());
+        assertEquals(2, result.getConversionMessages().size());
     }
 
     @Test

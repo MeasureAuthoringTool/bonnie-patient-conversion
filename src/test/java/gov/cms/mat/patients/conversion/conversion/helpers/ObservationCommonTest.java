@@ -2,10 +2,11 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmReferenceRange;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Period;
 
 import java.util.List;
 
@@ -21,20 +22,62 @@ public interface ObservationCommonTest extends FhirConversionTest {
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         checkDataElementCodeableConcept(result.getFhirResource().getCode());
 
-        checkRelevantPeriod((Period) result.getFhirResource().getEffective());
         checkAuthorDatetime(result.getFhirResource().getIssued());
         checkComponents(result.getFhirResource().getComponent());
+
+        checkRelevantPeriod(result.getFhirResource().getEffectivePeriod());
+
+        checkMethod(result.getFhirResource().getMethod());
+
+        checkReferenceRange(result.getFhirResource().getReferenceRangeFirstRep());
     }
+
+
 
     default void createObservationDataElement(QdmDataElement qdmDataElement) {
 
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
+
+        // if relevantPeriod & relevantDatetime both exist, period will be mapped
         qdmDataElement.setRelevantPeriod(createRelevantPeriod());
+        qdmDataElement.setRelevantDatetime(createRelevantDatetime());
 
         qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         qdmDataElement.setComponents(List.of(createComponents()));
+
+        qdmDataElement.setReason(createReason());
+
+        qdmDataElement.setMethod(createMethod());
+
+        qdmDataElement.setReferenceRange(createReferenceRange());
     }
+
+    private QdmReferenceRange createReferenceRange() {
+        QdmReferenceRange qdmReferenceRange = new QdmReferenceRange();
+
+        qdmReferenceRange.setHigh(createQuantityHigh());
+        qdmReferenceRange.setLow(createQuantityLow());
+
+        return qdmReferenceRange;
+    }
+
+    private QdmQuantity createQuantityHigh() {
+        return createQdmQuantity("g", 7000);
+    }
+
+    private QdmQuantity createQuantityLow() {
+        return createQdmQuantity("mg", 700);
+    }
+
+    default void checkReferenceRange(Observation.ObservationReferenceRangeComponent rangeComponent) {
+        assertEquals(7000, rangeComponent.getHigh().getValue().intValue());
+        assertEquals("g", rangeComponent.getHigh().getCode());
+
+        assertEquals(700, rangeComponent.getLow().getValue().intValue());
+        assertEquals("mg", rangeComponent.getLow().getCode());
+    }
+
 
     default void checkWithoutNegationResult(QdmToFhirConversionResult<Observation> result) {
         checkDataElement(result);

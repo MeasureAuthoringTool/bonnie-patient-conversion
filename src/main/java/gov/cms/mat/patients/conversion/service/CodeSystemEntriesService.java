@@ -24,7 +24,7 @@ public class CodeSystemEntriesService {
             return Optional.empty();
         } else {
             return googleDataService.getCodeSystemEntries().stream()
-                    .filter(c -> c.getOid().contains(oid))
+                    .filter(c -> c.getOid().endsWith(oid))
                     .findFirst();
         }
     }

@@ -11,6 +11,7 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.IntegerType;
+import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Type;
 
@@ -43,10 +44,8 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         } else if (result instanceof IntNode) {
             return processIntMode((IntNode) result);
         } else if (result instanceof DoubleNode) {
-            String message = "Observation result does not handle doubles value: " + result.asText();
-            log.warn(message);
-            conversionMessages.add(message);
-            return null;
+            DoubleNode doubleNode = (DoubleNode) result;
+            return new Quantity(doubleNode.doubleValue());
         } else {
             String message = "Observation result does not handle " + result.getClass().getSimpleName() + " value: " + result.asText();
             log.warn(message);

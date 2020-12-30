@@ -54,6 +54,8 @@ import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionT
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface FhirConversionTest {
@@ -125,9 +127,7 @@ public interface FhirConversionTest {
         checkSNOMEDCodeableConcept(codeableConcept, "50699000", "Hospital admission, short-term");
     }
 
-    default void checkDataElementCoding(Coding coding) {
-        checkSNOMEDCoding(coding, "50699000", "Hospital admission, short-term");
-    }
+
 
     default Date createRelevantDatetime() {
         return new Date(now.toEpochMilli() - 10000);
@@ -167,6 +167,14 @@ public interface FhirConversionTest {
 
     default Date createAuthorDatetime() {
         return new Date(now.toEpochMilli() - 50);
+    }
+
+    default Date createActiveDatetime() {
+        return new Date(now.toEpochMilli() - 7777);
+    }
+
+    default void checkActiveDatetime(Date  date) {
+        assertEquals(createActiveDatetime(), date);
     }
 
     default void checkAuthorDatetime(Date date) {
@@ -513,15 +521,12 @@ public interface FhirConversionTest {
     }
 
     default QdmQuantity createDosage() {
-        QdmQuantity qdmQuantity = new QdmQuantity();
-        qdmQuantity.setUnit("mg");
-        qdmQuantity.setValue(1000);
-        return qdmQuantity;
+        return createQdmQuantity("mg", 100);
     }
 
     default void checkDosage(Quantity doseQuantity) {
         assertEquals("mg", doseQuantity.getCode());
-        assertEquals(1000, doseQuantity.getValue().intValue());
+        assertEquals(100, doseQuantity.getValue().intValue());
     }
 
 
@@ -534,9 +539,13 @@ public interface FhirConversionTest {
     }
 
     default QdmQuantity createSupply() {
+        return createQdmQuantity("g", 100);
+    }
+
+    default QdmQuantity createQdmQuantity(String unit, Integer value) {
         QdmQuantity qdmQuantity = new QdmQuantity();
-        qdmQuantity.setUnit("g");
-        qdmQuantity.setValue(100);
+        qdmQuantity.setUnit(unit);
+        qdmQuantity.setValue(value);
         return qdmQuantity;
     }
 
@@ -571,8 +580,8 @@ public interface FhirConversionTest {
         assertEquals(createIncisionDatetime(), date);
     }
 
-  default void checkAnatomicalLocationSite(CodeableConcept codeableConcept) {
-        assertEquals("431321000124109",  codeableConcept.getCodingFirstRep().getCode());
+    default void checkAnatomicalLocationSite(CodeableConcept codeableConcept) {
+        assertEquals("431321000124109", codeableConcept.getCodingFirstRep().getCode());
         assertEquals("Body Site Value Set", codeableConcept.getCodingFirstRep().getDisplay());
         assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
     }
@@ -583,5 +592,18 @@ public interface FhirConversionTest {
         qdmCodeSystem.setSystem(SNOMED_OID);
         qdmCodeSystem.setCode("431321000124109");
         return qdmCodeSystem;
+    }
+
+    default QdmCodeSystem createMethod() {
+        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        qdmCodeSystem.setSystem(SNOMED_OID);
+        qdmCodeSystem.setCode("246507003");
+        return qdmCodeSystem;
+    }
+
+    default void checkMethod(CodeableConcept codeableConcept) {
+        assertEquals("246507003", codeableConcept.getCodingFirstRep().getCode());
+        assertNull(codeableConcept.getCodingFirstRep().getDisplay());
+        assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
     }
 }

@@ -7,6 +7,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 
@@ -42,6 +43,10 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
             observation.setEffective(convertPeriod(qdmDataElement.getRelevantPeriod()));
         }
 
+        if (!observation.hasEffectivePeriod() && qdmDataElement.getRelevantDatetime() != null) {
+            observation.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+        }
+
         if (!converterBase.processNegation(qdmDataElement, observation)) {
             //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8102-diagnostic-study-performed
             //Constrain status to -  final, amended, corrected, appended
@@ -60,6 +65,28 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
                     converterBase.getCodeSystemEntriesService(), conversionMessages);
 
             observation.setComponent(fhirComponents);
+        }
+
+        if (qdmDataElement.getReason() != null) {
+            conversionMessages.add("Cannot convert reason to basedOn. The Observation.basedOn concept indicates the plan, proposal " +
+                    "or order that the observation fulfills. This concept is not consistent with the QDM concept of " +
+                    "“reason” for the study to be performed.");
+        }
+
+        if (qdmDataElement.getReferenceRange() != null) {
+            if (qdmDataElement.getReferenceRange().getHigh() != null) {
+                observation.getReferenceRangeFirstRep()
+                        .setHigh(convertQuantity(qdmDataElement.getReferenceRange().getHigh()));
+            }
+
+            if (qdmDataElement.getReferenceRange().getLow() != null) {
+                observation.getReferenceRangeFirstRep()
+                        .setLow(convertQuantity(qdmDataElement.getReferenceRange().getLow()));
+            }
+        }
+
+        if (qdmDataElement.getMethod() != null) {
+            observation.setMethod(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getMethod()));
         }
 
         return QdmToFhirConversionResult.<Observation>builder()
@@ -85,7 +112,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
             QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
             qdmCodeSystem.setDisplay(qdmComponent.getCode().getDisplay());
             qdmCodeSystem.setCode(qdmComponent.getCode().getCode());
-            qdmCodeSystem.setSystem(qdmCodeSystem.getCodeSystem());
+            qdmCodeSystem.setSystem(qdmComponent.getCode().getSystem());
 
             component.setCode(convertToCodeableConcept(codeSystemEntriesService, qdmCodeSystem));
         }

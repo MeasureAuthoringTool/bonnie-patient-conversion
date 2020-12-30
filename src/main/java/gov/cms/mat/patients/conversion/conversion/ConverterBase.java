@@ -59,7 +59,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     @Getter
     private final CodeSystemEntriesService codeSystemEntriesService;
 
-    public ConverterBase(CodeSystemEntriesService codeSystemEntriesService,
+    protected ConverterBase(CodeSystemEntriesService codeSystemEntriesService,
                          FhirContext fhirContext,
                          ObjectMapper objectMapper,
                          ValidationService validationService) {

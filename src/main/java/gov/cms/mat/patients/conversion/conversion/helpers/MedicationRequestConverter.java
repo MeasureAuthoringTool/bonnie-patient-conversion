@@ -10,6 +10,7 @@ import org.hl7.fhir.r4.model.Dosage;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Timing;
 
@@ -66,29 +67,34 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
             dosage.setRoute(converterBase.convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
-        // if we had data would be hard to convert code to enum
         if (qdmDataElement.getSetting() != null) {
-            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "setting");
+            medicationRequest.getCategory()
+                    .add(converterBase.convertToCodeableConcept(qdmDataElement.getSetting()));
         }
 
         if (qdmDataElement.getReason() != null) {
-            converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "reason");
             medicationRequest.getReasonCode()
                     .add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
-
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
             dosage.getTiming().addEvent(qdmDataElement.getRelevantDatetime());
         }
 
-
         if (qdmDataElement.getRelevantPeriod() != null) {
             Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
             Timing timing = dosage.getTiming();
             Timing.TimingRepeatComponent timingRepeatComponent = timing.getRepeat();
             timingRepeatComponent.setBounds(convertPeriod(qdmDataElement.getRelevantPeriod()));
+        }
+
+        if (qdmDataElement.getActiveDatetime() != null) {
+            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+
+            Period period = new Period();
+            period.setStart(qdmDataElement.getActiveDatetime());
+            dosage.getTiming().getRepeat().setBounds(period);
         }
 
         medicationRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
@@ -100,7 +106,6 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
             medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
-
 
         if (qdmDataElement.getPrescriber() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "prescriber");
