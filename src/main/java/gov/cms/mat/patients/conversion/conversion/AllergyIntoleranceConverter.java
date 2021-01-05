@@ -52,11 +52,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
         allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
 
         if (qdmDataElement.getType() != null) {
-            List<AllergyIntolerance.AllergyIntoleranceReactionComponent> list = allergyIntolerance.getReaction();
-
-            var component = new AllergyIntolerance.AllergyIntoleranceReactionComponent();
-            component.setSubstance(convertToCodeableConcept(qdmDataElement.getType()));
-            list.add(component);
+            conversionMessages.add("Cannot convert Allergy/Intolerance.type due to AllergyIntolerance.reaction tuple.");
         }
 
         if (qdmDataElement.getSeverity() != null) {

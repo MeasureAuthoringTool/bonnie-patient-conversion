@@ -38,6 +38,7 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         qdmDataElement.setRelevantPeriod(createRelevantPeriod());
         qdmDataElement.setPrescriber(createPrescriber());
         qdmDataElement.setDispenser(createDispenser());
+        qdmDataElement.setRoute(createRoute());
 
         QdmToFhirConversionResult<MedicationDispense> result =
                 medicationDispensedConverter.convertToFhir(fhirPatient, qdmDataElement);
@@ -50,6 +51,8 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         checkRelevantPeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
         checkPrescriber(result.getFhirResource().getAuthorizingPrescriptionFirstRep());
         checkDispenser(result.getFhirResource().getPerformerFirstRep().getActor());
+
+        checkRoute( result.getFhirResource().getDosageInstructionFirstRep().getRoute());
 
         assertEquals(MedicationDispense.MedicationDispenseStatus.UNKNOWN, result.getFhirResource().getStatus());
 

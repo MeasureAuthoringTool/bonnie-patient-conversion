@@ -54,12 +54,15 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         }
 
         if (qdmDataElement.getPerformer() != null) {
-            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
             procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
         }
 
         if (!processNegation(qdmDataElement, procedure)) {
             procedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
+        }
+
+        if (qdmDataElement.getAnatomicalLocationSite() != null) {
+            procedure.getBodySite().add(convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite()));
         }
 
         return QdmToFhirConversionResult.<Procedure>builder()

@@ -96,6 +96,11 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             medicationDispense.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getDispenser()));
         }
 
+        if( qdmDataElement.getRoute() != null) {
+            medicationDispense.getDosageInstructionFirstRep().setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
+        }
+
+
         if (!processNegation(qdmDataElement, medicationDispense)) {
             medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.UNKNOWN);
             conversionMessages.add(NO_STATUS_MAPPING);

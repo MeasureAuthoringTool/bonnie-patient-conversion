@@ -39,11 +39,10 @@ class AllergyIntoleranceConverterTest extends BaseConversionTest implements Fhir
         checkDataElementCodeableConcept(result.getFhirResource().getCode());
         checkPrevalencePeriod(result.getFhirResource().getOnsetPeriod());
         checkAuthorDatetime(result.getFhirResource().getRecordedDate());
-        checkType(result.getFhirResource().getReactionFirstRep().getSubstance());
 
         assertFalse(result.getFhirResource().getReactionFirstRep().hasSeverity()); // we cannot convert
 
-        assertEquals(1, result.getConversionMessages().size());
+        assertEquals(2, result.getConversionMessages().size());
     }
 
     @Test

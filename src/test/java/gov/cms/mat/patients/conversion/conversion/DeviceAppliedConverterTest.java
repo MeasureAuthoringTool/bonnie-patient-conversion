@@ -31,6 +31,8 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
         qdmDataElement.setRelevantPeriod(createRelevantPeriod());
         qdmDataElement.setPerformer(createPerformer());
 
+        qdmDataElement.setAnatomicalLocationSite(createAnatomicalLocationSite());
+
         QdmToFhirConversionResult<Procedure> result = deviceAppliedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
@@ -40,6 +42,8 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
         checkReason(result.getFhirResource().getReasonCodeFirstRep());
         checkRelevantPeriod(result.getFhirResource().getPerformedPeriod());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
+
+        checkAnatomicalLocationSite(result.getFhirResource().getBodySiteFirstRep());
 
         assertEquals(0, result.getConversionMessages().size());
     }
@@ -60,6 +64,7 @@ class DeviceAppliedConverterTest extends BaseConversionTest implements FhirConve
         checkNotDoneExtension(result.getFhirResource().getModifierExtension().get(0));
 
         checkRecordedExtension(result.getFhirResource().getExtension().get(0));
+
 
     }
 
