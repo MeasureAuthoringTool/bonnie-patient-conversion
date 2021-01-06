@@ -100,6 +100,9 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             medicationDispense.getDosageInstructionFirstRep().setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
+        if( qdmDataElement.getAuthorDatetime() != null) {
+            conversionMessages.add("Cannot convert authorDatetime, not mapped to QI-Core 4R");
+        }
 
         if (!processNegation(qdmDataElement, medicationDispense)) {
             medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.UNKNOWN);

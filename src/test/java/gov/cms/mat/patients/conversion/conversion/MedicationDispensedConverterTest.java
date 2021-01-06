@@ -39,6 +39,7 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         qdmDataElement.setPrescriber(createPrescriber());
         qdmDataElement.setDispenser(createDispenser());
         qdmDataElement.setRoute(createRoute());
+        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         QdmToFhirConversionResult<MedicationDispense> result =
                 medicationDispensedConverter.convertToFhir(fhirPatient, qdmDataElement);
@@ -56,14 +57,13 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
 
         assertEquals(MedicationDispense.MedicationDispenseStatus.UNKNOWN, result.getFhirResource().getStatus());
 
-        assertEquals(2, result.getConversionMessages().size());
+        assertEquals(3, result.getConversionMessages().size());
     }
 
     @Test
     void convertToFhirNegation() {
         qdmDataElement.setNegationRationale(createNegationRationale());
         qdmDataElement.setAuthorDatetime(createAuthorDatetime());
-
 
         QdmToFhirConversionResult<MedicationDispense> result =
                 medicationDispensedConverter.convertToFhir(fhirPatient, qdmDataElement);
@@ -75,7 +75,7 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         checkRecordedExtension(result.getFhirResource().getExtension().get(0));
 
         assertEquals(MedicationDispense.MedicationDispenseStatus.DECLINED, result.getFhirResource().getStatus());
-        assertEquals(0, result.getConversionMessages().size());
+        assertEquals(1, result.getConversionMessages().size());
     }
 
     @Test
