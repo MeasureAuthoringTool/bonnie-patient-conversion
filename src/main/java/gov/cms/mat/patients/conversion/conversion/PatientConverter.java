@@ -31,7 +31,8 @@ import java.util.stream.Collectors;
 @Component
 public class PatientConverter implements DataElementFinder, FhirCreator {
     public static final String US_CORE_RACE_URL = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
-    public static final String DETAILED_RACE_URL = "http://hl7.org/fhir/us/core/ValueSet/detailed-race";
+
+    public static final String DETAILED_RACE_URL = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity";
 
     public static final String BIRTH_TIME_URL = "http://hl7.org/fhir/StructureDefinition/patient-birthTime";
     private static final String[] NOT_MAPPED_QDM_TYPES = {"QDM::DeviceOrder", "QDM::SubstanceOrder", "QDM::SubstanceRecommended"};
