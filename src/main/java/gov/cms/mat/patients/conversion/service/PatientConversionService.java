@@ -202,6 +202,7 @@ public class PatientConversionService implements FhirCreator {
             QdmToFhirPatientResult qdmToFhirPatientResult = patientConverter.convert(bonniePatient, qdmTypes);
             Patient fhirPatient = qdmToFhirPatientResult.getFhirPatient();
 
+            // creates Practitioners, if they exist,  that wil be used later for references
             processFuture(bonniePatient, fhirPatient, practitionerConverter, futures);
 
             processGroup1(bonniePatient, futures, qdmTypes, fhirPatient);

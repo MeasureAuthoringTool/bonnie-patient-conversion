@@ -41,7 +41,8 @@ public class PatientCharacteristicPayerConverter extends ConverterBase<Coverage>
         coverage.setBeneficiary(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
+            conversionMessages.add("Payer.code attribute not mapped");
+            // coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {

@@ -54,9 +54,9 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
             medicationAdministration.getDosage().setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
-        // This object if not null then all the elements in the object is null
+
         if (qdmDataElement.getFrequency() != null) {
-            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "frequency");
+            conversionMessages.add("Frequency attribute not mapped");
         }
 
         if (qdmDataElement.getReason() != null) {

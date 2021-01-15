@@ -75,8 +75,8 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
 
     @Async("threadPoolConversion")
     public CompletableFuture<List<FhirDataElement>> convertToFhirDataElement(BonniePatient bonniePatient, Patient fhirPatient) {
-        List<FhirDataElement> encounters = createDataElements(bonniePatient, fhirPatient);
-        return CompletableFuture.completedFuture(encounters);
+        List<FhirDataElement> dataElements = createDataElements(bonniePatient, fhirPatient);
+        return CompletableFuture.completedFuture(dataElements);
     }
 
     public List<FhirDataElement> createDataElements(BonniePatient bonniePatient, Patient fhirPatient) {

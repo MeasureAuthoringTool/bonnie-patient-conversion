@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -31,7 +32,7 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
         qdmDataElement.setDosage(createDosage());
         qdmDataElement.setRoute(createRoute());
 
-        qdmDataElement.setFrequency(createFrequency()); //  not mapped
+        qdmDataElement.setFrequency(createFrequency()); // creates warning
 
         qdmDataElement.setReason(createReason());
         qdmDataElement.setRelevantDatetime(createRelevantDatetime());
@@ -46,13 +47,15 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
         checkDosage(result.getFhirResource().getDosage().getDose());
         checkRoute(result.getFhirResource().getDosage().getRoute());
         checkReason(result.getFhirResource().getReasonCodeFirstRep());
-        // checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType().getValue());
         checkRelevantPeriod(result.getFhirResource().getEffectivePeriod());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
 
         assertEquals(MedicationAdministration.MedicationAdministrationStatus.UNKNOWN, result.getFhirResource().getStatus());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertEquals(2, result.getConversionMessages().size());
+        assertEquals("Frequency attribute not mapped", result.getConversionMessages().get(0));
+        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(1));
+
     }
 
     @Test

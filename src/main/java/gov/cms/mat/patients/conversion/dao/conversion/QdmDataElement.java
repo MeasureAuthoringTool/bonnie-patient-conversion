@@ -90,7 +90,7 @@ public class QdmDataElement {
 
     private String description;
 
-    private TargetOutcome targetOutcome;
+    private JsonNode targetOutcome;
 
     private String codeListId;
 
@@ -108,6 +108,8 @@ public class QdmDataElement {
     private QdmPractitioner prescriber;
     private QdmPractitioner dispenser;
     private QdmPractitioner performer;
+
+    private Date statusDate;
 
     public String identifier() {
         return id;

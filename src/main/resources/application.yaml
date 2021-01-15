@@ -31,10 +31,11 @@ mat-api-key: DISABLED
 
 logging:
   level:
-    root: WARN
+    root: DEBUG
     gov.cms.mat: INFO
     org.hl7.fhir.r4.hapi.ctx: WARN
     org.hl7.fhir.r4.hapi.validation: WARN
+    org.springframework.web.servlet.mvc.method.annotation: DEBUG
   pattern:
     console: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %mdc %-5level %logger{36}.%M - %msg%n"
     file: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %mdc %logger{36}.%M - %msg%n"

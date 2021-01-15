@@ -34,8 +34,11 @@ class PatientCharacteristicPayerConverterTest extends BaseConversionTest impleme
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getBeneficiary());
 
-        checkDataElementCodeableConcept(result.getFhirResource().getType());
+        // checkDataElementCodeableConcept(result.getFhirResource().getType());
         checkRelevantPeriod(result.getFhirResource().getPeriod());
+
+        assertEquals(1, result.getConversionMessages().size());
+        assertEquals("Payer.code attribute not mapped", result.getConversionMessages().get(0));
     }
 
     @Test

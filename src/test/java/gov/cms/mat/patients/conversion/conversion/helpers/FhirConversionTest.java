@@ -606,4 +606,12 @@ public interface FhirConversionTest {
         assertNull(codeableConcept.getCodingFirstRep().getDisplay());
         assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
     }
+
+   default Date createStatusDate() {
+       return new Date(now.toEpochMilli() - 9994);
+    }
+
+   default void checkStatusDate(Date statusDate) {
+        assertEquals(createStatusDate(), statusDate);
+    }
 }
