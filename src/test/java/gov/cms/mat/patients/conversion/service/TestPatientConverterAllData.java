@@ -45,7 +45,7 @@ class TestPatientConverterAllData implements ResourceFileUtil {
     @SneakyThrows
     @Test
     void process() {
-        String all = getStringFromResource("/cqm_patients.json");
+        String all = getStringFromResource("/cms157v10_patients.json");
 
         ObjectMapper objectMapper = new ObjectMapper();
 
