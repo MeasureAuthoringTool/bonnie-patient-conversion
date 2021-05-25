@@ -47,7 +47,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
     @Override
     public QdmToFhirConversionResult<Goal> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
-        Goal goal = new Goal();
+        var goal = new Goal();
         goal.setSubject(createPatientReference(fhirPatient));
         goal.setId(qdmDataElement.getId());
 
@@ -56,7 +56,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         }
 
         if (qdmDataElement.getTargetOutcome() != null) {
-            Type type = processTargetOutcome(qdmDataElement.getTargetOutcome());
+            var type = processTargetOutcome(qdmDataElement.getTargetOutcome());
 
             if (type != null) {
                 goal.getTargetFirstRep().setDetail(type);
@@ -71,8 +71,8 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             goal.getTargetFirstRep().setDue(new DateType(qdmDataElement.getRelevantPeriod().getHigh()));
         }
 
-        if (qdmDataElement.getStatusDate() != null) {
-            goal.setStatusDate(qdmDataElement.getStatusDate());
+        if (qdmDataElement.getProcessedStatusDate() != null) {
+            goal.setStatusDate(qdmDataElement.getProcessedStatusDate());
         }
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {
@@ -95,12 +95,12 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         log.debug(jsonNode.getClass().getName());
 
         if (jsonNode instanceof IntNode) {
-            IntNode intNode = (IntNode) jsonNode;
+            var intNode = (IntNode) jsonNode;
             return new IntegerType(intNode.intValue());
         }
 
         if (jsonNode instanceof DoubleNode) {
-            DoubleNode doubleNode = (DoubleNode) jsonNode;
+            var doubleNode = (DoubleNode) jsonNode;
             return new StringType(doubleNode.asText());
         }
 
@@ -116,7 +116,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         JsonNode typeNode = objectNode.get("_type");
 
         if (typeNode == null) {
-            QdmCodeSystem qdmCodeSystem = convertToQdmCodeSystem(objectNode);
+            var qdmCodeSystem = convertToQdmCodeSystem(objectNode);
 
             if (qdmCodeSystem == null) {
                 return null;
@@ -164,7 +164,7 @@ public class CareCoalConverter extends ConverterBase<Goal> {
 
         JsonNode displayNode = objectNode.get("display");
 
-        QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+        var qdmCodeSystem = new QdmCodeSystem();
         qdmCodeSystem.setSystem(systemNode.asText());
         qdmCodeSystem.setCode(codeNode.asText());
 

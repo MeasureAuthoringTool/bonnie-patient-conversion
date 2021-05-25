@@ -38,25 +38,17 @@ import org.hl7.fhir.r4.model.Type;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.SNOMED_OID;
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYSTEM;
-import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.ELEMENT_ID;
-import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.FAMILY_NAME;
-import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.GIVEN_NAMES;
-import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.PATIENT_ID;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.*;
+import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public interface FhirConversionTest {
     Instant now = Instant.now();
@@ -128,7 +120,6 @@ public interface FhirConversionTest {
     }
 
 
-
     default Date createRelevantDatetime() {
         return new Date(now.toEpochMilli() - 10000);
     }
@@ -173,7 +164,7 @@ public interface FhirConversionTest {
         return new Date(now.toEpochMilli() - 7777);
     }
 
-    default void checkActiveDatetime(Date  date) {
+    default void checkActiveDatetime(Date date) {
         assertEquals(createActiveDatetime(), date);
     }
 
@@ -607,11 +598,47 @@ public interface FhirConversionTest {
         assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
     }
 
-   default Date createStatusDate() {
-       return new Date(now.toEpochMilli() - 9994);
+    default Date createStatusDate() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.set(2021, Calendar.FEBRUARY, 1);
+
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTime();
     }
 
-   default void checkStatusDate(Date statusDate) {
-        assertEquals(createStatusDate(), statusDate);
+    default ObjectNode createStatusDateObjectNode() {
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.setTime(createStatusDate());
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("year", calendar.get(Calendar.YEAR));
+        objectNode.put("month", calendar.get(Calendar.MONTH));
+        objectNode.put("day", calendar.get(Calendar.DAY_OF_MONTH));
+        return objectNode;
+    }
+
+    default TextNode createStatusDateTextNode() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.setTime(createStatusDate());
+
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        String text = calendar.get(Calendar.YEAR) + "-0" + (calendar.get(Calendar.MONTH)+1) + "-0" + calendar.get(Calendar.DAY_OF_MONTH);
+
+        return new TextNode(text);
+    }
+
+
+    default void checkStatusDate(Date statusDate) {
+        assertEquals(createStatusDate().getTime(), statusDate.getTime(), 60* 60* 1000 * 24);
     }
 }

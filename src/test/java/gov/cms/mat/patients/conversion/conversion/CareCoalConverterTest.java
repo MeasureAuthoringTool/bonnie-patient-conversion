@@ -42,18 +42,10 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
     }
 
     @Test
-    void convertToFhir() {
-        qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
+    void convertToFhirStatusDateObjectNode() {
+        createQdmElement();
 
-        TargetOutcome targetOutcome = createTargetOutcome();
-        JsonNode node = objectMapper.valueToTree(targetOutcome);
-        qdmDataElement.setTargetOutcome(node);
-
-        qdmDataElement.setRelevantPeriod(createRelevantPeriod());
-        qdmDataElement.setRelatedTo(List.of(createRelatedTo()));
-        qdmDataElement.setPerformer(createPerformer());
-
-        qdmDataElement.setStatusDate(createStatusDate());
+        qdmDataElement.setStatusDate(createStatusDateObjectNode());
 
         QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
@@ -70,6 +62,30 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         checkPerformer(result.getFhirResource().getExpressedBy());
 
         checkStatusDate(result.getFhirResource().getStatusDate());
+    }
+
+    @Test
+    void convertToFhirStatusDateTextNode() {
+        createQdmElement();
+
+        qdmDataElement.setStatusDate(createStatusDateTextNode());
+
+        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
+
+        checkStatusDate(result.getFhirResource().getStatusDate());
+    }
+
+    private void createQdmElement() {
+        qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
+
+        TargetOutcome targetOutcome = createTargetOutcome();
+        JsonNode node = objectMapper.valueToTree(targetOutcome);
+        qdmDataElement.setTargetOutcome(node);
+
+        qdmDataElement.setRelevantPeriod(createRelevantPeriod());
+        qdmDataElement.setRelatedTo(List.of(createRelatedTo()));
+        qdmDataElement.setPerformer(createPerformer());
     }
 
     @Test

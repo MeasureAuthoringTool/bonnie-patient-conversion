@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import gov.cms.mat.patients.conversion.conversion.helpers.DateHelper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class QdmDataElement {
+public class QdmDataElement implements DateHelper {
     @JsonProperty("_id")
     private String id;
 
@@ -109,7 +112,23 @@ public class QdmDataElement {
     private QdmPractitioner dispenser;
     private QdmPractitioner performer;
 
-    private Date statusDate;
+    private JsonNode statusDate;
+
+    public Date getProcessedStatusDate() {
+        if( statusDate == null ) {
+            return null;
+        }
+
+        if (statusDate instanceof ObjectNode) {
+            return convertToDateFromObjectNode((ObjectNode) statusDate);
+        }
+
+        if (statusDate instanceof TextNode) {
+            return convertToDateFromTextNode((TextNode) statusDate);
+        }
+
+        return null;
+    }
 
     public String identifier() {
         return id;

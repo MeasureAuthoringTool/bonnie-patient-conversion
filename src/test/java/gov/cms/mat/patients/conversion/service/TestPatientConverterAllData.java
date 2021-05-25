@@ -45,7 +45,7 @@ class TestPatientConverterAllData implements ResourceFileUtil {
     @SneakyThrows
     @Test
     void process() {
-        String all = getStringFromResource("/cqm_patients.json");
+        String all = getStringFromResource("/test_data/patients_duplicate_ids.json");
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -76,12 +76,26 @@ class TestPatientConverterAllData implements ResourceFileUtil {
 
     @SneakyThrows
     @Test
-    void load() {
-        String all = getStringFromResource("/patients_all_QDM_PROD_as_array.json");
+    void loadMany() {
+        String all = getStringFromResource("/cms157v10_patients.json");
         ObjectMapper objectMapper = new ObjectMapper();
         BonniePatient[] patients = objectMapper.readValue(all, BonniePatient[].class);
 
         List<ConversionResult> results = patientConversionService.processMany(Arrays.asList(patients));
         assertEquals(patients.length, results.size());
+    }
+
+    @SneakyThrows
+    @Test
+    void loadOne() {
+        String one = getStringFromResource("/test_data/patient_normal_status_date.json");
+
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        BonniePatient patient = objectMapper.readValue(one, BonniePatient.class);
+
+        ConversionResult result = patientConversionService.processOne(patient);
+        assertNotNull(result);
     }
 }

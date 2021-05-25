@@ -1,0 +1,365 @@
+{
+  "_id": "5f96e9ba9a72fb0000255bba",
+  "bundleId": null,
+  "expectedValues": [
+    {
+      "population_index": 0,
+      "measure_id": "BC4CD0D3-4352-4682-988F-179D977E738F",
+      "IPP": 1,
+      "DENOM": 1,
+      "DENEX": 1,
+      "NUMER": 0
+    }
+  ],
+  "familyName": "DenExclPass",
+  "givenNames": [
+    "HospiceCervixAbsence"
+  ],
+  "measure_ids": [
+    "BC4CD0D3-4352-4682-988F-179D977E738F"
+  ],
+  "notes": "",
+  "provider_ids": [],
+  "qdmPatient": {
+    "_id": "600087e51c76ba59c8c6aefc",
+    "birthDatetime": "1982-01-01T08:00:00.000+00:00",
+    "dataElements": [
+      {
+        "_id": "5f96e9c29a72fb0000255bc3",
+        "anatomicalLocationSite": null,
+        "authorDatetime": "2012-10-26T08:00:00.000+00:00",
+        "codeListId": "drc-18ff66177a0dae8ba4e94517c2aeb1bf0e08f2d4387e4be1c295ea26fc506a92",
+        "dataElementCodes": [
+          {
+            "code": "37687000",
+            "system": "2.16.840.1.113883.6.96",
+            "version": null,
+            "display": null
+          }
+        ],
+        "description": "Diagnosis: Congenital absence of cervix (disorder)",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.110",
+        "id": "5f96e9c29a72fb0000255bc3",
+        "prevalencePeriod": {
+          "low": "2012-10-26T08:00:00.000Z",
+          "high": "2012-10-26T08:15:00.000Z",
+          "lowClosed": true,
+          "highClosed": true
+        },
+        "qdmCategory": "condition",
+        "qdmTitle": "Diagnosis",
+        "qdmVersion": "5.5",
+        "qrdaOid": "2.16.840.1.113883.10.20.24.3.135",
+        "severity": null,
+        "_type": "QDM::Diagnosis"
+      },
+      {
+        "_id": "5f96e9d19a72fb0000255bcc",
+        "admissionSource": null,
+        "authorDatetime": null,
+        "codeListId": "2.16.840.1.113883.3.464.1003.101.12.1025",
+        "dataElementCodes": [
+          {
+            "code": "99395",
+            "system": "2.16.840.1.113883.6.12",
+            "version": null,
+            "display": null
+          }
+        ],
+        "description": "Encounter, Performed: Preventive Care Services - Established Office Visit, 18 and Up",
+        "diagnoses": [],
+        "dischargeDisposition": null,
+        "facilityLocations": [],
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.5",
+        "id": "5f96e9d19a72fb0000255bcc",
+        "lengthOfStay": null,
+        "negationRationale": null,
+        "priority": null,
+        "qdmCategory": "encounter",
+        "qdmStatus": "performed",
+        "qdmTitle": "Encounter, Performed",
+        "qdmVersion": "5.5",
+        "relevantPeriod": {
+          "low": "2011-10-26T08:00:00.000Z",
+          "high": "2012-10-26T08:15:00.000Z",
+          "lowClosed": true,
+          "highClosed": true
+        },
+        "_type": "QDM::EncounterPerformed"
+      },
+      {
+        "_id": "5f96ebf69a72fb0000255c3e",
+        "authorDatetime": "2012-10-26T08:00:00.000+00:00",
+        "codeListId": "2.16.840.1.113762.1.4.1108.15",
+        "dataElementCodes": [
+          {
+            "code": "385763009",
+            "system": "2.16.840.1.113883.6.96",
+            "version": null,
+            "display": null
+          }
+        ],
+        "description": "Intervention, Order: Hospice care ambulatory",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.35",
+        "id": "5f96ebf69a72fb0000255c3e",
+        "negationRationale": null,
+        "qdmCategory": "intervention",
+        "qdmStatus": "order",
+        "qdmTitle": "Intervention, Order",
+        "qdmVersion": "5.5",
+        "reason": null,
+        "_type": "QDM::InterventionOrder"
+      },
+      {
+        "_id": "5f96ec009a72fb0000255c4b",
+        "anatomicalLocationSite": null,
+        "authorDatetime": null,
+        "codeListId": "2.16.840.1.113883.3.464.1003.198.12.1014",
+        "components": [],
+        "dataElementCodes": [
+          {
+            "code": "0UTC0ZZ",
+            "system": "2.16.840.1.113883.6.4",
+            "version": null,
+            "display": null
+          }
+        ],
+        "description": "Procedure, Performed: Hysterectomy with No Residual Cervix",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.67",
+        "id": "5f96ec009a72fb0000255c4b",
+        "incisionDatetime": null,
+        "method": null,
+        "negationRationale": null,
+        "priority": null,
+        "qdmCategory": "procedure",
+        "qdmStatus": "performed",
+        "qdmTitle": "Procedure, Performed",
+        "qdmVersion": "5.5",
+        "rank": null,
+        "reason": null,
+        "relevantDatetime": null,
+        "relevantPeriod": {
+          "low": "2012-10-26T08:00:00.000Z",
+          "high": null,
+          "lowClosed": true,
+          "highClosed": true
+        },
+        "result": null,
+        "status": null,
+        "_type": "QDM::ProcedurePerformed"
+      },
+      {
+        "_id": "5f96ed729a72fb0000255cb3",
+        "authorDatetime": null,
+        "codeListId": "2.16.840.1.113883.3.464.1003.110.12.1059",
+        "components": [],
+        "dataElementCodes": [
+          {
+            "code": "21440-3",
+            "system": "2.16.840.1.113883.6.1",
+            "version": null,
+            "display": null
+          }
+        ],
+        "description": "Laboratory Test, Performed: HPV Test",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.42",
+        "id": "5f96ed729a72fb0000255cb3",
+        "method": null,
+        "negationRationale": null,
+        "qdmCategory": "laboratory_test",
+        "qdmStatus": "performed",
+        "qdmTitle": "Laboratory Test, Performed",
+        "qdmVersion": "5.5",
+        "reason": null,
+        "referenceRange": null,
+        "relevantDatetime": null,
+        "relevantPeriod": {
+          "low": null,
+          "high": null,
+          "lowClosed": true,
+          "highClosed": true
+        },
+        "result": null,
+        "resultDatetime": null,
+        "status": null,
+        "_type": "QDM::LaboratoryTestPerformed"
+      },
+      {
+        "_id": "6000818bb84298000052d56c",
+        "codeListId": "2.16.840.1.113883.3.7643.3.1010",
+        "dataElementCodes": [
+          {
+            "code": "248346009",
+            "system": "2.16.840.1.113883.6.96",
+            "version": null,
+            "display": null
+          }
+        ],
+        "description": "Care Goal: Change in Body Weight",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.7",
+        "id": "6000818bb84298000052d56c",
+        "performer": {
+          "_id": "108",
+          "hqmfOid": "2.16.840.1.113883.10.20.28.4.137",
+          "id": "108",
+          "identifier": {
+            "_id": "600087e51c76ba59c8c6aefd",
+            "namingSystem": "\"{urn:healthit-gov:qdm:v5_5}Practitioner\"",
+            "qdmVersion": "5.5",
+            "value": "NamedTypeSpecifier",
+            "_type": "QDM::Identifier"
+          },
+          "qdmVersion": "5.5",
+          "qrdaOid": "2.16.840.1.113883.10.20.24.3.162",
+          "qualification": {
+            "code": "101Y00000X",
+            "system": "2.16.840.1.113883.6.101",
+            "display": "Behavioral Health \u0026 Social Service Providers; Counselor",
+            "version": null
+          },
+          "role": {
+            "code": "101Y00000X",
+            "system": "2.16.840.1.113883.6.101",
+            "display": "Behavioral Health \u0026 Social Service Providers; Counselor",
+            "version": null
+          },
+          "specialty": {
+            "code": "309367003",
+            "system": "2.16.840.1.113883.6.96",
+            "display": "Obstetrician and gynecologist (occupation)",
+            "version": null
+          },
+          "_type": "QDM::Practitioner"
+        },
+        "qdmCategory": "care_goal",
+        "qdmTitle": "Care Goal",
+        "qdmVersion": "5.5",
+        "relatedTo": [],
+        "relevantPeriod": {
+          "low": "2012-01-14T08:00:00.000Z",
+          "high": "2012-01-14T08:15:00.000Z",
+          "lowClosed": true,
+          "highClosed": true
+        },
+        "statusDate": "2012-01-16",
+        "targetOutcome": {
+          "numerator": {
+            "value": 2,
+            "unit": "kg"
+          },
+          "denominator": {
+            "value": 5,
+            "unit": "kg"
+          }
+        },
+        "_type": "QDM::CareGoal"
+      },
+      {
+        "_id": "600087a21c76ba59c8c60aa7",
+        "codeListId": "2.16.840.1.113762.1.4.1",
+        "dataElementCodes": [
+          {
+            "code": "F",
+            "system": "2.16.840.1.113883.5.1",
+            "version": null,
+            "display": "Female"
+          }
+        ],
+        "description": "Patient Characteristic Sex: ONCAdministrativeSex",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.55",
+        "id": "600087a21c76ba59c8c60aa7",
+        "qdmCategory": "patient_characteristic",
+        "qdmStatus": "gender",
+        "qdmTitle": "Patient Characteristic Sex",
+        "qdmVersion": "5.5",
+        "_type": "QDM::PatientCharacteristicSex"
+      },
+      {
+        "_id": "600087a21c76ba59c8c60ab9",
+        "birthDatetime": "1982-01-01T08:00:00.000+00:00",
+        "codeListId": "drc-c48426f721cede4d865df946157d5e2dc90bd32763ffcb982ca45b3bd97a29db",
+        "dataElementCodes": [
+          {
+            "code": "21112-8",
+            "system": "2.16.840.1.113883.6.1",
+            "version": null,
+            "display": "Birth date"
+          }
+        ],
+        "description": "Patient Characteristic Birthdate: Birth date",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.54",
+        "id": "600087a21c76ba59c8c60ab9",
+        "qdmCategory": "patient_characteristic",
+        "qdmStatus": "birthdate",
+        "qdmTitle": "Patient Characteristic Birthdate",
+        "qdmVersion": "5.5",
+        "_type": "QDM::PatientCharacteristicBirthdate"
+      },
+      {
+        "_id": "600087a21c76ba59c8c60ab8",
+        "cause": null,
+        "codeListId": "drc-de07870094887380a3ec4ea0162ea8784a0f80fd301f096068889a6f335f7313",
+        "dataElementCodes": [
+          {
+            "code": "419099009",
+            "system": "2.16.840.1.113883.6.96",
+            "version": null,
+            "display": "Dead (finding)"
+          }
+        ],
+        "description": "Patient Characteristic Expired: Dead (finding)",
+        "expiredDatetime": "2020-10-01T08:00:00.000+00:00",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.57",
+        "id": "600087a21c76ba59c8c60ab8",
+        "qdmCategory": "patient_characteristic",
+        "qdmStatus": "expired",
+        "qdmTitle": "Patient Characteristic Expired",
+        "qdmVersion": "5.5",
+        "_type": "QDM::PatientCharacteristicExpired"
+      },
+      {
+        "_id": "600087a21c76ba59c8c60ab2",
+        "codeListId": "2.16.840.1.114222.4.11.836",
+        "dataElementCodes": [
+          {
+            "code": "1002-5",
+            "system": "2.16.840.1.113883.6.238",
+            "version": null,
+            "display": "American Indian or Alaska Native"
+          }
+        ],
+        "description": "Patient Characteristic Race: Race",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.59",
+        "id": "600087a21c76ba59c8c60ab2",
+        "qdmCategory": "patient_characteristic",
+        "qdmStatus": "race",
+        "qdmTitle": "Patient Characteristic Race",
+        "qdmVersion": "5.5",
+        "_type": "QDM::PatientCharacteristicRace"
+      },
+      {
+        "_id": "600087a21c76ba59c8c60aad",
+        "codeListId": "2.16.840.1.114222.4.11.837",
+        "dataElementCodes": [
+          {
+            "code": "2135-2",
+            "system": "2.16.840.1.113883.6.238",
+            "version": null,
+            "display": "Hispanic or Latino"
+          }
+        ],
+        "description": "Patient Characteristic Ethnicity: Ethnicity",
+        "hqmfOid": "2.16.840.1.113883.10.20.28.4.56",
+        "id": "600087a21c76ba59c8c60aad",
+        "qdmCategory": "patient_characteristic",
+        "qdmStatus": "ethnicity",
+        "qdmTitle": "Patient Characteristic Ethnicity",
+        "qdmVersion": "5.5",
+        "_type": "QDM::PatientCharacteristicEthnicity"
+      }
+    ],
+    "extendedData": null,
+    "qdmVersion": "5.5"
+  },
+  "user_id": "5633832f6c5d1c693000854a"
+}
