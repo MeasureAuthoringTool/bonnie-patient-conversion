@@ -27,11 +27,11 @@ public class ConversionResult {
     List<String> measureIds;
 
     @JsonProperty("data_elements")
-    private List<FhirDataElement> dataElements;
+    private final List<FhirDataElement> dataElements;
 
     @JsonProperty("created_at")
-    private Instant createdAt;
+    private final Instant createdAt;
 
     @JsonProperty("updated_at")
-    private Instant updatedAt;
+    private final Instant updatedAt;
 }

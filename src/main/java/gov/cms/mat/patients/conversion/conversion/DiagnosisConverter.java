@@ -37,7 +37,7 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
     public QdmToFhirConversionResult<Condition> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        Condition condition = new Condition();
+        var condition = new Condition();
         condition.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
@@ -56,9 +56,19 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
             condition.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));
         }
 
-        if( qdmDataElement.getAnatomicalLocationSite() != null) {
-            condition.setBodySite(List.of( convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite())));
+        if (qdmDataElement.getAnatomicalLocationSite() != null) {
+            condition.setBodySite(List.of(convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite())));
         }
+
+        condition.setClinicalStatus(createCodeableConcept(
+                "http://hl7.org/fhir/ValueSet/condition-clinical",
+                "active",
+                "Active"));
+
+        condition.setVerificationStatus(createCodeableConcept(
+                "http://hl7.org/fhir/ValueSet/condition-ver-status",
+                "confirmed",
+                "Confirmed"));
 
         processNegation(qdmDataElement, condition);
 

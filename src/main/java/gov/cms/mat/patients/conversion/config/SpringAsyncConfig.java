@@ -27,9 +27,9 @@ public class SpringAsyncConfig {
     }
 
     private ThreadPoolTaskExecutor createThreadPool(String name, String prefix) {
-        BonnieFhirThreadPoolConfiguration.ThreadPoolConfigurations configuration = findConfiguration(name);
+        var configuration = findConfiguration(name);
 
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        var executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(configuration.getCorePoolSize());
         executor.setMaxPoolSize(configuration.getMaxPoolSize());
         executor.setQueueCapacity(configuration.getQueueCapacity());

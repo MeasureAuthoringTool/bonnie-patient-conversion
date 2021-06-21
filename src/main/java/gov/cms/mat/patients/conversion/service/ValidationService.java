@@ -15,7 +15,7 @@ public class ValidationService {
     }
 
     public ValidationResult validate(IBaseResource resource) {
-        ValidationOptions options = new ValidationOptions();
+        var options = new ValidationOptions();
 
         return fhirValidator.validateWithResult(resource, options);
     }

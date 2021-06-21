@@ -38,7 +38,7 @@ public class PatientConversionService implements FhirCreator {
     private final ObjectMapper objectMapper;
     private final FhirContext fhirContext;
 
-    //Loads all beans that extends Abstract class ConverterBase
+    //Loads all beans that extends Abstract class ConverterBase except PractitionerConverter
     private final List<ConverterBase<? extends IBaseResource>> converters;
 
     public PatientConversionService(PatientConverter patientConverter,
@@ -139,7 +139,7 @@ public class PatientConversionService implements FhirCreator {
         } catch (InterruptedException ie) {
             log.error("InterruptedException: ", ie);
             Thread.currentThread().interrupt();
-            throw new PatientConversionException("oops", ie);
+            throw new PatientConversionException("InterruptedException from future", ie);
         } catch (Exception e) {
             log.error("Error with future get", e);
             return Collections.emptyList();

@@ -31,6 +31,9 @@ class ProcedurePerformedConverterTest extends BaseConversionTest implements Fhir
         QdmToFhirConversionResult<Procedure> result = procedurePerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkNoNegation(result);
+
+        assertEquals(2, result.getFhirResource().getExtension().size());
+        checkRecordedExtension(result.getFhirResource().getExtension().get(1));
     }
 
     @Test

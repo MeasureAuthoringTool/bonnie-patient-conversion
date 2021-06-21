@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class FhirContextConfig {
     @Bean
     public FhirContext fhirContext() {
-        FhirContext fhirContext = FhirContext.forR4();
+        var fhirContext = FhirContext.forR4();
         fhirContext.setNarrativeGenerator(new DefaultThymeleafNarrativeGenerator());
         log.info("Created: {} ", fhirContext);
         return fhirContext;

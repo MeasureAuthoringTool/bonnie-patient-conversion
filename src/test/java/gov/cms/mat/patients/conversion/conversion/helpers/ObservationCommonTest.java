@@ -81,7 +81,7 @@ public interface ObservationCommonTest extends FhirConversionTest {
 
     default void checkWithoutNegationResult(QdmToFhirConversionResult<Observation> result) {
         checkDataElement(result);
-        assertEquals(Observation.ObservationStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(Observation.ObservationStatus.FINAL, result.getFhirResource().getStatus());
     }
 
     default void checkNegationResult(QdmToFhirConversionResult<Observation> result) {

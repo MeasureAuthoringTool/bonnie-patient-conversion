@@ -12,13 +12,14 @@ import java.util.List;
 
 public interface ServiceRequestConverter extends DataElementFinder, FhirCreator {
 
-    default QdmToFhirConversionResult<ServiceRequest> convertToFhirServiceRequest(Patient fhirPatient,
-                                                                                  QdmDataElement qdmDataElement,
-                                                                                  ConverterBase<ServiceRequest> converterBase,
-                                                                                  ServiceRequest.ServiceRequestIntent intent) {
+    default QdmToFhirConversionResult<ServiceRequest>
+    convertToFhirServiceRequest(Patient fhirPatient,
+                                QdmDataElement qdmDataElement,
+                                ConverterBase<ServiceRequest> converterBase,
+                                ServiceRequest.ServiceRequestIntent intent) {
         List<String> conversionMessages = new ArrayList<>();
 
-        ServiceRequest serviceRequest = new ServiceRequest();
+        var serviceRequest = new ServiceRequest();
         serviceRequest.setSubject(createPatientReference(fhirPatient));
 
         serviceRequest.setIntent(intent);
@@ -36,8 +37,7 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
         serviceRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
 
         if (!converterBase.processNegation(qdmDataElement, serviceRequest)) {
-            serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.UNKNOWN);
-            conversionMessages.add(ConverterBase.NO_STATUS_MAPPING);
+            serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.ACTIVE);
         }
 
         return QdmToFhirConversionResult.<ServiceRequest>builder()

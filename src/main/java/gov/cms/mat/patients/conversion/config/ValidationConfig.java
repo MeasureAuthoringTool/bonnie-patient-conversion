@@ -7,9 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.INCISION_DATE_TIME_URL;
-import static gov.cms.mat.patients.conversion.conversion.PatientConverter.BIRTH_TIME_URL;
-import static gov.cms.mat.patients.conversion.conversion.PatientConverter.DETAILED_RACE_URL;
-import static gov.cms.mat.patients.conversion.conversion.PatientConverter.US_CORE_RACE_URL;
+import static gov.cms.mat.patients.conversion.conversion.PatientConverter.*;
 
 @Configuration
 public class ValidationConfig {
@@ -23,7 +21,7 @@ public class ValidationConfig {
     FhirValidator fhirValidator() {
         FhirValidator validator = fhirContext.newValidator();
 
-        FhirInstanceValidator instanceValidator = new FhirInstanceValidator(fhirContext);
+        var instanceValidator = new FhirInstanceValidator(fhirContext);
         instanceValidator.setValidationSupport(fhirContext.getValidationSupport());
         instanceValidator.setNoTerminologyChecks(true);
 

@@ -17,7 +17,7 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        OpenAPI openAPI = new OpenAPI()
+        var openAPI = new OpenAPI()
                 .info(buildInfo());
 
         configureServerUrl(openAPI);

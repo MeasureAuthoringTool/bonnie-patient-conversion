@@ -26,10 +26,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      */
     @ExceptionHandler({Exception.class})
     @ResponseBody
-    public ResponseEntity<ExceptionMessage>  handleAnyException(Exception e) {
+    public ResponseEntity<ExceptionMessage> handleAnyException(Exception e) {
         ResponseStatus foundAnnotation = AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class);
 
-        HttpStatus status = foundAnnotation != null ?   foundAnnotation.code() :  HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpStatus status = foundAnnotation != null ? foundAnnotation.code() : HttpStatus.INTERNAL_SERVER_ERROR;
 
         return errorResponse(e, status);
     }
@@ -40,7 +40,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({InvocationTargetException.class, IllegalArgumentException.class, ClassCastException.class,
             ConversionFailedException.class})
     @ResponseBody
-    public ResponseEntity<ExceptionMessage>  handleMiscFailures(Throwable t) {
+    public ResponseEntity<ExceptionMessage> handleMiscFailures(Throwable t) {
         return errorResponse(t, HttpStatus.BAD_REQUEST);
     }
 

@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -53,11 +54,14 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         checkPrescriber(result.getFhirResource().getAuthorizingPrescriptionFirstRep());
         checkDispenser(result.getFhirResource().getPerformerFirstRep().getActor());
 
-        checkRoute( result.getFhirResource().getDosageInstructionFirstRep().getRoute());
+        checkRoute(result.getFhirResource().getDosageInstructionFirstRep().getRoute());
 
-        assertEquals(MedicationDispense.MedicationDispenseStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(MedicationDispense.MedicationDispenseStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        assertEquals(3, result.getConversionMessages().size());
+        assertEquals(1, result.getFhirResource().getExtension().size());
+        checkRecordedExtension(result.getFhirResource().getExtension().get(0));
+
+        assertEquals(1, result.getConversionMessages().size());
     }
 
     @Test
@@ -75,7 +79,7 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
         checkRecordedExtension(result.getFhirResource().getExtension().get(0));
 
         assertEquals(MedicationDispense.MedicationDispenseStatus.DECLINED, result.getFhirResource().getStatus());
-        assertEquals(1, result.getConversionMessages().size());
+        assertEquals(0, result.getConversionMessages().size());
     }
 
     @Test
@@ -86,7 +90,7 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
                 medicationDispensedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(2, result.getConversionMessages().size());
+        assertEquals(1, result.getConversionMessages().size());
         assertEquals("Frequency code is null", result.getConversionMessages().get(0));
     }
 
@@ -102,8 +106,8 @@ class MedicationDispensedConverterTest extends BaseConversionTest implements Fhi
                 medicationDispensedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(MedicationDispense.MedicationDispenseStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(MedicationDispense.MedicationDispenseStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 }

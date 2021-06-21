@@ -22,7 +22,7 @@ public class ConcurrentMapCacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        var cacheManager = new SimpleCacheManager();
 
         List<ConcurrentMapCache> caches = createCaches();
         log.info("Created caches: {}", names);

@@ -41,7 +41,7 @@ public class RelatedToProcessor implements FhirCreator {
 
     @SneakyThrows
     private void processGoalAddresses(FhirDataElement goalFhirDataElement) {
-        Goal goal = (Goal) goalFhirDataElement.getFhirObject();
+        var goal = (Goal) goalFhirDataElement.getFhirObject();
 
         goal.getAddresses().forEach(reference -> processBasedOn(reference, goalFhirDataElement));
 
@@ -62,7 +62,7 @@ public class RelatedToProcessor implements FhirCreator {
 
     @SneakyThrows
     private void processCommunicationRelatedTo(FhirDataElement communicationFhirDataElement) {
-        Communication communication = (Communication) communicationFhirDataElement.getFhirObject();
+        var communication = (Communication) communicationFhirDataElement.getFhirObject();
 
         communication.getBasedOn().forEach(reference -> processBasedOn(reference, communicationFhirDataElement));
 

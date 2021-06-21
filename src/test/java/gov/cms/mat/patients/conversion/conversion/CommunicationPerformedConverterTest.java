@@ -36,12 +36,13 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         qdmDataElement.setRelatedTo(List.of(createRelatedTo()));
         qdmDataElement.setSender(createSender());
         qdmDataElement.setRecipient(createRecipient());
+        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         QdmToFhirConversionResult<Communication> result = communicationPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(Communication.CommunicationStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(Communication.CommunicationStatus.COMPLETED, result.getFhirResource().getStatus());
 
         checkNoStatusMappingOnly(result.getConversionMessages());
 
@@ -53,6 +54,9 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         checkRelatedTo(result.getFhirResource().getBasedOnFirstRep());
         checkSender(result.getFhirResource().getSender());
         checkRecipient(result.getFhirResource().getRecipientFirstRep());
+
+        assertEquals(1, result.getFhirResource().getExtension().size());
+        checkRecordedExtension(result.getFhirResource().getExtension().get(0));
     }
 
     @Test

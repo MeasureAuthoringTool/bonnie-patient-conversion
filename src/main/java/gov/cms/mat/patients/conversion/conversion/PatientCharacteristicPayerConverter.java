@@ -4,7 +4,6 @@ import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +36,11 @@ public class PatientCharacteristicPayerConverter extends ConverterBase<Coverage>
     public QdmToFhirConversionResult<Coverage> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        Coverage coverage = new Coverage();
+        var coverage = new Coverage();
         coverage.setBeneficiary(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             conversionMessages.add("Payer.code attribute not mapped");
-            // coverage.setType(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
@@ -58,7 +56,7 @@ public class PatientCharacteristicPayerConverter extends ConverterBase<Coverage>
     }
 
     private void convertRelevantPeriod(Coverage coverage, QdmDataElement qdmDataElement) {
-        QdmPeriod qdmPeriod = qdmDataElement.getRelevantPeriod();
+        var qdmPeriod = qdmDataElement.getRelevantPeriod();
         coverage.getPeriod().setStart(qdmPeriod.getLow());
         coverage.getPeriod().setEnd(qdmPeriod.getHigh());
     }

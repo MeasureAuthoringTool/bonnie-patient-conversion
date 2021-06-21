@@ -1,11 +1,9 @@
 package gov.cms.mat.patients.conversion.conversion;
 
-import ca.uhn.fhir.validation.ValidationResult;
 import gov.cms.mat.patients.conversion.conversion.helpers.DataElementFinder;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirPatientResult;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
@@ -59,17 +57,17 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
     public QdmToFhirPatientResult getQdmToFhirPatientResult(BonniePatient bonniePatient, Set<String> qdmTypes) {
         List<String> conversionMessages = createNotMappedMessages(bonniePatient.getQdmPatient().getDataElements(), qdmTypes);
-        Patient patient = process(bonniePatient);
+        var patient = process(bonniePatient);
 
-        ValidationResult validationResult = validationService.validate(patient);
+        var validationResult = validationService.validate(patient);
 
-        ConversionOutcome outcome = ConversionOutcome.builder()
+        var conversionOutcome = ConversionOutcome.builder()
                 .conversionMessages(conversionMessages)
                 .validationMessages(validationResult.getMessages())
                 .build();
 
         return QdmToFhirPatientResult.builder()
-                .outcome(outcome)
+                .outcome(conversionOutcome)
                 .fhirPatient(patient)
                 .build();
     }
@@ -100,7 +98,7 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
     }
 
     private Patient process(BonniePatient bonniePatient) {
-        Patient fhirPatient = new Patient();
+        var fhirPatient = new Patient();
         fhirPatient.setId(bonniePatient.getId());
 
         fhirPatient.getExtension().add(new Extension(US_CORE_RACE_URL));
@@ -111,16 +109,6 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         fhirPatient.getName().add(createName(bonniePatient));
 
         fhirPatient.setBirthDate(bonniePatient.getQdmPatient().getBirthDatetime());
-
-        /* awaiting inout from stan adding this creates a validation message:
-         * “The extension http://hl7.org/fhir/StructureDefinition/patient-birthTime is not allowed to be used at this
-         * point (allowed = e:Patient.birthDate; this element is [[Patient])“,
-         * */
-//        if( fhirPatient.hasBirthDate()) {
-//            fhirPatient.getExtension().add(new Extension(BIRTH_TIME_URL));
-//            Extension extension = fhirPatient.getExtensionByUrl(BIRTH_TIME_URL);
-//            extension.setValue(new DateTimeType(bonniePatient.getQdmPatient().getBirthDatetime()));
-//        }
 
         if (bonniePatient.getQdmPatient().getExtendedData() != null &&
                 StringUtils.isNotBlank(bonniePatient.getQdmPatient().getExtendedData().getMedicalRecordNumber())) {
@@ -153,7 +141,7 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
     }
 
     private HumanName createName(BonniePatient bonniePatient) {
-        HumanName humanName = new HumanName();
+        var humanName = new HumanName();
         humanName.setUse(HumanName.NameUse.USUAL); // ??
 
         humanName.setFamily(bonniePatient.getFamilyName());
@@ -171,8 +159,8 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
     private void processRace(BonniePatient bonniePatient, Patient fhirPatient) {
         try {
-            QdmCodeSystem qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicRace");
-            Extension extension = fhirPatient.getExtensionByUrl(US_CORE_RACE_URL);
+            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicRace");
+            var extension = fhirPatient.getExtensionByUrl(US_CORE_RACE_URL);
 
             extension.setValue(new CodeType(qdmCodeSystem.getCode()));
         } catch (PatientConversionException e) {
@@ -182,8 +170,8 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
     private void processEthnicity(BonniePatient bonniePatient, Patient fhirPatient) {
         try {
-            QdmCodeSystem qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicEthnicity");
-            Extension extension = fhirPatient.getExtensionByUrl(DETAILED_RACE_URL);
+            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicEthnicity");
+            var extension = fhirPatient.getExtensionByUrl(DETAILED_RACE_URL);
 
             extension.setValue(new CodeType(qdmCodeSystem.getCode()));
         } catch (PatientConversionException e) {
@@ -193,18 +181,18 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
 
     private Enumerations.AdministrativeGender processSex(BonniePatient bonniePatient) {
         try {
-            QdmCodeSystem qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicSex");
+            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicSex");
 
-            Enumerations.AdministrativeGender value = Enumerations.AdministrativeGender.UNKNOWN;
+            var administrativeGender = Enumerations.AdministrativeGender.UNKNOWN;
             if (qdmCodeSystem.getDisplay().toLowerCase().startsWith("m")) { // sometimes Male and M
-                value = Enumerations.AdministrativeGender.MALE;
+                administrativeGender = Enumerations.AdministrativeGender.MALE;
             }
 
             if (qdmCodeSystem.getDisplay().toLowerCase().startsWith("f")) {
-                value = Enumerations.AdministrativeGender.FEMALE;
+                administrativeGender = Enumerations.AdministrativeGender.FEMALE;
             }
 
-            return value;
+            return administrativeGender;
         } catch (PatientConversionException e) {
             log.info(e.getMessage());
             return null;

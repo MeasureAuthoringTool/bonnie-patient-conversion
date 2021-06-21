@@ -11,10 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -44,6 +41,8 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
         assertFalse(result.getFhirResource().hasSeverity());
         assertFalse(result.getFhirResource().hasLocation());
         assertNull(result.getFhirResource().getRecordedDate());
+
+        assertEquals(AdverseEvent.AdverseEventActuality.ACTUAL, result.getFhirResource().getActuality());
     }
 
     @Test

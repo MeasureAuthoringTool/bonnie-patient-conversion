@@ -14,10 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -44,7 +41,9 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
         checkAuthorDatetime(result.getFhirResource().getDate());
         checkRelationShip(result.getFhirResource().getRelationship());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertEquals(FamilyMemberHistory.FamilyHistoryStatus.COMPLETED, result.getFhirResource().getStatus());
+
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     @Test
@@ -57,9 +56,7 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
 
         assertTrue(result.getFhirResource().hasRelationship());
 
-        assertEquals(1, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
-
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     private void checkRelationShip(CodeableConcept relationship) {
@@ -82,6 +79,6 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
         QdmToFhirConversionResult<FamilyMemberHistory> result = familyHistoryConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
         assertNotNull(result);
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 }

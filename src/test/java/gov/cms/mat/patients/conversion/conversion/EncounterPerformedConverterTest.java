@@ -15,10 +15,7 @@ import java.util.List;
 
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static gov.cms.mat.patients.conversion.conversion.EncounterPerformedConverter.NEGATION_MESSAGE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -48,12 +45,12 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         assertEquals(1, result.getFhirResource().getType().size());
         checkDataElementCodeableConcept(result.getFhirResource().getType().get(0));
 
-
         checkDiagnose(result.getFhirResource().getDiagnosisFirstRep());
         checkLengthOfStay(result.getFhirResource().getLength());
         checkDischargeDisposition(result.getFhirResource().getHospitalization());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertEquals(Encounter.EncounterStatus.FINISHED, result.getFhirResource().getStatus());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     @Test
@@ -63,7 +60,6 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         bad2.setCode(null);
         qdmDataElement.setDiagnoses(List.of(bad1, bad2));
 
-
         QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         assertEquals(1, result.getFhirResource().getDiagnosis().size());
@@ -71,7 +67,7 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         assertEquals("badCode", result.getFhirResource().getDiagnosisFirstRep().getUse().getCoding().get(0).getCode());
         assertEquals("urn:oid:badSystem", result.getFhirResource().getDiagnosisFirstRep().getUse().getCoding().get(0).getSystem());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     @Test
@@ -81,9 +77,8 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(2, result.getConversionMessages().size());
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(0));
-        assertEquals(NEGATION_MESSAGE, result.getConversionMessages().get(1));
+        assertEquals(1, result.getConversionMessages().size());
+        assertEquals(NEGATION_MESSAGE, result.getConversionMessages().get(0));
     }
 
     @Test
@@ -91,8 +86,7 @@ class EncounterPerformedConverterTest extends BaseConversionTest implements Fhir
         QdmToFhirConversionResult<Encounter> result = encounterPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
-
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     private void checkDischargeDisposition(Encounter.EncounterHospitalizationComponent hospitalization) {

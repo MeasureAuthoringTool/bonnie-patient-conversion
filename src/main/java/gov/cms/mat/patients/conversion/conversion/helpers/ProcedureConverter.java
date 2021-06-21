@@ -4,7 +4,6 @@ import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
@@ -22,7 +21,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
                                                                         QdmDataElement qdmDataElement,
                                                                         ConverterBase<Procedure> converterBase) {
         List<String> conversionMessages = new ArrayList<>();
-        Procedure procedure = new Procedure();
+        var procedure = new Procedure();
         procedure.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
@@ -54,13 +53,13 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getAnatomicalLocationSite() != null) {
-            CodeableConcept codeableConcept = converterBase.convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite());
+            var codeableConcept = converterBase.convertToCodeableConcept(qdmDataElement.getAnatomicalLocationSite());
             procedure.setBodySite(List.of(codeableConcept));
         }
 
         // Relevant getRelevantPeriod() and getRelevantDatetime() bot map to fhir as setPerformed(Type value)
         // since period has more data we can let that win if we have both
-        boolean havePeriod = false;
+        var havePeriod = false;
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             procedure.setPerformed(convertPeriod(qdmDataElement.getRelevantPeriod()));
@@ -74,7 +73,7 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         if (qdmDataElement.getIncisionDatetime() != null) {
             procedure.getExtension()
                     .add(new Extension(INCISION_DATE_TIME_URL));
-            Extension extension = procedure.getExtension().get(0);
+            var extension = procedure.getExtension().get(0);
             extension.setValue(new DateTimeType(qdmDataElement.getIncisionDatetime()));
         }
 
@@ -85,6 +84,11 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
         if (qdmDataElement.getPerformer() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "performer");
             procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+        }
+
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            var recordedExtension = createRecordedExtension(qdmDataElement.getAuthorDatetime());
+            procedure.getExtension().add(recordedExtension);
         }
 
         return QdmToFhirConversionResult.<Procedure>builder()

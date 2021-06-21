@@ -3,8 +3,6 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
-import gov.cms.mat.patients.conversion.dao.spreadsheet.CodeSystemEntry;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -20,7 +18,7 @@ import java.util.stream.Collectors;
 public interface DataElementFinder {
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService,
                                                      @Nonnull List<QdmCodeSystem> dataElementCodes) {
-        CodeableConcept codeableConcept = new CodeableConcept();
+        var codeableConcept = new CodeableConcept();
 
         List<Coding> codings = dataElementCodes.stream()
                 .map(c -> convertToCoding(codeSystemEntriesService, c))
@@ -30,7 +28,7 @@ public interface DataElementFinder {
     }
 
     default CodeableConcept convertToCodeableConcept(CodeSystemEntriesService codeSystemEntriesService, QdmCodeSystem qdmCodeSystem) {
-        CodeableConcept codeableConcept = new CodeableConcept();
+        var codeableConcept = new CodeableConcept();
         codeableConcept.getCoding().add(convertToCoding(codeSystemEntriesService, qdmCodeSystem));
         return codeableConcept;
     }
@@ -39,7 +37,7 @@ public interface DataElementFinder {
         String theSystem;
 
         try {
-            CodeSystemEntry codeSystemEntry = codeSystemEntriesService.findRequired(qdmCodeSystem.getSystem());
+            var codeSystemEntry = codeSystemEntriesService.findRequired(qdmCodeSystem.getSystem());
             theSystem = codeSystemEntry.getUrl();
         } catch (PatientConversionException e) {
             theSystem = "urn:oid:" + qdmCodeSystem.getSystem();
@@ -53,14 +51,14 @@ public interface DataElementFinder {
         if (CollectionUtils.isEmpty(dataElementCodes)) {
             return null;
         } else {
-            QdmCodeSystem qdmCodeSystem = dataElementCodes.get(0);// if many will take 1st one
+            var qdmCodeSystem = dataElementCodes.get(0);// if many will take 1st one
 
             var optional = codeSystemEntriesService.find(qdmCodeSystem.getSystem());
 
             if (optional.isEmpty()) {
                 return new Coding(qdmCodeSystem.getSystem(), qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay());
             } else {
-                CodeSystemEntry codeSystemEntry = optional.get();
+                var codeSystemEntry = optional.get();
                 return new Coding(codeSystemEntry.getUrl(), qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay());
             }
         }
@@ -98,7 +96,7 @@ public interface DataElementFinder {
     }
 
     default List<QdmDataElement> findDataElementsByType(BonniePatient bonniePatient, String type) {
-        QdmPatient qdmPatient = bonniePatient.getQdmPatient();
+        var qdmPatient = bonniePatient.getQdmPatient();
 
         if (CollectionUtils.isEmpty(qdmPatient.getDataElements())) {
             return Collections.emptyList();
@@ -110,13 +108,13 @@ public interface DataElementFinder {
     }
 
     default QdmCodeSystem findOneCodeSystemWithRequiredDisplay(BonniePatient bonniePatient, String type) {
-        QdmDataElement element = findOneDataElementsByType(bonniePatient, type);
+        var qdmDataElement = findOneDataElementsByType(bonniePatient, type);
 
-        QdmCodeSystem qdmCodeSystem = getOneCodeSystem(element);
+        var qdmCodeSystem = getOneCodeSystem(qdmDataElement);
 
         if (qdmCodeSystem.getDisplay() == null) {
             throw new PatientConversionException(String.format("DataElement %s has no dataElementCodes. codeSystem: %s",
-                    element.identifier(), qdmCodeSystem));
+                    qdmDataElement.identifier(), qdmCodeSystem));
         }
 
         return qdmCodeSystem;
