@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class CommunicationPerformedConverter extends ConverterBase<Communication> {
+public class CommunicationPerformedConverter extends ConverterBase<Communication> implements FhirCreator {
     public static final String QDM_TYPE = "QDM::CommunicationPerformed";
 
     public CommunicationPerformedConverter(CodeSystemEntriesService codeSystemEntriesService,
@@ -36,7 +37,7 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
     @Override
     public QdmToFhirConversionResult<Communication> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
-        Communication communication = new Communication();
+        var communication = new Communication();
         communication.setId(qdmDataElement.getId());
         communication.setSubject(createPatientReference(fhirPatient));
 
@@ -72,8 +73,14 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
             communication.getRecipient().add(createPractitionerReference(qdmDataElement.getRecipient()));
         }
 
+
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            var recordedExtension = createRecordedExtension(qdmDataElement.getAuthorDatetime());
+            communication.getExtension().add(recordedExtension);
+        }
+
         if (!processNegation(qdmDataElement, communication)) {
-            communication.setStatus(Communication.CommunicationStatus.UNKNOWN);
+            communication.setStatus(Communication.CommunicationStatus.COMPLETED);
             conversionMessages.add(NO_STATUS_MAPPING);
         }
 

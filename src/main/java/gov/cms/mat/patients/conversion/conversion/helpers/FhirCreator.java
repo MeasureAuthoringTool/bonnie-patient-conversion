@@ -34,7 +34,7 @@ import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYST
 
 public interface FhirCreator {
     default Reference createPatientReference(Patient fhirPatient) {
-        Reference reference = new Reference("Patient/" + fhirPatient.getId());
+        var reference = new Reference("Patient/" + fhirPatient.getId());
         return reference.setDisplay(convertHumanNamesToString(fhirPatient.getName()));
     }
 
@@ -56,7 +56,7 @@ public interface FhirCreator {
         if (CollectionUtils.isEmpty(humanNames)) {
             return "No Human Names Found";
         } else {
-            HumanName humanName = humanNames.get(0);
+            var humanName = humanNames.get(0);
 
             String given = humanName.getGiven().stream()
                     .map(StringType::getValueNotNull)
@@ -87,7 +87,7 @@ public interface FhirCreator {
     }
 
     default Quantity createQuantity(Integer value, String unit) {
-        Quantity quantity = new Quantity();
+        var quantity = new Quantity();
 
         if (value != null) {
             quantity.setValue(value);

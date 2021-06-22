@@ -33,7 +33,8 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
 
     @Override
     public QdmToFhirConversionResult<AdverseEvent> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
-        AdverseEvent adverseEvent = new AdverseEvent();
+        var adverseEvent = new AdverseEvent();
+
         adverseEvent.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
@@ -64,6 +65,8 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
             adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "authorDatetime");
         }
+
+        adverseEvent.setActuality(AdverseEvent.AdverseEventActuality.ACTUAL);
 
         adverseEvent.setId(qdmDataElement.getId());
 

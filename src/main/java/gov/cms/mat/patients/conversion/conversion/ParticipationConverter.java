@@ -38,7 +38,7 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
     public QdmToFhirConversionResult<Coverage> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        Coverage coverage = new Coverage();
+        var coverage = new Coverage();
         coverage.setBeneficiary(createPatientReference(fhirPatient));
 
         coverage.setStatus(Coverage.CoverageStatus.ACTIVE);

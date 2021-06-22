@@ -36,7 +36,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
     public QdmToFhirConversionResult<Procedure> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        Procedure procedure = new Procedure();
+        var procedure = new Procedure();
         procedure.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {

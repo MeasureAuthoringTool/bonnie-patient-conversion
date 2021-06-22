@@ -43,8 +43,8 @@ public class BuildInfo {
 
     @Bean
     public InfoEndpoint infoEndpoint() {
-        BuildInfoContributor buildInfoContributor = new BuildInfoContributor(buildProperties);
-        GitInfoContributorExtra gitInfoContributor = new GitInfoContributorExtra(gitProperties);
+        var buildInfoContributor = new BuildInfoContributor(buildProperties);
+        var gitInfoContributor = new GitInfoContributorExtra(gitProperties);
         return new InfoEndpoint(List.of(buildInfoContributor, gitInfoContributor));
     }
 
@@ -55,19 +55,19 @@ public class BuildInfo {
 
         @Override
         protected PropertySource<?> toSimplePropertySource() {
-            Properties props = new Properties();
-            copyIfSet(props, "branch");
+            var properties = new Properties();
+            copyIfSet(properties, "branch");
             String commitId = getProperties().getShortCommitId();
             if (commitId != null) {
-                props.put("commit.id", commitId);
+                properties.put("commit.id", commitId);
             }
-            copyIfSet(props, "commit.time");
+            copyIfSet(properties, "commit.time");
 
             // these the extra bits
-            copyIfSet(props, "commit.user.name");
-            copyIfSet(props, "commit.message.short");
+            copyIfSet(properties, "commit.user.name");
+            copyIfSet(properties, "commit.message.short");
 
-            return new PropertiesPropertySource("git", props);
+            return new PropertiesPropertySource("git", properties);
         }
     }
 }

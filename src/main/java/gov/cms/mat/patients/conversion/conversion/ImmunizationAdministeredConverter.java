@@ -46,13 +46,10 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
     private QdmToFhirConversionResult<Immunization> convertToFhirNoNegation(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        Immunization immunization = new Immunization();
+        var immunization = new Immunization();
         immunization.setPatient(createPatientReference(fhirPatient));
 
-        // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8131-immunization-administered
-        // Constrain to Completed, entered-in-error, not-done
-        immunization.setStatus(Immunization.ImmunizationStatus.NULL);
-        conversionMessages.add(NO_STATUS_MAPPING);
+        immunization.setStatus(Immunization.ImmunizationStatus.COMPLETED);
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             immunization.setVaccineCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));

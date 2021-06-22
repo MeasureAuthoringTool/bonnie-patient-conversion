@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -52,7 +53,9 @@ class SubstanceAdministeredConverterTest extends BaseConversionTest implements F
 
         checkRelevantPeriodTiming(result.getFhirResource().getEnteralFormula().getAdministrationFirstRep().getSchedule());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertEquals(NutritionOrder.NutritionOrderStatus.COMPLETED, result.getFhirResource().getStatus());
+
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     private void checkRelevantPeriodTiming(Timing schedule) {
@@ -64,8 +67,8 @@ class SubstanceAdministeredConverterTest extends BaseConversionTest implements F
         QdmToFhirConversionResult<NutritionOrder> result = substanceAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
-        assertEquals(NutritionOrder.NutritionOrderStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(NutritionOrder.NutritionOrderStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 }

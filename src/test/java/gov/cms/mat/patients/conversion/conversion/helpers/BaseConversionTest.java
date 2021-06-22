@@ -3,6 +3,9 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BaseConversionTest implements FhirConversionTest {
     protected static final String PATIENT_ID = "1";
@@ -17,5 +20,11 @@ public class BaseConversionTest implements FhirConversionTest {
     void before() {
         fhirPatient = createFhirPatient();
         qdmDataElement = createQdmDataElement();
+    }
+
+    @Test
+    void verifyIds() {
+        assertEquals(PATIENT_ID, fhirPatient.getId());
+        assertEquals(ELEMENT_ID, qdmDataElement.getId());
     }
 }

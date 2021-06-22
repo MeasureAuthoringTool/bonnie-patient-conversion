@@ -12,7 +12,6 @@ import org.hl7.fhir.r4.model.Timing;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
 public interface SubstanceConverter extends DataElementFinder, FhirCreator {
@@ -21,15 +20,14 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
                                                                                   ConverterBase<NutritionOrder> converterBase) {
         List<String> conversionMessages = new ArrayList<>();
 
-        NutritionOrder nutritionOrder = new NutritionOrder();
+        var nutritionOrder = new NutritionOrder();
         nutritionOrder.setPatient(createPatientReference(fhirPatient));
 
         nutritionOrder.setIntent(NutritionOrder.NutritiionOrderIntent.NULL);
 
-        //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#821-substance
-        //Constrain to Active, on-hold, Completed
-        nutritionOrder.setStatus(NutritionOrder.NutritionOrderStatus.UNKNOWN); // Constrain to Active, on-hold, Completed
-        conversionMessages.add(NO_STATUS_MAPPING);
+
+        nutritionOrder.setStatus(NutritionOrder.NutritionOrderStatus.COMPLETED); // Constrain to Active, on-hold, Completed
+
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
             nutritionOrder.getOralDiet().addType(converterBase.convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
@@ -58,7 +56,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
-            Timing timing = new Timing();
+            var timing = new Timing();
 
             timing.getEvent().add(new DateTimeType(qdmDataElement.getRelevantPeriod().getLow()));
 

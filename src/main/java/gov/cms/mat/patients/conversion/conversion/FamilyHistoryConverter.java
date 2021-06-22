@@ -1,6 +1,5 @@
 package gov.cms.mat.patients.conversion.conversion;
 
-
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
@@ -37,11 +36,11 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
     public QdmToFhirConversionResult<FamilyMemberHistory> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        FamilyMemberHistory familyMemberHistory = new FamilyMemberHistory();
+        var familyMemberHistory = new FamilyMemberHistory();
         familyMemberHistory.setPatient(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
-            FamilyMemberHistory.FamilyMemberHistoryConditionComponent familyMemberHistoryConditionComponent = familyMemberHistory.getConditionFirstRep();
+            var familyMemberHistoryConditionComponent = familyMemberHistory.getConditionFirstRep();
             familyMemberHistoryConditionComponent.setCode(convertToCodeableConcept(qdmDataElement.getDataElementCodes()));
         }
 
@@ -49,11 +48,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
 
         familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
 
-        //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#812-family-history
-        //Constrain to Completed, entered-in-error, not-done
-        familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.NULL);
-        conversionMessages.add(NO_STATUS_MAPPING);
-
+        familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
 
         if (qdmDataElement.getRelationship() != null) {
             if (qdmDataElement.getRelationship().getSystem() == null) {

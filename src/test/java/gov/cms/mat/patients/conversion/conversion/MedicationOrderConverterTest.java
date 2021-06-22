@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -31,7 +32,7 @@ class MedicationOrderConverterTest extends BaseConversionTest implements FhirCon
         QdmToFhirConversionResult<MedicationRequest> result = medicationOrderConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         assertEquals(MedicationRequest.MedicationRequestIntent.ORDER, result.getFhirResource().getIntent());
-        assertEquals(MedicationRequest.MedicationRequestStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(MedicationRequest.MedicationRequestStatus.COMPLETED, result.getFhirResource().getStatus());
 
         assertEquals(1, result.getFhirResource().getReasonCode().size());
 
@@ -44,8 +45,8 @@ class MedicationOrderConverterTest extends BaseConversionTest implements FhirCon
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         assertEquals(MedicationRequest.MedicationRequestIntent.ORDER, result.getFhirResource().getIntent());
-        assertEquals(MedicationRequest.MedicationRequestStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(MedicationRequest.MedicationRequestStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 }

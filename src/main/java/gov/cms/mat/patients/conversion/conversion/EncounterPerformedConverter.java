@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.Diagnoses;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.spreadsheet.CodeSystemEntry;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Patient;
@@ -43,7 +41,7 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
     @Override
     public QdmToFhirConversionResult<Encounter> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
-        Encounter encounter = new Encounter();
+        var encounter = new Encounter();
         encounter.setSubject(createPatientReference(fhirPatient));
         encounter.setId(qdmDataElement.getId());
 
@@ -51,11 +49,7 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
             encounter.setType(List.of(convertToCodeableConcept(qdmDataElement.getDataElementCodes())));
         }
 
-        //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8114-encounter-performed
-        // 	consider constraint to - arrived, triaged, in-progress, on-leave, finished
-        encounter.setStatus(Encounter.EncounterStatus.UNKNOWN);
-        conversionMessages.add(NO_STATUS_MAPPING);
-
+        encounter.setStatus(Encounter.EncounterStatus.FINISHED);
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             encounter.setPeriod(convertPeriod(qdmDataElement.getRelevantPeriod()));
@@ -66,7 +60,7 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
         }
 
         if (qdmDataElement.getLengthOfStay() != null) {
-            Duration duration = new Duration();
+            var duration = new Duration();
             duration.setUnit(qdmDataElement.getLengthOfStay().getUnit());
             duration.setValue(qdmDataElement.getLengthOfStay().getValue());
             encounter.setLength(duration);
@@ -74,7 +68,7 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
 
         if (qdmDataElement.getDischargeDisposition() != null) {
             Encounter.EncounterHospitalizationComponent hospitalizationComponent = encounter.getHospitalization();
-            CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getDischargeDisposition());
+            var codeableConcept = convertToCodeableConcept(qdmDataElement.getDischargeDisposition());
             hospitalizationComponent.setDischargeDisposition(codeableConcept);
         }
 
@@ -100,10 +94,10 @@ public class EncounterPerformedConverter extends ConverterBase<Encounter> {
 
     private Encounter.DiagnosisComponent createDiagnosis(Diagnoses diagnoses) {
 
-        Encounter.DiagnosisComponent diagnosisComponent = new Encounter.DiagnosisComponent();
+        var diagnosisComponent = new Encounter.DiagnosisComponent();
 
         try {
-            CodeSystemEntry codeSystemEntry = getCodeSystemEntriesService().findRequired(diagnoses.getCode().getSystem());
+            var codeSystemEntry = getCodeSystemEntriesService().findRequired(diagnoses.getCode().getSystem());
             diagnosisComponent.setUse(createCodeableConcept(diagnoses.getCode(), codeSystemEntry.getUrl()));
         } catch (Exception e) {
             if (diagnoses.getCode() == null) {

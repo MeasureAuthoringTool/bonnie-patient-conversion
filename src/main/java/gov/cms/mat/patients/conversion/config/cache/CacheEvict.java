@@ -3,10 +3,10 @@ package gov.cms.mat.patients.conversion.config.cache;
 import gov.cms.mat.patients.conversion.service.GoogleDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @Configuration
@@ -30,7 +30,7 @@ public class CacheEvict implements ApplicationListener<ApplicationReadyEvent> {
     }
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
+    public void onApplicationEvent(@NonNull ApplicationReadyEvent applicationReadyEvent) {
         update(); // pre load cache - without this and with massive threading the cached method can be called may times
     }
 
@@ -39,7 +39,7 @@ public class CacheEvict implements ApplicationListener<ApplicationReadyEvent> {
     }
 
     private void evict(String name) {
-        Cache cache = cacheManager.getCache(name);
+        var cache = cacheManager.getCache(name);
 
         if (cache == null) {
             log.error("Cache is null: {}", name); // Should never happen

@@ -44,7 +44,7 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         } else if (result instanceof IntNode) {
             return processIntMode((IntNode) result);
         } else if (result instanceof DoubleNode) {
-            DoubleNode doubleNode = (DoubleNode) result;
+            var doubleNode = (DoubleNode) result;
             return new Quantity(doubleNode.doubleValue());
         } else {
             String message = "Observation result does not handle " + result.getClass().getSimpleName() + " value: " + result.asText();
@@ -59,7 +59,7 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
     }
 
     Type processObjectNode(ObjectNode objectNode) {
-        Type type = searchForValueCodeableConcept(objectNode);
+        var type = searchForValueCodeableConcept(objectNode);
 
         if (type == null) {
             type = searchForValueQuantity(objectNode);
@@ -84,11 +84,11 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         JsonNode systemNode = objectNode.get("system"); // oid
 
         if (codeNode != null && systemNode != null) {
-            QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+            var qdmCodeSystem = new QdmCodeSystem();
             qdmCodeSystem.setCode(codeNode.asText());
             qdmCodeSystem.setSystem(systemNode.asText());
 
-            JsonNode displayNode = objectNode.get("display");
+            var displayNode = objectNode.get("display");
 
             if (displayNode != null) {
                 qdmCodeSystem.setDisplay(displayNode.asText());
@@ -104,9 +104,9 @@ public class JsonNodeObservationResultProcessor implements FhirCreator, DataElem
         String data = result.textValue();
 
         try {
-            LocalDateTime dateTime = LocalDateTime.parse(data, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+            var localDateTime = LocalDateTime.parse(data, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 
-            Date date = convertToDateViaInstant(dateTime);
+            var date = convertToDateViaInstant(localDateTime);
 
             return new DateTimeType(date);
         } catch (Exception e) { // Not a date

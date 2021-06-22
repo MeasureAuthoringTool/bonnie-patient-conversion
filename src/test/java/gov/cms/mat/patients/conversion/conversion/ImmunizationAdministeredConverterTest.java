@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -43,9 +44,9 @@ class ImmunizationAdministeredConverterTest extends BaseConversionTest implement
         checkRelevantDateTime(result.getFhirResource().getOccurrenceDateTimeType().getValue());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
 
-        assertEquals(Immunization.ImmunizationStatus.NULL, result.getFhirResource().getStatus());
+        assertEquals(Immunization.ImmunizationStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 
     @Test
@@ -60,8 +61,8 @@ class ImmunizationAdministeredConverterTest extends BaseConversionTest implement
         QdmToFhirConversionResult<Immunization> result = immunizationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
-        assertEquals(Immunization.ImmunizationStatus.NULL, result.getFhirResource().getStatus());
+        assertEquals(Immunization.ImmunizationStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 }

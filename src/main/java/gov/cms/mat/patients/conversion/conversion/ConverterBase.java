@@ -60,9 +60,9 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     private final CodeSystemEntriesService codeSystemEntriesService;
 
     protected ConverterBase(CodeSystemEntriesService codeSystemEntriesService,
-                         FhirContext fhirContext,
-                         ObjectMapper objectMapper,
-                         ValidationService validationService) {
+                            FhirContext fhirContext,
+                            ObjectMapper objectMapper,
+                            ValidationService validationService) {
         this.codeSystemEntriesService = codeSystemEntriesService;
         this.fhirContext = fhirContext;
         this.objectMapper = objectMapper;
@@ -96,7 +96,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
                                      ValidationResult validationResult,
                                      QdmDataElement dataElement) {
         try {
-            ConversionOutcome conversionOutcome = ConversionOutcome.builder()
+            var conversionOutcome = ConversionOutcome.builder()
                     .conversionMessages(qdmToFhirConversionResult.getConversionMessages())
                     .validationMessages(validationResult.getMessages())
                     .build();
@@ -155,7 +155,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         if (qdmToFhirConversionResult == null) {
             return null;
         } else {
-            ValidationResult validationResult = validationService.validate(qdmToFhirConversionResult.getFhirResource());
+            var validationResult = validationService.validate(qdmToFhirConversionResult.getFhirResource());
 
             return buildDataElement(qdmToFhirConversionResult, validationResult, dataElement);
         }
@@ -180,7 +180,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
         serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.COMPLETED);
         serviceRequest.setDoNotPerform(true);
 
-        Extension extensionDoNotPerformReason = new Extension(QICORE_DO_NOT_PERFORM_REASON);
+        var extensionDoNotPerformReason = new Extension(QICORE_DO_NOT_PERFORM_REASON);
         extensionDoNotPerformReason.setValue(convertToCoding(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
         serviceRequest.getExtension().add(extensionDoNotPerformReason);
     }
@@ -192,7 +192,7 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
             observation.getModifierExtension().add(createNotDoneExtension());
         }
 
-        Extension extensionNotDoneReason = new Extension(QICORE_NOT_DONE_REASON);
+        var extensionNotDoneReason = new Extension(QICORE_NOT_DONE_REASON);
         extensionNotDoneReason.setValue(convertToCoding(codeSystemEntriesService, qdmDataElement.getNegationRationale()));
         observation.getExtension().add(extensionNotDoneReason);
     }

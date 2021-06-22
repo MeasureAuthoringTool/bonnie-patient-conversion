@@ -46,6 +46,7 @@ public interface ProcedureConversionTest extends FhirConversionTest {
         qdmDataElement.setPerformer(createPerformer());
 
         qdmDataElement.setAnatomicalLocationSite(createAnatomicalLocationSite());
+        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
     }
 
     default void checkNoNegation(QdmToFhirConversionResult<Procedure> result) {
@@ -71,7 +72,7 @@ public interface ProcedureConversionTest extends FhirConversionTest {
     }
 
     default Date checkIncision(List<Extension> extensions) {
-        assertEquals(1, extensions.size());
+        assertEquals(2, extensions.size());
         Extension extension = extensions.get(0);
 
         assertThat(extension.getValue(), instanceOf(DateTimeType.class));

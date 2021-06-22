@@ -43,6 +43,8 @@ class AllergyIntoleranceConverterTest extends BaseConversionTest implements Fhir
         assertFalse(result.getFhirResource().getReactionFirstRep().hasSeverity()); // we cannot convert
 
         assertEquals(2, result.getConversionMessages().size());
+
+        assertEquals("Active", result.getFhirResource().getClinicalStatus().getCoding().get(0).getDisplay());
     }
 
     @Test

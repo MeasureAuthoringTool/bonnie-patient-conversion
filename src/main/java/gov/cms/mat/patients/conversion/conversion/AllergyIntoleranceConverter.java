@@ -36,7 +36,7 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
     public QdmToFhirConversionResult<AllergyIntolerance> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        AllergyIntolerance allergyIntolerance = new AllergyIntolerance();
+        var allergyIntolerance = new AllergyIntolerance();
         allergyIntolerance.setPatient(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
@@ -60,6 +60,11 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
         }
 
         processNegation(qdmDataElement, allergyIntolerance);
+
+        allergyIntolerance.setClinicalStatus(createCodeableConcept(
+                "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                "active",
+                "Active"));
 
         return QdmToFhirConversionResult.<AllergyIntolerance>builder()
                 .fhirResource(allergyIntolerance)

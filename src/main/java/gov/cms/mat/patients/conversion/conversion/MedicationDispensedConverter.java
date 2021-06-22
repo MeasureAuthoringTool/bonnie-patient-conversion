@@ -9,12 +9,8 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Dosage;
 import org.hl7.fhir.r4.model.MedicationDispense;
 import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Timing;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -41,7 +37,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
     public QdmToFhirConversionResult<MedicationDispense> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        MedicationDispense medicationDispense = new MedicationDispense();
+        var medicationDispense = new MedicationDispense();
         medicationDispense.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
@@ -60,7 +56,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
         }
 
         if (qdmDataElement.getDaysSupplied() != null) {
-            Quantity quantity = createQuantity(qdmDataElement.getDaysSupplied(), "d");
+            var quantity = createQuantity(qdmDataElement.getDaysSupplied(), "d");
             medicationDispense.setDaysSupply(quantity);
         }
 
@@ -68,8 +64,8 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             if (qdmDataElement.getFrequency().getCode() == null) {
                 conversionMessages.add("Frequency code is null");
             } else {
-                Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
-                Timing timing = dosage.getTiming();
+                var dosage = medicationDispense.getDosageInstructionFirstRep();
+                var timing = dosage.getTiming();
                 timing.setCode(convertToCodeableConcept(qdmDataElement.getFrequency()));
             }
         }
@@ -78,15 +74,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "setting");
         }
 
-        if (qdmDataElement.getRelevantDatetime() != null) {
-            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
-        }
-
-        if (qdmDataElement.getRelevantPeriod() != null) {
-            Dosage dosage = medicationDispense.getDosageInstructionFirstRep();
-            Timing timing = dosage.getTiming();
-            timing.getRepeat().setBounds(convertPeriod(qdmDataElement.getRelevantPeriod()));
-        }
+        processTimes(qdmDataElement, medicationDispense);
 
         if (qdmDataElement.getPrescriber() != null) {
             medicationDispense.addAuthorizingPrescription(createPractitionerReference(qdmDataElement.getPrescriber()));
@@ -96,17 +84,13 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
             medicationDispense.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getDispenser()));
         }
 
-        if( qdmDataElement.getRoute() != null) {
+        if (qdmDataElement.getRoute() != null) {
             medicationDispense.getDosageInstructionFirstRep().setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
-        if( qdmDataElement.getAuthorDatetime() != null) {
-            conversionMessages.add("Cannot convert authorDatetime, not mapped to QI-Core 4R");
-        }
 
         if (!processNegation(qdmDataElement, medicationDispense)) {
-            medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.UNKNOWN);
-            conversionMessages.add(NO_STATUS_MAPPING);
+            medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.COMPLETED);
         }
 
         return QdmToFhirConversionResult.<MedicationDispense>builder()
@@ -115,15 +99,28 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
                 .build();
     }
 
+    private void processTimes(QdmDataElement qdmDataElement, MedicationDispense medicationDispense) {
+        if (qdmDataElement.getRelevantDatetime() != null) {
+            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
+        }
+
+        if (qdmDataElement.getRelevantPeriod() != null) {
+            var dosage = medicationDispense.getDosageInstructionFirstRep();
+            var timing = dosage.getTiming();
+            timing.getRepeat().setBounds(convertPeriod(qdmDataElement.getRelevantPeriod()));
+        }
+
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            var recordedExtension = createRecordedExtension(qdmDataElement.getAuthorDatetime());
+            medicationDispense.getExtension().add(recordedExtension);
+        }
+    }
+
     @Override
     void convertNegation(QdmDataElement qdmDataElement, MedicationDispense medicationDispense) {
         medicationDispense.setStatus(MedicationDispense.MedicationDispenseStatus.DECLINED);
 
-        CodeableConcept codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
+        var codeableConcept = convertToCodeableConcept(qdmDataElement.getNegationRationale());
         medicationDispense.setStatusReason(codeableConcept);
-
-        if (qdmDataElement.getAuthorDatetime() != null) {
-            medicationDispense.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
-        }
     }
 }

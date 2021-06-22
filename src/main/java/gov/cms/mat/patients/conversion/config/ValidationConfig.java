@@ -23,7 +23,7 @@ public class ValidationConfig {
     FhirValidator fhirValidator() {
         FhirValidator validator = fhirContext.newValidator();
 
-        FhirInstanceValidator instanceValidator = new FhirInstanceValidator(fhirContext);
+        var instanceValidator = new FhirInstanceValidator(fhirContext);
         instanceValidator.setValidationSupport(fhirContext.getValidationSupport());
         instanceValidator.setNoTerminologyChecks(true);
 

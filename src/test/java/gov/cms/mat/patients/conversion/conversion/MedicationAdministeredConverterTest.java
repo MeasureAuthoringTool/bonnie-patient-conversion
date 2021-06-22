@@ -11,9 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -38,6 +38,7 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
         qdmDataElement.setRelevantDatetime(createRelevantDatetime());
         qdmDataElement.setRelevantPeriod(createRelevantPeriod());
         qdmDataElement.setPerformer(createPerformer());
+        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         QdmToFhirConversionResult<MedicationAdministration> result =
                 medicationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
@@ -50,12 +51,13 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
         checkRelevantPeriod(result.getFhirResource().getEffectivePeriod());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
 
-        assertEquals(MedicationAdministration.MedicationAdministrationStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(MedicationAdministration.MedicationAdministrationStatus.COMPLETED, result.getFhirResource().getStatus());
 
-        assertEquals(2, result.getConversionMessages().size());
+        assertEquals(1, result.getConversionMessages().size());
         assertEquals("Frequency attribute not mapped", result.getConversionMessages().get(0));
-        assertEquals(NO_STATUS_MAPPING, result.getConversionMessages().get(1));
 
+        assertEquals(1, result.getFhirResource().getExtension().size());
+        checkRecordedExtension(result.getFhirResource().getExtension().get(0));
     }
 
     @Test
@@ -92,8 +94,7 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
                 medicationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
-        assertEquals(MedicationAdministration.MedicationAdministrationStatus.UNKNOWN, result.getFhirResource().getStatus());
-
-        checkNoStatusMappingOnly(result.getConversionMessages());
+        assertEquals(MedicationAdministration.MedicationAdministrationStatus.COMPLETED, result.getFhirResource().getStatus());
+        assertTrue(result.getConversionMessages().isEmpty());
     }
 }

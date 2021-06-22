@@ -15,16 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
-
 public interface ObservationConverter extends FhirCreator, DataElementFinder {
 
     default QdmToFhirConversionResult<Observation> convertToFhirObservation(Patient fhirPatient,
                                                                             QdmDataElement qdmDataElement,
-
                                                                             ConverterBase<Observation> converterBase) {
         List<String> conversionMessages = new ArrayList<>();
-        Observation observation = new Observation();
+        var observation = new Observation();
         observation.setId(qdmDataElement.getId());
         observation.setSubject(createPatientReference(fhirPatient));
 
@@ -33,7 +30,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (qdmDataElement.getResult() != null) {
-            JsonNodeObservationResultProcessor resultProcessor =
+            var resultProcessor =
                     new JsonNodeObservationResultProcessor(converterBase.getCodeSystemEntriesService(), conversionMessages);
 
             observation.setValue(resultProcessor.findType(qdmDataElement.getResult()));
@@ -48,10 +45,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (!converterBase.processNegation(qdmDataElement, observation)) {
-            //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8102-diagnostic-study-performed
-            //Constrain status to -  final, amended, corrected, appended
-            observation.setStatus(Observation.ObservationStatus.UNKNOWN);
-            conversionMessages.add(NO_STATUS_MAPPING);
+            observation.setStatus(Observation.ObservationStatus.FINAL);
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
@@ -73,6 +67,19 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
                     "“reason” for the study to be performed.");
         }
 
+        processReferenceRange(qdmDataElement, observation);
+
+        if (qdmDataElement.getMethod() != null) {
+            observation.setMethod(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getMethod()));
+        }
+
+        return QdmToFhirConversionResult.<Observation>builder()
+                .fhirResource(observation)
+                .conversionMessages(conversionMessages)
+                .build();
+    }
+
+    private void processReferenceRange(QdmDataElement qdmDataElement, Observation observation) {
         if (qdmDataElement.getReferenceRange() != null) {
             if (qdmDataElement.getReferenceRange().getHigh() != null) {
                 observation.getReferenceRangeFirstRep()
@@ -84,15 +91,6 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
                         .setLow(convertQuantity(qdmDataElement.getReferenceRange().getLow()));
             }
         }
-
-        if (qdmDataElement.getMethod() != null) {
-            observation.setMethod(convertToCodeableConcept(converterBase.getCodeSystemEntriesService(), qdmDataElement.getMethod()));
-        }
-
-        return QdmToFhirConversionResult.<Observation>builder()
-                .fhirResource(observation)
-                .conversionMessages(conversionMessages)
-                .build();
     }
 
     private List<Observation.ObservationComponentComponent> processComponents(List<QdmComponent> qdmComponents,
@@ -106,10 +104,10 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
     default Observation.ObservationComponentComponent convertComponent(QdmComponent qdmComponent,
                                                                        CodeSystemEntriesService codeSystemEntriesService,
                                                                        List<String> conversionMessages) {
-        Observation.ObservationComponentComponent component = new Observation.ObservationComponentComponent();
+        var component = new Observation.ObservationComponentComponent();
 
         if (qdmComponent.getCode() != null) {
-            QdmCodeSystem qdmCodeSystem = new QdmCodeSystem();
+            var qdmCodeSystem = new QdmCodeSystem();
             qdmCodeSystem.setDisplay(qdmComponent.getCode().getDisplay());
             qdmCodeSystem.setCode(qdmComponent.getCode().getCode());
             qdmCodeSystem.setSystem(qdmComponent.getCode().getSystem());
@@ -118,7 +116,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (qdmComponent.getResult() != null) {
-            JsonNodeObservationResultProcessor resultProcessor =
+            var resultProcessor =
                     new JsonNodeObservationResultProcessor(codeSystemEntriesService, conversionMessages);
 
             component.setValue(resultProcessor.findType(qdmComponent.getResult()));

@@ -40,9 +40,8 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
         checkWithoutNegationResult(result);
         assertNull(result.getFhirResource().getValue());
 
-        assertEquals(2, result.getConversionMessages().size());
-        assertEquals("No mapping for status", result.getConversionMessages().get(0));
-        assertTrue( result.getConversionMessages().get(1).startsWith( "Cannot convert reason to basedOn."));
+        assertEquals(1, result.getConversionMessages().size());
+        assertTrue(result.getConversionMessages().get(0).startsWith("Cannot convert reason to basedOn."));
     }
 
     @Test

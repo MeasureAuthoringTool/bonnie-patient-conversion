@@ -40,7 +40,7 @@ public interface ServiceRequestCommonTest extends FhirConversionTest {
 
     default void checkWithoutNegationResult(QdmToFhirConversionResult<ServiceRequest> result, ServiceRequest.ServiceRequestIntent intent) {
         checkDataElement(result);
-        assertEquals(ServiceRequest.ServiceRequestStatus.UNKNOWN, result.getFhirResource().getStatus());
+        assertEquals(ServiceRequest.ServiceRequestStatus.ACTIVE, result.getFhirResource().getStatus());
         assertEquals(intent, result.getFhirResource().getIntent());
         assertFalse(result.getFhirResource().getDoNotPerform());
     }

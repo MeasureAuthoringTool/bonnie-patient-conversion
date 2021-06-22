@@ -44,6 +44,8 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
         assertFalse(result.getFhirResource().hasSeverity());
         assertFalse(result.getFhirResource().hasLocation());
         assertNull(result.getFhirResource().getRecordedDate());
+
+        assertEquals(AdverseEvent.AdverseEventActuality.ACTUAL, result.getFhirResource().getActuality());
     }
 
     @Test

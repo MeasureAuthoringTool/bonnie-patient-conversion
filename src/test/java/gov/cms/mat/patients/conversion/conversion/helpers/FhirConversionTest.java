@@ -54,7 +54,6 @@ import static gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionT
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -128,7 +127,6 @@ public interface FhirConversionTest {
     }
 
 
-
     default Date createRelevantDatetime() {
         return new Date(now.toEpochMilli() - 10000);
     }
@@ -173,7 +171,7 @@ public interface FhirConversionTest {
         return new Date(now.toEpochMilli() - 7777);
     }
 
-    default void checkActiveDatetime(Date  date) {
+    default void checkActiveDatetime(Date date) {
         assertEquals(createActiveDatetime(), date);
     }
 
@@ -607,11 +605,11 @@ public interface FhirConversionTest {
         assertEquals("http://snomed.info/sct", codeableConcept.getCodingFirstRep().getSystem());
     }
 
-   default Date createStatusDate() {
-       return new Date(now.toEpochMilli() - 9994);
+    default Date createStatusDate() {
+        return new Date(now.toEpochMilli() - 9994);
     }
 
-   default void checkStatusDate(Date statusDate) {
+    default void checkStatusDate(Date statusDate) {
         assertEquals(createStatusDate(), statusDate);
     }
 }

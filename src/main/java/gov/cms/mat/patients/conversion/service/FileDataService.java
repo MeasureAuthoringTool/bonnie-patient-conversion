@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -23,8 +24,8 @@ public class FileDataService implements GoogleDataService {
     @Override
     @Cacheable("codeSystemEntries")
     public List<CodeSystemEntry> getCodeSystemEntries() {
-        String fromResource = getStringFromResource();
-        GoogleConversionDataCodeSystemEntry data = objectMapper.readValue(fromResource, GoogleConversionDataCodeSystemEntry.class);
+        var fromResource = getStringFromResource();
+        var data = objectMapper.readValue(fromResource, GoogleConversionDataCodeSystemEntry.class);
 
         log.info("Loaded google data from file");
 
@@ -33,7 +34,7 @@ public class FileDataService implements GoogleDataService {
 
     @SneakyThrows
     private String getStringFromResource() {
-        File inputXmlFile = new File(this.getClass().getResource("/google/feed_data.json").getFile());
+        var inputXmlFile = new File(Objects.requireNonNull(this.getClass().getResource("/google/feed_data.json")).getFile());
         return new String(Files.readAllBytes(inputXmlFile.toPath()));
     }
 }

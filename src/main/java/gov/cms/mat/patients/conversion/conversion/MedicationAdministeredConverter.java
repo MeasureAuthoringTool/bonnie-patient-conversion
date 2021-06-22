@@ -37,7 +37,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
     public QdmToFhirConversionResult<MedicationAdministration> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        MedicationAdministration medicationAdministration = new MedicationAdministration();
+        var medicationAdministration = new MedicationAdministration();
         medicationAdministration.setSubject(createPatientReference(fhirPatient));
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getDataElementCodes())) {
@@ -54,7 +54,6 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
             medicationAdministration.getDosage().setRoute(convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
-
         if (qdmDataElement.getFrequency() != null) {
             conversionMessages.add("Frequency attribute not mapped");
         }
@@ -63,7 +62,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
             medicationAdministration.getReasonCode().add(convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
-        boolean havePeriod = false;
+        var havePeriod = false;
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             medicationAdministration.setEffective(convertPeriod(qdmDataElement.getRelevantPeriod()));
@@ -75,13 +74,15 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (qdmDataElement.getPerformer() != null) {
-            log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
             medicationAdministration.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
         }
 
         if (!processNegation(qdmDataElement, medicationAdministration)) {
-            medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.UNKNOWN);
-            conversionMessages.add(NO_STATUS_MAPPING);
+            medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.COMPLETED);
+        }
+
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            medicationAdministration.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
         }
 
         return QdmToFhirConversionResult.<MedicationAdministration>builder()
@@ -95,9 +96,5 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         medicationAdministration.setStatus(MedicationAdministration.MedicationAdministrationStatus.NOTDONE);
 
         medicationAdministration.getStatusReason().add(convertToCodeableConcept(qdmDataElement.getNegationRationale()));
-
-        if (qdmDataElement.getAuthorDatetime() != null) {
-            medicationAdministration.getExtension().add(createRecordedExtension(qdmDataElement.getAuthorDatetime()));
-        }
     }
 }

@@ -82,7 +82,7 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
     public FhirDataElement convertToFhirPractitioner(QdmPractitioner qdmPractitioner, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
-        Practitioner practitioner = new Practitioner();
+        var practitioner = new Practitioner();
         practitioner.setId(qdmPractitioner.getId());
 
         if (qdmPractitioner.getRole() != null) {

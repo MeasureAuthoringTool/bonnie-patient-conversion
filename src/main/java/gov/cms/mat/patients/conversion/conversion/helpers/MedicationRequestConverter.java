@@ -6,18 +6,14 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Dosage;
 import org.hl7.fhir.r4.model.Duration;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Timing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.NO_STATUS_MAPPING;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYSTEM;
 import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UNEXPECTED_DATA_LOG_MESSAGE;
 
@@ -30,7 +26,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
                                                                                         boolean setStatusToUnknown) {
         List<String> conversionMessages = new ArrayList<>();
 
-        MedicationRequest medicationRequest = new MedicationRequest();
+        var medicationRequest = new MedicationRequest();
         medicationRequest.setSubject(createPatientReference(fhirPatient));
 
         medicationRequest.setIntent(intent);
@@ -63,7 +59,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         }
 
         if (qdmDataElement.getRoute() != null) {
-            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+            var dosage = medicationRequest.getDosageInstructionFirstRep();
             dosage.setRoute(converterBase.convertToCodeableConcept(qdmDataElement.getRoute()));
         }
 
@@ -78,21 +74,21 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
-            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+            var dosage = medicationRequest.getDosageInstructionFirstRep();
             dosage.getTiming().addEvent(qdmDataElement.getRelevantDatetime());
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
-            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-            Timing timing = dosage.getTiming();
-            Timing.TimingRepeatComponent timingRepeatComponent = timing.getRepeat();
+            var dosage = medicationRequest.getDosageInstructionFirstRep();
+            var timing = dosage.getTiming();
+            var timingRepeatComponent = timing.getRepeat();
             timingRepeatComponent.setBounds(convertPeriod(qdmDataElement.getRelevantPeriod()));
         }
 
         if (qdmDataElement.getActiveDatetime() != null) {
-            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+            var dosage = medicationRequest.getDosageInstructionFirstRep();
 
-            Period period = new Period();
+            var period = new Period();
             period.setStart(qdmDataElement.getActiveDatetime());
             dosage.getTiming().getRepeat().setBounds(period);
         }
@@ -101,10 +97,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
 
         if (!converterBase.processNegation(qdmDataElement, medicationRequest) && setStatusToUnknown) {
-            // http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#8173-medication-discharge
-            // 	Constrain to active, completed, on-hold
-            medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.UNKNOWN);
-            conversionMessages.add(NO_STATUS_MAPPING);
+            medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.COMPLETED);
         }
 
         if (qdmDataElement.getPrescriber() != null) {
@@ -125,22 +118,22 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         if (qdmDataElement.getFrequency().getCode() == null) {
             conversionMessages.add("Frequency code is null");
         } else {
-            Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
-            Timing timing = dosage.getTiming();
+            var dosage = medicationRequest.getDosageInstructionFirstRep();
+            var timing = dosage.getTiming();
             timing.setCode(converterBase.convertToCodeableConcept(qdmDataElement.getFrequency()));
         }
     }
 
     private void createDosage(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
-        Quantity quantity = convertQuantity(qdmDataElement.getDosage());
+        var quantity = convertQuantity(qdmDataElement.getDosage());
 
-        Dosage dosage = medicationRequest.getDosageInstructionFirstRep();
+        var dosage = medicationRequest.getDosageInstructionFirstRep();
         dosage.getDoseAndRateFirstRep().setDose(quantity);
     }
 
     private void createDuration(QdmDataElement qdmDataElement, MedicationRequest medicationRequest) {
-        MedicationRequest.MedicationRequestDispenseRequestComponent dispenseRequest = medicationRequest.getDispenseRequest();
-        Duration duration = new Duration();
+        var dispenseRequest = medicationRequest.getDispenseRequest();
+        var duration = new Duration();
         duration.setUnit("d");
         duration.setSystem(UCUM_SYSTEM);
         duration.setValue(qdmDataElement.getDaysSupplied());

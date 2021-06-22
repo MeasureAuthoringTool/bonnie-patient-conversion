@@ -37,7 +37,7 @@ public class SymptomConverter extends ConverterBase<Observation> {
         //http://hl7.org/fhir/us/qicore/qdm-to-qicore.html#822-symptom
         List<String> conversionMessages = new ArrayList<>();
 
-        Observation observation = new Observation();
+        var observation = new Observation();
         observation.setSubject(createPatientReference(fhirPatient));
         conversionMessages.add(NO_STATUS_MAPPING);
 
