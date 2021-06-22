@@ -17,6 +17,6 @@ class BonniePatientTest implements ResourceFileUtil {
 
         BonniePatient bonniePatient = objectMapper.readValue(json, BonniePatient.class);
 
-        assertNotNull( bonniePatient);
+        assertNotNull(bonniePatient);
     }
 }

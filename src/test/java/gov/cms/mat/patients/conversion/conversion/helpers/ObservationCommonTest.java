@@ -33,7 +33,6 @@ public interface ObservationCommonTest extends FhirConversionTest {
     }
 
 
-
     default void createObservationDataElement(QdmDataElement qdmDataElement) {
 
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));

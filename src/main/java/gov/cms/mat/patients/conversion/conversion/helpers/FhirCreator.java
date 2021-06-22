@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static gov.cms.mat.patients.conversion.conversion.ConverterBase.*;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_NOT_DONE;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.QICORE_RECORDED;
+import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYSTEM;
 
 public interface FhirCreator {
     default Reference createPatientReference(Patient fhirPatient) {

@@ -19,19 +19,14 @@ public class ConversionResult {
 
     @JsonProperty("fhir_patient")
     private final JsonNode fhirPatient;
-
-    @JsonProperty("expected_values")
-    List<ExpectedValues> expectedValues;
-
-    @JsonProperty("measure_ids")
-    List<String> measureIds;
-
     @JsonProperty("data_elements")
     private final List<FhirDataElement> dataElements;
-
     @JsonProperty("created_at")
     private final Instant createdAt;
-
     @JsonProperty("updated_at")
     private final Instant updatedAt;
+    @JsonProperty("expected_values")
+    List<ExpectedValues> expectedValues;
+    @JsonProperty("measure_ids")
+    List<String> measureIds;
 }

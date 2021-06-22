@@ -41,7 +41,7 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
         assertNull(result.getFhirResource().getValue());
 
         assertEquals(1, result.getConversionMessages().size());
-        assertTrue( result.getConversionMessages().get(0).startsWith( "Cannot convert reason to basedOn."));
+        assertTrue(result.getConversionMessages().get(0).startsWith("Cannot convert reason to basedOn."));
     }
 
     @Test

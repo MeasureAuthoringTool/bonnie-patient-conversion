@@ -55,7 +55,7 @@ public class BuildInfo {
 
         @Override
         protected PropertySource<?> toSimplePropertySource() {
-           var properties = new Properties();
+            var properties = new Properties();
             copyIfSet(properties, "branch");
             String commitId = getProperties().getShortCommitId();
             if (commitId != null) {
