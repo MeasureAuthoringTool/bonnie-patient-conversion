@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion;
 import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,11 @@ class AllergyIntoleranceConverterTest extends BaseConversionTest implements Fhir
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
         checkDataElementCodeableConcept(result.getFhirResource().getCode());
-        checkPrevalencePeriod(result.getFhirResource().getOnsetPeriod());
+
+        QdmPeriod qdmPeriod = createPrevalencePeriod();
+        assertEquals(qdmPeriod.getLow(), result.getFhirResource().getOnsetDateTimeType().getValue());
+        assertEquals(qdmPeriod.getHigh(), result.getFhirResource().getLastOccurrence());
+
         checkAuthorDatetime(result.getFhirResource().getRecordedDate());
 
         assertFalse(result.getFhirResource().getReactionFirstRep().hasSeverity()); // we cannot convert

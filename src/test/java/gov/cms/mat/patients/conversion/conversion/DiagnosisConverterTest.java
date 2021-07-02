@@ -3,6 +3,7 @@ package gov.cms.mat.patients.conversion.conversion;
 import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import org.hl7.fhir.r4.model.Condition;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,11 @@ class DiagnosisConverterTest extends BaseConversionTest implements FhirConversio
         assertEquals(0, result.getConversionMessages().size());
         checkSeverity(result.getFhirResource().getSeverity());
         checkAuthorDatetime(result.getFhirResource().getRecordedDate());
-        checkPrevalencePeriod(result.getFhirResource().getOnsetPeriod());
+
+        QdmPeriod qdmPeriod = createPrevalencePeriod();
+        assertEquals(qdmPeriod.getLow(), result.getFhirResource().getOnsetDateTimeType().getValue());
+        assertEquals(qdmPeriod.getHigh(), result.getFhirResource().getAbatementDateTimeType().getValue());
+
         checkAnatomicalLocationSite(result.getFhirResource().getBodySiteFirstRep());
 
         assertEquals("Active", result.getFhirResource().getClinicalStatus().getCoding().get(0).getDisplay());
