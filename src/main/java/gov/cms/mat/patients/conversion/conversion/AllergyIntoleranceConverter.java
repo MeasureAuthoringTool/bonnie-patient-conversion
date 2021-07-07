@@ -9,6 +9,7 @@ import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +47,13 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
         allergyIntolerance.setId(qdmDataElement.getId());
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
-            allergyIntolerance.setOnset(convertPeriod(qdmDataElement.getPrevalencePeriod()));
+            if (qdmDataElement.getPrevalencePeriod().getLow() != null) {
+                allergyIntolerance.setOnset(new DateTimeType(qdmDataElement.getPrevalencePeriod().getLow()));
+            }
+
+            if (qdmDataElement.getPrevalencePeriod().getHigh() != null) {
+                allergyIntolerance.setLastOccurrence(qdmDataElement.getPrevalencePeriod().getHigh());
+            }
         }
 
         allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());

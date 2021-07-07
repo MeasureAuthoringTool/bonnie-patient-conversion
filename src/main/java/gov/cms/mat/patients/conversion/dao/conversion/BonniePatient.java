@@ -23,7 +23,9 @@ public class BonniePatient {
     private QdmPatient qdmPatient;
     @JsonProperty("_id")
     private String id;
-
+    @JsonProperty("group_id")
+    private String groupId;
+    
     public String identifier() {
         return id;
     }
