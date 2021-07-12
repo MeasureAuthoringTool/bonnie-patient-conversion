@@ -18,7 +18,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <hapi.fhir.version>5.4.1</hapi.fhir.version>
+        <hapi.fhir.version>5.4.2</hapi.fhir.version>
         <swagger.version>1.5.9</swagger.version>
         <commons.collections.version>4.1</commons.collections.version>
         <cqframework.version>1.5.0-SNAPSHOT</cqframework.version>
