@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.client.RestTemplate;
 
+import java.net.URL;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MappingDataServiceTest implements ResourceFileUtil {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
-    private RestTemplate restTemplate;
+    private ObjectMapper objectMapper;
+
     @InjectMocks
     private MappingDataService mappingDataService;
 
@@ -39,9 +39,8 @@ class MappingDataServiceTest implements ResourceFileUtil {
     @Test
     void getCodeSystemEntries() {
         String json = getStringFromResource("/google/feed_data.json");
-        GoogleConversionDataCodeSystemEntry data = objectMapper.readValue(json, GoogleConversionDataCodeSystemEntry.class);
-
-        when(restTemplate.getForObject("http://howdy.doody.com", GoogleConversionDataCodeSystemEntry.class)).thenReturn(data);
+        GoogleConversionDataCodeSystemEntry data = new ObjectMapper().readValue(json, GoogleConversionDataCodeSystemEntry.class);
+        when(objectMapper.readValue(new URL("http://howdy.doody.com"), GoogleConversionDataCodeSystemEntry.class)).thenReturn(data);
 
         List<CodeSystemEntry> codeSystemEntries = mappingDataService.getCodeSystemEntries();
 
@@ -54,7 +53,7 @@ class MappingDataServiceTest implements ResourceFileUtil {
         GoogleConversionDataCodeSystemEntry data = new GoogleConversionDataCodeSystemEntry();
         data.setFeed(new GoogleCodeSystemEntryFeed());
 
-        when(restTemplate.getForObject("http://howdy.doody.com", GoogleConversionDataCodeSystemEntry.class)).thenReturn(data);
+        when(objectMapper.readValue(new URL("http://howdy.doody.com"), GoogleConversionDataCodeSystemEntry.class)).thenReturn(data);
 
         List<CodeSystemEntry> codeSystemEntries = mappingDataService.getCodeSystemEntries();
 
