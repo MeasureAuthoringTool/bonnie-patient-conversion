@@ -117,6 +117,7 @@ public class PatientConversionService implements FhirCreator {
                 .id(bonniePatient.getId())
                 .expectedValues(bonniePatient.getExpectedValues())
                 .measureIds(bonniePatient.getMeasureIds())
+                .notes(bonniePatient.getNotes())
                 .fhirPatient(convertedPatient.getFhirPatient())
                 .patientOutcome(convertedPatient.getOutcome())
                 .dataElements(fhirDataElements)

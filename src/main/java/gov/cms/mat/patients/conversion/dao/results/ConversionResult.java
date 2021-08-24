@@ -29,4 +29,5 @@ public class ConversionResult {
     List<ExpectedValues> expectedValues;
     @JsonProperty("measure_ids")
     List<String> measureIds;
+    String notes;
 }
