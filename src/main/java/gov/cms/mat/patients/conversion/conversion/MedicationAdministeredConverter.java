@@ -8,7 +8,6 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.MedicationAdministration;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -70,7 +69,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (!havePeriod && qdmDataElement.getRelevantDatetime() != null) {
-            medicationAdministration.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+            medicationAdministration.setEffective(qdmDataElement.getRelevantDatetime());
         }
 
         if (qdmDataElement.getPerformer() != null) {

@@ -8,7 +8,6 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -72,10 +71,10 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
-            immunization.setOccurrence(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+            immunization.setOccurrence(qdmDataElement.getRelevantDatetime());
         }
 
-        immunization.setRecorded(qdmDataElement.getAuthorDatetime());
+        immunization.setRecordedElement(qdmDataElement.getAuthorDatetime());
 
         if (qdmDataElement.getPerformer() != null) {
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");

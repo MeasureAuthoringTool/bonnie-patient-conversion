@@ -34,7 +34,7 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
             serviceRequest.getReasonCode().add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
-        serviceRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
+        serviceRequest.setAuthoredOnElement(qdmDataElement.getAuthorDatetime());
 
         if (!converterBase.processNegation(qdmDataElement, serviceRequest)) {
             serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.ACTIVE);

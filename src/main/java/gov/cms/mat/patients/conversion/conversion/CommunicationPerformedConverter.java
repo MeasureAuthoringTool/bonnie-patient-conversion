@@ -54,11 +54,11 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         }
 
         if (qdmDataElement.getSentDatetime() != null) {
-            communication.setSent(qdmDataElement.getSentDatetime());
+            communication.setSentElement(qdmDataElement.getSentDatetime());
         }
 
         if (qdmDataElement.getReceivedDatetime() != null) {
-            communication.setReceived(qdmDataElement.getReceivedDatetime());
+            communication.setReceivedElement(qdmDataElement.getReceivedDatetime());
         }
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {

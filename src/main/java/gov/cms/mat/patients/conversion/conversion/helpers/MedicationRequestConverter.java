@@ -5,11 +5,7 @@ import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionRes
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Duration;
-import org.hl7.fhir.r4.model.MedicationRequest;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Period;
+import org.hl7.fhir.r4.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +71,10 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             var dosage = medicationRequest.getDosageInstructionFirstRep();
-            dosage.getTiming().addEvent(qdmDataElement.getRelevantDatetime());
+            List<DateTimeType> relevantDateTime = new ArrayList<>() {{
+                add(qdmDataElement.getRelevantDatetime());
+            }};
+            dosage.getTiming().setEvent(relevantDateTime);
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
@@ -88,12 +87,12 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
         if (qdmDataElement.getActiveDatetime() != null) {
             var dosage = medicationRequest.getDosageInstructionFirstRep();
 
-            var period = new Period();
-            period.setStart(qdmDataElement.getActiveDatetime());
+            var period = new Period()
+                    .setStartElement(qdmDataElement.getActiveDatetime());
             dosage.getTiming().getRepeat().setBounds(period);
         }
 
-        medicationRequest.setAuthoredOn(qdmDataElement.getAuthorDatetime());
+        medicationRequest.setAuthoredOnElement(qdmDataElement.getAuthorDatetime());
 
 
         if (!converterBase.processNegation(qdmDataElement, medicationRequest) && setStatusToUnknown) {

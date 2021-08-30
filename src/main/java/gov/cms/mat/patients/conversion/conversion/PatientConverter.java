@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -133,7 +134,7 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         if (optional.isPresent()) {
             QdmDataElement dataElement = optional.get();
             log.trace("Patient is dead");
-            return new DateTimeType(dataElement.getExpiredDatetime());
+            return dataElement.getExpiredDatetime();
         } else {
             log.trace("Patient is alive");
             return null;

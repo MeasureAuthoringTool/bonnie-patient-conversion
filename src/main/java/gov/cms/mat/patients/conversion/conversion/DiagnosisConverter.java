@@ -10,7 +10,6 @@ import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
@@ -49,15 +48,15 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             if (qdmDataElement.getPrevalencePeriod().getLow() != null) {
-                condition.setOnset(new DateTimeType(qdmDataElement.getPrevalencePeriod().getLow()));
+                condition.setOnset(qdmDataElement.getPrevalencePeriod().getLow());
             }
 
             if (qdmDataElement.getPrevalencePeriod().getHigh() != null) {
-                condition.setAbatement(new DateTimeType(qdmDataElement.getPrevalencePeriod().getHigh()));
+                condition.setAbatement(qdmDataElement.getPrevalencePeriod().getHigh());
             }
         }
 
-        condition.setRecordedDate(qdmDataElement.getAuthorDatetime()); // usually comes in as null
+        condition.setRecordedDateElement(qdmDataElement.getAuthorDatetime()); // usually comes in as null
 
         if (qdmDataElement.getSeverity() != null) {
             condition.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));

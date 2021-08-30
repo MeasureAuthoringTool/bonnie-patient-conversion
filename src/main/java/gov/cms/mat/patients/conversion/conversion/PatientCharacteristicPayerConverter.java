@@ -57,7 +57,7 @@ public class PatientCharacteristicPayerConverter extends ConverterBase<Coverage>
 
     private void convertRelevantPeriod(Coverage coverage, QdmDataElement qdmDataElement) {
         var qdmPeriod = qdmDataElement.getRelevantPeriod();
-        coverage.getPeriod().setStart(qdmPeriod.getLow());
-        coverage.getPeriod().setEnd(qdmPeriod.getHigh());
+        coverage.getPeriod().setStartElement(qdmPeriod.getLow());
+        coverage.getPeriod().setEndElement(qdmPeriod.getHigh());
     }
 }

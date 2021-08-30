@@ -46,7 +46,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
 
         familyMemberHistory.setId(qdmDataElement.getId());
 
-        familyMemberHistory.setDate(qdmDataElement.getAuthorDatetime());
+        familyMemberHistory.setDateElement(qdmDataElement.getAuthorDatetime());
 
         familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
 

@@ -4,7 +4,6 @@ import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.NutritionOrder;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Timing;
@@ -39,7 +38,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "frequency");
         }
 
-        nutritionOrder.setDateTime(qdmDataElement.getAuthorDatetime());
+        nutritionOrder.setDateTimeElement(qdmDataElement.getAuthorDatetime());
 
         if (qdmDataElement.getRoute() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "route");
@@ -58,7 +57,7 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
         if (qdmDataElement.getRelevantPeriod() != null) {
             var timing = new Timing();
 
-            timing.getEvent().add(new DateTimeType(qdmDataElement.getRelevantPeriod().getLow()));
+            timing.getEvent().add(qdmDataElement.getRelevantPeriod().getLow());
 
             nutritionOrder.getEnteralFormula().getAdministrationFirstRep().setSchedule(timing);
         }

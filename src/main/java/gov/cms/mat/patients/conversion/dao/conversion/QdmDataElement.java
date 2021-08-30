@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hl7.fhir.r4.model.DateTimeType;
 
 import java.util.Date;
 import java.util.List;
@@ -39,11 +40,11 @@ public class QdmDataElement {
 
     private List<String> relatedTo;
 
-    private Date expiredDatetime;
-    private Date activeDatetime;
-    private Date birthDatetime;
+    private DateTimeType expiredDatetime;
+    private DateTimeType activeDatetime;
+    private DateTimeType birthDatetime;
 
-    private Date authorDatetime;
+    private DateTimeType authorDatetime;
 
     private Integer refills;
     private QdmQuantity dosage;
@@ -70,7 +71,7 @@ public class QdmDataElement {
     private QdmReferenceRange referenceRange;
 
     private QdmCodeSystem status;
-    private Date resultDatetime;
+    private DateTimeType resultDatetime;
     private QdmCodeSystem method;
 
     private QdmCodeSystem negationRationale;
@@ -84,7 +85,7 @@ public class QdmDataElement {
     private QdmCodeSystem severity;
     private QdmCodeSystem relationship;
 
-    private Date incisionDatetime;
+    private DateTimeType incisionDatetime;
 
     private List<QdmComponent> components;
 
@@ -94,14 +95,14 @@ public class QdmDataElement {
 
     private String codeListId;
 
-    private Date relevantDatetime;
+    private DateTimeType relevantDatetime;
 
     private String rank;
 
     private QdmCodeSystem category;
     private QdmCodeSystem medium;
-    private Date sentDatetime;
-    private Date receivedDatetime;
+    private DateTimeType sentDatetime;
+    private DateTimeType receivedDatetime;
 
     private QdmPractitioner sender;
     private QdmPractitioner recipient;

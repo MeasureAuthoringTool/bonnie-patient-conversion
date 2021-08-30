@@ -4,9 +4,7 @@ import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionRes
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmReferenceRange;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.*;
 
 import java.util.List;
 
@@ -22,10 +20,9 @@ public interface ObservationCommonTest extends FhirConversionTest {
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         checkDataElementCodeableConcept(result.getFhirResource().getCode());
 
-        checkAuthorDatetime(result.getFhirResource().getIssued());
         checkComponents(result.getFhirResource().getComponent());
 
-        checkRelevantPeriod(result.getFhirResource().getEffectivePeriod());
+        checkRelevantPeriod((Period) result.getFhirResource().getEffective());
 
         checkMethod(result.getFhirResource().getMethod());
 

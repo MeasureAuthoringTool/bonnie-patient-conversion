@@ -52,7 +52,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
-            adverseEvent.setDate(qdmDataElement.getRelevantDatetime());
+            adverseEvent.setDateElement(qdmDataElement.getRelevantDatetime());
         }
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getFacilityLocations())) {
@@ -62,7 +62,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            adverseEvent.setRecordedDate(qdmDataElement.getAuthorDatetime());
+            adverseEvent.setRecordedDateElement(qdmDataElement.getAuthorDatetime());
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "authorDatetime");
         }
 

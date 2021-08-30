@@ -49,8 +49,8 @@ class CommunicationPerformedConverterTest extends BaseConversionTest implements 
         checkDataElementCodeableConcept(result.getFhirResource().getReasonCodeFirstRep());
 
         checkMedium(result.getFhirResource().getMediumFirstRep());
-        checkSentDatetime(result.getFhirResource().getSent());
-        checkReceivedDatetime(result.getFhirResource().getReceived());
+        checkSentDatetime(result.getFhirResource().getSentElement());
+        checkReceivedDatetime(result.getFhirResource().getReceivedElement());
         checkRelatedTo(result.getFhirResource().getBasedOnFirstRep());
         checkSender(result.getFhirResource().getSender());
         checkRecipient(result.getFhirResource().getRecipientFirstRep());

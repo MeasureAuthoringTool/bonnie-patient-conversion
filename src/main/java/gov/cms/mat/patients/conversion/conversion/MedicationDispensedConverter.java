@@ -101,7 +101,7 @@ public class MedicationDispensedConverter extends ConverterBase<MedicationDispen
 
     private void processTimes(QdmDataElement qdmDataElement, MedicationDispense medicationDispense) {
         if (qdmDataElement.getRelevantDatetime() != null) {
-            medicationDispense.setWhenHandedOver(qdmDataElement.getRelevantDatetime());
+            medicationDispense.setWhenHandedOverElement(qdmDataElement.getRelevantDatetime());
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {

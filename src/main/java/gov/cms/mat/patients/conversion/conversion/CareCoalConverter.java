@@ -14,14 +14,7 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.Goal;
-import org.hl7.fhir.r4.model.IntegerType;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Ratio;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -67,8 +60,8 @@ public class CareCoalConverter extends ConverterBase<Goal> {
         }
 
         if (qdmDataElement.getRelevantPeriod() != null) {
-            goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow()));
-            goal.getTargetFirstRep().setDue(new DateType(qdmDataElement.getRelevantPeriod().getHigh()));
+            goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow().toCalendar()) );
+            goal.getTargetFirstRep().setDue(new DateType(qdmDataElement.getRelevantPeriod().getHigh().toCalendar()));
         }
 
         if (qdmDataElement.getStatusDate() != null) {

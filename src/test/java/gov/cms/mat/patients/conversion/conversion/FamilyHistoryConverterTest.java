@@ -39,7 +39,7 @@ class FamilyHistoryConverterTest extends BaseConversionTest implements FhirConve
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getPatient());
 
         checkDataElementCodeableConcept(result.getFhirResource().getConditionFirstRep().getCode());
-        checkAuthorDatetime(result.getFhirResource().getDate());
+        checkAuthorDatetime(result.getFhirResource().getDateElement());
         checkRelationShip(result.getFhirResource().getRelationship());
 
         assertEquals(FamilyMemberHistory.FamilyHistoryStatus.COMPLETED, result.getFhirResource().getStatus());

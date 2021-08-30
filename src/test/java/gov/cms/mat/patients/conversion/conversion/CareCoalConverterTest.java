@@ -61,10 +61,10 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
 
         checkTargetOutCome(result.getFhirResource().getTargetFirstRep().getDetailCodeableConcept());
 
-        Type type = result.getFhirResource().getTargetFirstRep().getDue();
-        assertThat(type, instanceOf(DateType.class));
+        DateType dueDate = (DateType) result.getFhirResource().getTargetFirstRep().getDue();
+        assertThat(dueDate, instanceOf(DateType.class));
 
-        checkRelevantPeriodGoal(result.getFhirResource().getStart(), (DateType) type);
+        checkRelevantPeriodGoal((DateType) result.getFhirResource().getStart(), dueDate);
 
         checkRelatedTo(result.getFhirResource().getAddressesFirstRep());
         checkPerformer(result.getFhirResource().getExpressedBy());

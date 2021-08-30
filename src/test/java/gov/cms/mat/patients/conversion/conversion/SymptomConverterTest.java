@@ -4,6 +4,7 @@ import gov.cms.mat.patients.conversion.conversion.helpers.BaseConversionTest;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirConversionTest;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Period;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +38,7 @@ class SymptomConverterTest extends BaseConversionTest implements FhirConversionT
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkDataElementCodeableConcept(result.getFhirResource().getValueCodeableConcept());
-        checkPrevalencePeriod(result.getFhirResource().getEffectivePeriod());
+        checkPrevalencePeriod((Period) result.getFhirResource().getEffective());
         checkSeverity(result.getFhirResource().getInterpretationFirstRep());
     }
 

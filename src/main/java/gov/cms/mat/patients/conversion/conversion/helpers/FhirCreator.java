@@ -23,7 +23,6 @@ import org.hl7.fhir.r4.model.StringType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,8 +71,8 @@ public interface FhirCreator {
 
     default Period convertPeriod(QdmPeriod relevantPeriod) {
         return new Period()
-                .setStart(relevantPeriod.getLow())
-                .setEnd(relevantPeriod.getHigh() == null ? null : relevantPeriod.getHigh());
+                .setStartElement(relevantPeriod.getLow())
+                .setEndElement(relevantPeriod.getHigh());
     }
 
     default String toJson(FhirContext fhirContext, IBaseResource theResource) {
@@ -117,9 +116,9 @@ public interface FhirCreator {
                 .setValue(new BooleanType(true));
     }
 
-    default Extension createRecordedExtension(Date date) {
+    default Extension createRecordedExtension(DateTimeType date) {
         return new Extension(QICORE_RECORDED)
-                .setValue(new DateTimeType(date));
+                .setValue(date);
     }
 
     default Set<String> collectQdmTypes(BonniePatient bonniePatient) {

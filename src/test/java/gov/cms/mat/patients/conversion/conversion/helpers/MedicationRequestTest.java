@@ -60,9 +60,9 @@ public interface MedicationRequestTest extends FhirConversionTest {
 
         checkReason(result.getFhirResource().getReasonCode().get(0));
 
-        checkRelevantDateTime(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getEvent().get(0).getValue());
+        checkRelevantDateTime(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getEvent().get(0));
         checkRelevantPeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
-        checkAuthorDatetime(result.getFhirResource().getAuthoredOn());
+        checkAuthorDatetime(result.getFhirResource().getAuthoredOnElement());
 
         //  checkActiveDatetimePeriod(result.getFhirResource().getDosageInstructionFirstRep().getTiming().getRepeat().getBoundsPeriod());
     }
