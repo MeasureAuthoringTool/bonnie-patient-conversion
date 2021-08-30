@@ -9,7 +9,6 @@ import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -78,8 +77,6 @@ public interface ProcedureConversionTest extends FhirConversionTest {
 
         assertThat(extension.getValue(), instanceOf(DateTimeType.class));
 
-        DateTimeType dateTimeType = (DateTimeType) extension.getValue();
-
-        return dateTimeType;
+        return (DateTimeType) extension.getValue();
     }
 }
