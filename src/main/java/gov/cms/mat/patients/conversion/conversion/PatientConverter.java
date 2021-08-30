@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.conversion.helpers.DataElementFinder;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirPatientResult;
@@ -134,6 +135,8 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         if (optional.isPresent()) {
             QdmDataElement dataElement = optional.get();
             log.trace("Patient is dead");
+            if (dataElement.getExpiredDatetime() != null)
+                dataElement.getExpiredDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             return dataElement.getExpiredDatetime();
         } else {
             log.trace("Patient is alive");

@@ -61,8 +61,12 @@ public class ParticipationConverter extends ConverterBase<Coverage> {
 
     private void convertParticipationPeriod(Coverage coverage, QdmDataElement qdmDataElement) {
         QdmPeriod qdmInterval = qdmDataElement.getParticipationPeriod();
-        qdmInterval.getLow().setPrecision(TemporalPrecisionEnum.MILLI);
-        qdmInterval.getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
+
+        if (qdmInterval.getLow() != null)
+            qdmInterval.getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+        if (qdmInterval.getHigh() != null)
+            qdmInterval.getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
+
         coverage.getPeriod().setStartElement(qdmInterval.getLow());
         coverage.getPeriod().setEndElement(qdmInterval.getHigh());
     }

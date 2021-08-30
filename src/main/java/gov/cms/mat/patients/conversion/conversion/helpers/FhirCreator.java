@@ -122,7 +122,7 @@ public interface FhirCreator {
     }
 
     default Extension createRecordedExtension(DateTimeType date) {
-        date.setPrecision(TemporalPrecisionEnum.MILLI);
+        if (date != null) date.setPrecision(TemporalPrecisionEnum.MILLI);
         return new Extension(QICORE_RECORDED)
                 .setValue(date);
     }

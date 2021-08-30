@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -46,7 +47,10 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
 
         familyMemberHistory.setId(qdmDataElement.getId());
 
-        familyMemberHistory.setDateElement(qdmDataElement.getAuthorDatetime());
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            familyMemberHistory.setDateElement(qdmDataElement.getAuthorDatetime());
+        }
 
         familyMemberHistory.setStatus(FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
 

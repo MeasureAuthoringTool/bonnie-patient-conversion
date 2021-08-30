@@ -59,7 +59,10 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
             }
         }
 
-        condition.setRecordedDateElement(qdmDataElement.getAuthorDatetime()); // usually comes in as null
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            condition.setRecordedDateElement(qdmDataElement.getAuthorDatetime()); // usually comes in as null
+        }
 
         if (qdmDataElement.getSeverity() != null) {
             condition.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));
