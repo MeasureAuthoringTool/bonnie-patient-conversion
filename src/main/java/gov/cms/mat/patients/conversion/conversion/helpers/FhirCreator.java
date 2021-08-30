@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -70,6 +71,10 @@ public interface FhirCreator {
     }
 
     default Period convertPeriod(QdmPeriod relevantPeriod) {
+        if (relevantPeriod.getLow() != null)
+            relevantPeriod.getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+        if (relevantPeriod.getHigh() != null)
+            relevantPeriod.getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
         return new Period()
                 .setStartElement(relevantPeriod.getLow())
                 .setEndElement(relevantPeriod.getHigh());
@@ -117,6 +122,7 @@ public interface FhirCreator {
     }
 
     default Extension createRecordedExtension(DateTimeType date) {
+        date.setPrecision(TemporalPrecisionEnum.MILLI);
         return new Extension(QICORE_RECORDED)
                 .setValue(date);
     }

@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -34,7 +35,10 @@ public interface ServiceRequestConverter extends DataElementFinder, FhirCreator 
             serviceRequest.getReasonCode().add(converterBase.convertToCodeableConcept(qdmDataElement.getReason()));
         }
 
-        serviceRequest.setAuthoredOnElement(qdmDataElement.getAuthorDatetime());
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            serviceRequest.setAuthoredOnElement(qdmDataElement.getAuthorDatetime());
+        }
 
         if (!converterBase.processNegation(qdmDataElement, serviceRequest)) {
             serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.ACTIVE);

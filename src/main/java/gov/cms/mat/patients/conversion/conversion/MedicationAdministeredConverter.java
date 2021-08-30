@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -69,6 +70,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (!havePeriod && qdmDataElement.getRelevantDatetime() != null) {
+            qdmDataElement.getRelevantDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             medicationAdministration.setEffective(qdmDataElement.getRelevantDatetime());
         }
 

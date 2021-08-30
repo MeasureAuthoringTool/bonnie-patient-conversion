@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
@@ -41,6 +42,7 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (!observation.hasEffectivePeriod() && qdmDataElement.getRelevantDatetime() != null) {
+            qdmDataElement.getRelevantDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             observation.setEffective(qdmDataElement.getRelevantDatetime());
         }
 
@@ -49,8 +51,10 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             observation.setIssuedElement(new InstantType(qdmDataElement.getAuthorDatetime()));
         } else if (qdmDataElement.getResultDatetime() != null) {
+            qdmDataElement.getResultDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             observation.setIssuedElement(new InstantType(qdmDataElement.getResultDatetime()));
         }
 

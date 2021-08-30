@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -38,7 +39,10 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "frequency");
         }
 
-        nutritionOrder.setDateTimeElement(qdmDataElement.getAuthorDatetime());
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            nutritionOrder.setDateTimeElement(qdmDataElement.getAuthorDatetime());
+        }
 
         if (qdmDataElement.getRoute() != null) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "route");
@@ -56,9 +60,10 @@ public interface SubstanceConverter extends DataElementFinder, FhirCreator {
 
         if (qdmDataElement.getRelevantPeriod() != null) {
             var timing = new Timing();
-
-            timing.getEvent().add(qdmDataElement.getRelevantPeriod().getLow());
-
+            if (qdmDataElement.getRelevantPeriod().getLow() != null) {
+                qdmDataElement.getRelevantPeriod().getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+                timing.getEvent().add(qdmDataElement.getRelevantPeriod().getLow());
+            }
             nutritionOrder.getEnteralFormula().getAdministrationFirstRep().setSchedule(timing);
         }
 

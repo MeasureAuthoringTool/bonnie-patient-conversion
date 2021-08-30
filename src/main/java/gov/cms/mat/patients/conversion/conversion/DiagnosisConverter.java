@@ -2,6 +2,7 @@ package gov.cms.mat.patients.conversion.conversion;
 
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -48,10 +49,12 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             if (qdmDataElement.getPrevalencePeriod().getLow() != null) {
+                qdmDataElement.getPrevalencePeriod().getLow().setPrecision(TemporalPrecisionEnum.MILLI);
                 condition.setOnset(qdmDataElement.getPrevalencePeriod().getLow());
             }
 
             if (qdmDataElement.getPrevalencePeriod().getHigh() != null) {
+                qdmDataElement.getPrevalencePeriod().getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
                 condition.setAbatement(qdmDataElement.getPrevalencePeriod().getHigh());
             }
         }

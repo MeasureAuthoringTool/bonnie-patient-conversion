@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -57,6 +58,10 @@ public class PatientCharacteristicPayerConverter extends ConverterBase<Coverage>
 
     private void convertRelevantPeriod(Coverage coverage, QdmDataElement qdmDataElement) {
         var qdmPeriod = qdmDataElement.getRelevantPeriod();
+        if (qdmPeriod.getLow() != null)
+            qdmPeriod.getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+        if (qdmPeriod.getHigh() != null)
+            qdmPeriod.getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
         coverage.getPeriod().setStartElement(qdmPeriod.getLow());
         coverage.getPeriod().setEndElement(qdmPeriod.getHigh());
     }

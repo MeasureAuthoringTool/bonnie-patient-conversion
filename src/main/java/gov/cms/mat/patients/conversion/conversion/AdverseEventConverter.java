@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -52,6 +53,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         }
 
         if (qdmDataElement.getRelevantDatetime() != null) {
+            qdmDataElement.getRelevantDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             adverseEvent.setDateElement(qdmDataElement.getRelevantDatetime());
         }
 
@@ -62,6 +64,7 @@ public class AdverseEventConverter extends ConverterBase<AdverseEvent> {
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             adverseEvent.setRecordedDateElement(qdmDataElement.getAuthorDatetime());
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "authorDatetime");
         }

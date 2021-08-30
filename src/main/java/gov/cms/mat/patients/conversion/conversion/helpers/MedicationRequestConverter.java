@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
@@ -71,6 +72,7 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getRelevantDatetime() != null) {
             var dosage = medicationRequest.getDosageInstructionFirstRep();
+            qdmDataElement.getRelevantDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             List<DateTimeType> relevantDateTime = new ArrayList<>() {{
                 add(qdmDataElement.getRelevantDatetime());
             }};
@@ -86,14 +88,16 @@ public interface MedicationRequestConverter extends FhirCreator, DataElementFind
 
         if (qdmDataElement.getActiveDatetime() != null) {
             var dosage = medicationRequest.getDosageInstructionFirstRep();
-
+            qdmDataElement.getActiveDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
             var period = new Period()
                     .setStartElement(qdmDataElement.getActiveDatetime());
             dosage.getTiming().getRepeat().setBounds(period);
         }
 
-        medicationRequest.setAuthoredOnElement(qdmDataElement.getAuthorDatetime());
-
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            medicationRequest.setAuthoredOnElement(qdmDataElement.getAuthorDatetime());
+        }
 
         if (!converterBase.processNegation(qdmDataElement, medicationRequest) && setStatusToUnknown) {
             medicationRequest.setStatus(MedicationRequest.MedicationRequestStatus.COMPLETED);
