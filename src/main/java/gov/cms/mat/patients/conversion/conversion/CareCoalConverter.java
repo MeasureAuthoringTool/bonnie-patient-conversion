@@ -58,11 +58,12 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             }
 
         }
-
-        if (qdmDataElement.getRelevantPeriod() != null) {
-            goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow().toCalendar()) );
-            goal.getTargetFirstRep().setDue(new DateType(qdmDataElement.getRelevantPeriod().getHigh().toCalendar()));
-        }
+        // Need to accept RelevantPeriod (DateTimeType) and convert to a DateTime type which doesn't accept time
+        // Need to consider TimeZone when converting to just Date.
+//        if (qdmDataElement.getRelevantPeriod() != null) {
+//            goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow()));
+//            goal.getTargetFirstRep().setDue(new DateType(String.valueOf(qdmDataElement.getRelevantPeriod().getHigh())));
+//        }
 
         if (qdmDataElement.getStatusDate() != null) {
             goal.setStatusDate(qdmDataElement.getStatusDate());

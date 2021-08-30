@@ -12,10 +12,8 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import lombok.Data;
 import lombok.SneakyThrows;
-import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.Goal;
 import org.hl7.fhir.r4.model.Ratio;
-import org.hl7.fhir.r4.model.Type;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -61,10 +57,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
 
         checkTargetOutCome(result.getFhirResource().getTargetFirstRep().getDetailCodeableConcept());
 
-        DateType dueDate = (DateType) result.getFhirResource().getTargetFirstRep().getDue();
-        assertThat(dueDate, instanceOf(DateType.class));
-
-        checkRelevantPeriodGoal((DateType) result.getFhirResource().getStart(), dueDate);
+//        checkRelevantPeriodGoal(result.getFhirResource().getStartDateType(), result.getFhirResource().getTargetFirstRep().getDueDateType());
 
         checkRelatedTo(result.getFhirResource().getAddressesFirstRep());
         checkPerformer(result.getFhirResource().getExpressedBy());

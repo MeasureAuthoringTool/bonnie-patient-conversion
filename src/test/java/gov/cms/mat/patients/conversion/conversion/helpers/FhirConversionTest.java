@@ -20,7 +20,6 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
 import org.hl7.fhir.r4.model.*;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface FhirConversionTest {
     long currentTime = System.currentTimeMillis();
-    DateTimeType dateTimeTypeNow = DateTimeType.now();
+    DateTimeType now = DateTimeType.now();
 
     default void checkSNOMEDCodeableConcept(CodeableConcept codeableConcept, String code, String display) {
         assertEquals(1, codeableConcept.getCoding().size());
@@ -113,7 +112,7 @@ public interface FhirConversionTest {
 
 
     default DateTimeType createRelevantDatetime() {
-        return dateTimeTypeNow;
+        return now;
     }
 
     default void checkRelevantDateTime(DateTimeType relevantDatetime) {
@@ -122,8 +121,8 @@ public interface FhirConversionTest {
 
     default QdmPeriod createPrevalencePeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(dateTimeTypeNow);
-        qdmPeriod.setHigh(dateTimeTypeNow);
+        qdmPeriod.setLow(now);
+        qdmPeriod.setHigh(now);
         return qdmPeriod;
     }
 
@@ -136,8 +135,8 @@ public interface FhirConversionTest {
 
     default QdmPeriod createParticipationPeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(dateTimeTypeNow);
-        qdmPeriod.setHigh(dateTimeTypeNow);
+        qdmPeriod.setLow(now);
+        qdmPeriod.setHigh(now);
         return qdmPeriod;
     }
 
@@ -149,7 +148,7 @@ public interface FhirConversionTest {
     }
 
     default DateTimeType createAuthorDatetime() {
-        return dateTimeTypeNow;
+        return now;
     }
 
     default Date createActiveDatetime() {
@@ -249,8 +248,8 @@ public interface FhirConversionTest {
 
     default QdmPeriod createRelevantPeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(dateTimeTypeNow);
-        qdmPeriod.setHigh(dateTimeTypeNow);
+        qdmPeriod.setLow(now);
+        qdmPeriod.setHigh(now);
         return qdmPeriod;
     }
 
@@ -261,10 +260,9 @@ public interface FhirConversionTest {
         assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEndElement());
     }
 
-    default void checkRelevantPeriodGoal(DateType start, DateType end) {
-        assertThat(start, instanceOf(DateType.class));
-        assertEquals(dateTimeTypeNow, start);
-        assertEquals(dateTimeTypeNow, end);
+    default void checkRelevantPeriodGoal(DateType start, DateType due) {
+        assertEquals(now, start);
+        assertEquals(now, due);
     }
 
     default QdmComponent createComponents() {
@@ -448,7 +446,7 @@ public interface FhirConversionTest {
     }
 
     default DateTimeType createSentDatetime() {
-        return dateTimeTypeNow;
+        return now;
     }
 
     default void checkSentDatetime(DateTimeType sent) {
@@ -456,7 +454,7 @@ public interface FhirConversionTest {
     }
 
     default DateTimeType createReceivedDatetime() {
-        return dateTimeTypeNow;
+        return now;
     }
 
     default void checkReceivedDatetime(DateTimeType received) {
@@ -554,7 +552,7 @@ public interface FhirConversionTest {
     }
 
     default DateTimeType createIncisionDatetime() {
-        return dateTimeTypeNow;
+        return now;
     }
 
     default void checkIncisionDatetime(DateTimeType date) {
