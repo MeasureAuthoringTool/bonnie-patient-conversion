@@ -27,14 +27,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CareCoalConverterTest extends BaseConversionTest implements FhirConversionTest {
+class CareGoalConverterTest extends BaseConversionTest implements FhirConversionTest {
     ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
-    private CareCoalConverter careCoalConverter;
+    private CareGoalConverter careGoalConverter;
 
     @Test
     void getQdmType() {
-        assertEquals(CareCoalConverter.QDM_TYPE, careCoalConverter.getQdmType());
+        assertEquals(CareGoalConverter.QDM_TYPE, careGoalConverter.getQdmType());
     }
 
     @Test
@@ -51,7 +51,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
 
         qdmDataElement.setStatusDate(createStatusDate());
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -74,7 +74,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         JsonNode node = objectMapper.valueToTree(targetOutcome);
         qdmDataElement.setTargetOutcome(node);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -93,7 +93,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
 
         qdmDataElement.setTargetOutcome(node);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -113,7 +113,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
         qdmDataElement.setTargetOutcome(node);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -136,7 +136,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
         qdmDataElement.setTargetOutcome(node);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -151,7 +151,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         BooleanNode booleanNode = BooleanNode.FALSE; // fhir object Goal can take this we not handling this boolean type
         qdmDataElement.setTargetOutcome(booleanNode);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -166,7 +166,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         IntNode intNode = new IntNode(123);
         qdmDataElement.setTargetOutcome(intNode);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -180,7 +180,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
         DoubleNode doubleNode = new DoubleNode(1.23);
         qdmDataElement.setTargetOutcome(doubleNode);
 
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -190,7 +190,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
 
     @Test
     void convertToFhirEmptyTargetOutcome() {
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
@@ -199,7 +199,7 @@ class CareCoalConverterTest extends BaseConversionTest implements FhirConversion
 
     @Test
     void convertToFhirEmptyObjects() {
-        QdmToFhirConversionResult<Goal> result = careCoalConverter.convertToFhir(fhirPatient, qdmDataElement);
+        QdmToFhirConversionResult<Goal> result = careGoalConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 

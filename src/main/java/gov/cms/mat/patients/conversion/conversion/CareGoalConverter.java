@@ -22,10 +22,10 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class CareCoalConverter extends ConverterBase<Goal> {
+public class CareGoalConverter extends ConverterBase<Goal> {
     public static final String QDM_TYPE = "QDM::CareGoal";
 
-    public CareCoalConverter(CodeSystemEntriesService codeSystemEntriesService,
+    public CareGoalConverter(CodeSystemEntriesService codeSystemEntriesService,
                              FhirContext fhirContext,
                              ObjectMapper objectMapper,
                              ValidationService validationService) {
