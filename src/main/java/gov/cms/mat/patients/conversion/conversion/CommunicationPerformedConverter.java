@@ -2,6 +2,7 @@ package gov.cms.mat.patients.conversion.conversion;
 
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
@@ -54,11 +55,13 @@ public class CommunicationPerformedConverter extends ConverterBase<Communication
         }
 
         if (qdmDataElement.getSentDatetime() != null) {
-            communication.setSent(qdmDataElement.getSentDatetime());
+            qdmDataElement.getSentDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            communication.setSentElement(qdmDataElement.getSentDatetime());
         }
 
         if (qdmDataElement.getReceivedDatetime() != null) {
-            communication.setReceived(qdmDataElement.getReceivedDatetime());
+            qdmDataElement.getReceivedDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            communication.setReceivedElement(qdmDataElement.getReceivedDatetime());
         }
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getRelatedTo())) {

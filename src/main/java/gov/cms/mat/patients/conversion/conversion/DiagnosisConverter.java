@@ -2,6 +2,7 @@ package gov.cms.mat.patients.conversion.conversion;
 
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -10,7 +11,6 @@ import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
@@ -49,15 +49,20 @@ public class DiagnosisConverter extends ConverterBase<Condition> {
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             if (qdmDataElement.getPrevalencePeriod().getLow() != null) {
-                condition.setOnset(new DateTimeType(qdmDataElement.getPrevalencePeriod().getLow()));
+                qdmDataElement.getPrevalencePeriod().getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+                condition.setOnset(qdmDataElement.getPrevalencePeriod().getLow());
             }
 
             if (qdmDataElement.getPrevalencePeriod().getHigh() != null) {
-                condition.setAbatement(new DateTimeType(qdmDataElement.getPrevalencePeriod().getHigh()));
+                qdmDataElement.getPrevalencePeriod().getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
+                condition.setAbatement(qdmDataElement.getPrevalencePeriod().getHigh());
             }
         }
 
-        condition.setRecordedDate(qdmDataElement.getAuthorDatetime()); // usually comes in as null
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            condition.setRecordedDateElement(qdmDataElement.getAuthorDatetime()); // usually comes in as null
+        }
 
         if (qdmDataElement.getSeverity() != null) {
             condition.setSeverity(convertToCodeableConcept(qdmDataElement.getSeverity()));

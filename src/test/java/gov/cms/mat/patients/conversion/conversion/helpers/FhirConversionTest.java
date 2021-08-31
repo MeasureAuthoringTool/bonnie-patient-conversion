@@ -18,25 +18,8 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
 import gov.cms.mat.patients.conversion.dao.conversion.TargetOutcome;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.Duration;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.HumanName;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.IntegerType;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.model.*;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface FhirConversionTest {
-    Instant now = Instant.now();
+    long currentTime = System.currentTimeMillis();
+    DateTimeType now = DateTimeType.now();
 
     default void checkSNOMEDCodeableConcept(CodeableConcept codeableConcept, String code, String display) {
         assertEquals(1, codeableConcept.getCoding().size());
@@ -127,55 +111,55 @@ public interface FhirConversionTest {
     }
 
 
-    default Date createRelevantDatetime() {
-        return new Date(now.toEpochMilli() - 10000);
+    default DateTimeType createRelevantDatetime() {
+        return now;
     }
 
-    default void checkRelevantDateTime(Date relevantDatetime) {
+    default void checkRelevantDateTime(DateTimeType relevantDatetime) {
         assertEquals(createRelevantDatetime(), relevantDatetime);
     }
 
     default QdmPeriod createPrevalencePeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(new Date(now.toEpochMilli() - 1000000));
-        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 100));
+        qdmPeriod.setLow(now);
+        qdmPeriod.setHigh(now);
         return qdmPeriod;
     }
 
     default void checkPrevalencePeriod(Period fhirPeriod) {
         QdmPeriod qdmPeriod = createPrevalencePeriod();
 
-        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
-        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
+        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStartElement());
+        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEndElement());
     }
 
     default QdmPeriod createParticipationPeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(new Date(now.toEpochMilli() - 1000000));
-        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 100));
+        qdmPeriod.setLow(now);
+        qdmPeriod.setHigh(now);
         return qdmPeriod;
     }
 
     default void checkParticipationPeriod(Period fhirPeriod) {
         QdmPeriod qdmPeriod = createPrevalencePeriod();
 
-        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
-        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
+        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStartElement());
+        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEndElement());
     }
 
-    default Date createAuthorDatetime() {
-        return new Date(now.toEpochMilli() - 50);
+    default DateTimeType createAuthorDatetime() {
+        return now;
     }
 
     default Date createActiveDatetime() {
-        return new Date(now.toEpochMilli() - 7777);
+        return new Date(currentTime - 7777);
     }
 
     default void checkActiveDatetime(Date date) {
         assertEquals(createActiveDatetime(), date);
     }
 
-    default void checkAuthorDatetime(Date date) {
+    default void checkAuthorDatetime(DateTimeType date) {
         assertEquals(createAuthorDatetime(), date);
     }
 
@@ -264,24 +248,21 @@ public interface FhirConversionTest {
 
     default QdmPeriod createRelevantPeriod() {
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(new Date(now.toEpochMilli() - 2000000));
-        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 1000));
+        qdmPeriod.setLow(now);
+        qdmPeriod.setHigh(now);
         return qdmPeriod;
     }
 
     default void checkRelevantPeriod(Period fhirPeriod) {
         QdmPeriod qdmPeriod = createRelevantPeriod();
 
-        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStart());
-        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEnd());
+        assertEquals(qdmPeriod.getLow(), fhirPeriod.getStartElement());
+        assertEquals(qdmPeriod.getHigh(), fhirPeriod.getEndElement());
     }
 
-    default void checkRelevantPeriodGoal(Type start, DateType end) {
-        assertThat(start, instanceOf(DateType.class));
-        DateType dateType = (DateType) start;
-        assertEquals(new Date(now.toEpochMilli() - 2000000), dateType.getValue());
-
-        assertEquals(new Date(now.toEpochMilli() - 1000), end.getValue());
+    default void checkRelevantPeriodGoal(DateType start, DateType due) {
+        assertEquals(now, start);
+        assertEquals(now, due);
     }
 
     default QdmComponent createComponents() {
@@ -298,8 +279,8 @@ public interface FhirConversionTest {
 
 
         QdmPeriod qdmPeriod = new QdmPeriod();
-        qdmPeriod.setLow(new Date(now.toEpochMilli() - 20000));
-        qdmPeriod.setHigh(new Date(now.toEpochMilli() - 999));
+        qdmPeriod.setLow(new DateTimeType(new Date(System.currentTimeMillis() - 10000)));
+        qdmPeriod.setHigh(new DateTimeType(new Date(System.currentTimeMillis() - 999)));
 
         qdmComponent.setReferenceRange(qdmPeriod);
 
@@ -464,19 +445,19 @@ public interface FhirConversionTest {
         checkSNOMEDCodeableConcept(codeableConcept, "408563008", "Email sent to consultant (finding)");
     }
 
-    default Date createSentDatetime() {
-        return new Date(now.toEpochMilli() - 12345);
+    default DateTimeType createSentDatetime() {
+        return now;
     }
 
-    default void checkSentDatetime(Date sent) {
+    default void checkSentDatetime(DateTimeType sent) {
         assertEquals(createSentDatetime(), sent);
     }
 
-    default Date createReceivedDatetime() {
-        return new Date(now.toEpochMilli() - 1);
+    default DateTimeType createReceivedDatetime() {
+        return now;
     }
 
-    default void checkReceivedDatetime(Date received) {
+    default void checkReceivedDatetime(DateTimeType received) {
         assertEquals(createReceivedDatetime(), received);
     }
 
@@ -493,7 +474,7 @@ public interface FhirConversionTest {
         assertThat(extension.getValue(), instanceOf(DateTimeType.class));
         DateTimeType dateTimeType = (DateTimeType) extension.getValue();
 
-        assertEquals(createAuthorDatetime(), dateTimeType.getValue());
+        assertEquals(createAuthorDatetime(), dateTimeType);
 
         assertEquals(QICORE_RECORDED, extension.getUrl());
     }
@@ -570,11 +551,11 @@ public interface FhirConversionTest {
         assertEquals(NO_STATUS_MAPPING, conversionMessages.get(0));
     }
 
-    default Date createIncisionDatetime() {
-        return new Date(now.toEpochMilli() - 2222);
+    default DateTimeType createIncisionDatetime() {
+        return now;
     }
 
-    default void checkIncisionDatetime(Date date) {
+    default void checkIncisionDatetime(DateTimeType date) {
         assertEquals(createIncisionDatetime(), date);
     }
 
@@ -606,7 +587,7 @@ public interface FhirConversionTest {
     }
 
     default Date createStatusDate() {
-        return new Date(now.toEpochMilli() - 9994);
+        return new Date(currentTime - 9994);
     }
 
     default void checkStatusDate(Date statusDate) {

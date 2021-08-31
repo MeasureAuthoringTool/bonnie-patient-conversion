@@ -11,6 +11,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import lombok.SneakyThrows;
 import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Enumerations;
 import org.hl7.fhir.r4.model.Extension;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Set;
 
 import static gov.cms.mat.patients.conversion.conversion.PatientConverter.DETAILED_RACE_URL;
@@ -111,10 +111,10 @@ class PatientConverterTest implements ResourceFileUtil, FhirCreator, DataElement
 
     @Test
     void convertExpired() {
-        Date deathDate = new Date();
+        var now = DateTimeType.now();
 
         var expiredElement = create("QDM::PatientCharacteristicExpired");
-        expiredElement.setExpiredDatetime(deathDate);
+        expiredElement.setExpiredDatetime(now);
         bonniePatient.getQdmPatient().getDataElements().add(expiredElement);
 
         QdmToFhirPatientResult result = patientConverter.convert(bonniePatient, collectQdmTypes(bonniePatient));
@@ -123,7 +123,7 @@ class PatientConverterTest implements ResourceFileUtil, FhirCreator, DataElement
         assertEquals(0, result.getOutcome().getValidationMessages().size());
 
         assertTrue(result.getFhirPatient().hasDeceased()); // Im dead
-        assertEquals(deathDate, result.getFhirPatient().getDeceasedDateTimeType().getValue());
+        assertEquals(now, result.getFhirPatient().getDeceasedDateTimeType());
     }
 
     @Test

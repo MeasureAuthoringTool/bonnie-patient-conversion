@@ -3,14 +3,13 @@ package gov.cms.mat.patients.conversion.dao.conversion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import org.hl7.fhir.r4.model.DateTimeType;
 
 @Data
 @NoArgsConstructor
 public class QdmPeriod {
-    private Date low;
-    private Date high;
+    private DateTimeType low;
+    private DateTimeType high;
     private Boolean lowClosed;
     private Boolean highClosed;
 

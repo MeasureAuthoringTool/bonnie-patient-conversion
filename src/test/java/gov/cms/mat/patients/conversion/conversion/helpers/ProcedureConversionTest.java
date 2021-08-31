@@ -6,9 +6,9 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -65,20 +65,18 @@ public interface ProcedureConversionTest extends FhirConversionTest {
 
         assertEquals("Cannot convert QDM attribute result", result.getConversionMessages().get(2));
 
-        checkRelevantPeriod(result.getFhirResource().getPerformedPeriod());
+        checkRelevantPeriod((Period) result.getFhirResource().getPerformed());
         checkIncisionDatetime(checkIncision(result.getFhirResource().getExtension()));
 
         checkAnatomicalLocationSite(result.getFhirResource().getBodySiteFirstRep());
     }
 
-    default Date checkIncision(List<Extension> extensions) {
+    default DateTimeType checkIncision(List<Extension> extensions) {
         assertEquals(2, extensions.size());
         Extension extension = extensions.get(0);
 
         assertThat(extension.getValue(), instanceOf(DateTimeType.class));
 
-        DateTimeType dateTimeType = (DateTimeType) extension.getValue();
-
-        return dateTimeType.getValue();
+        return (DateTimeType) extension.getValue();
     }
 }

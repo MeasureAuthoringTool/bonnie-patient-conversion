@@ -38,18 +38,16 @@ class DiagnosisConverterTest extends BaseConversionTest implements FhirConversio
 
         assertEquals(0, result.getConversionMessages().size());
         checkSeverity(result.getFhirResource().getSeverity());
-        checkAuthorDatetime(result.getFhirResource().getRecordedDate());
+        checkAuthorDatetime(result.getFhirResource().getRecordedDateElement());
 
         QdmPeriod qdmPeriod = createPrevalencePeriod();
-        assertEquals(qdmPeriod.getLow(), result.getFhirResource().getOnsetDateTimeType().getValue());
-        assertEquals(qdmPeriod.getHigh(), result.getFhirResource().getAbatementDateTimeType().getValue());
+        assertEquals(qdmPeriod.getLow(), result.getFhirResource().getOnsetDateTimeType());
+        assertEquals(qdmPeriod.getHigh(), result.getFhirResource().getAbatementDateTimeType());
 
         checkAnatomicalLocationSite(result.getFhirResource().getBodySiteFirstRep());
 
         assertEquals("Active", result.getFhirResource().getClinicalStatus().getCoding().get(0).getDisplay());
         assertEquals("Confirmed", result.getFhirResource().getVerificationStatus().getCoding().get(0).getDisplay());
-
-
     }
 
     @Test

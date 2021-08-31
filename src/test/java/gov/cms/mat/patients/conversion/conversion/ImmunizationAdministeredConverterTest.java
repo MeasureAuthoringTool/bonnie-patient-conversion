@@ -41,7 +41,7 @@ class ImmunizationAdministeredConverterTest extends BaseConversionTest implement
         checkDataElementCodeableConcept(result.getFhirResource().getVaccineCode());
         checkDosage(result.getFhirResource().getDoseQuantity());
         checkRoute(result.getFhirResource().getRoute());
-        checkRelevantDateTime(result.getFhirResource().getOccurrenceDateTimeType().getValue());
+        checkRelevantDateTime(result.getFhirResource().getOccurrenceDateTimeType());
         checkPerformer(result.getFhirResource().getPerformerFirstRep().getActor());
 
         assertEquals(Immunization.ImmunizationStatus.COMPLETED, result.getFhirResource().getStatus());

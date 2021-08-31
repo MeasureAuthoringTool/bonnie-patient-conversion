@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -9,7 +10,6 @@ import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
 
@@ -48,15 +48,21 @@ public class AllergyIntoleranceConverter extends ConverterBase<AllergyIntoleranc
 
         if (qdmDataElement.getPrevalencePeriod() != null) {
             if (qdmDataElement.getPrevalencePeriod().getLow() != null) {
-                allergyIntolerance.setOnset(new DateTimeType(qdmDataElement.getPrevalencePeriod().getLow()));
+                qdmDataElement.getPrevalencePeriod().getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+                allergyIntolerance.setOnset(qdmDataElement.getPrevalencePeriod().getLow());
             }
 
             if (qdmDataElement.getPrevalencePeriod().getHigh() != null) {
-                allergyIntolerance.setLastOccurrence(qdmDataElement.getPrevalencePeriod().getHigh());
+                qdmDataElement.getPrevalencePeriod().getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
+                allergyIntolerance.setLastOccurrenceElement(qdmDataElement.getPrevalencePeriod().getHigh());
             }
         }
 
-        allergyIntolerance.setRecordedDate(qdmDataElement.getAuthorDatetime());
+        if (qdmDataElement.getAuthorDatetime() != null) {
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            allergyIntolerance.setRecordedDateElement(qdmDataElement.getAuthorDatetime());
+        }
+
 
         if (qdmDataElement.getType() != null) {
             conversionMessages.add("Cannot convert Allergy/Intolerance.type due to AllergyIntolerance.reaction tuple.");

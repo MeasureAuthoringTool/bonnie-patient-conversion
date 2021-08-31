@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -23,7 +24,6 @@ import org.hl7.fhir.r4.model.StringType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -71,9 +71,13 @@ public interface FhirCreator {
     }
 
     default Period convertPeriod(QdmPeriod relevantPeriod) {
+        if (relevantPeriod.getLow() != null)
+            relevantPeriod.getLow().setPrecision(TemporalPrecisionEnum.MILLI);
+        if (relevantPeriod.getHigh() != null)
+            relevantPeriod.getHigh().setPrecision(TemporalPrecisionEnum.MILLI);
         return new Period()
-                .setStart(relevantPeriod.getLow())
-                .setEnd(relevantPeriod.getHigh() == null ? null : relevantPeriod.getHigh());
+                .setStartElement(relevantPeriod.getLow())
+                .setEndElement(relevantPeriod.getHigh());
     }
 
     default String toJson(FhirContext fhirContext, IBaseResource theResource) {
@@ -117,9 +121,10 @@ public interface FhirCreator {
                 .setValue(new BooleanType(true));
     }
 
-    default Extension createRecordedExtension(Date date) {
+    default Extension createRecordedExtension(DateTimeType date) {
+        if (date != null) date.setPrecision(TemporalPrecisionEnum.MILLI);
         return new Extension(QICORE_RECORDED)
-                .setValue(new DateTimeType(date));
+                .setValue(date);
     }
 
     default Set<String> collectQdmTypes(BonniePatient bonniePatient) {

@@ -44,7 +44,7 @@ class SubstanceAdministeredConverterTest extends BaseConversionTest implements F
         // DataElementCodes mapped twice
         checkDataElementCodeableConcept(result.getFhirResource().getOralDiet().getTypeFirstRep());
 
-        checkAuthorDatetime(result.getFhirResource().getDateTime());
+        checkAuthorDatetime(result.getFhirResource().getDateTimeElement());
 
         // DataElementCodes mapped twice
         checkDataElementCodeableConcept(result.getFhirResource().getEnteralFormula().getBaseFormulaType());
@@ -59,7 +59,7 @@ class SubstanceAdministeredConverterTest extends BaseConversionTest implements F
     }
 
     private void checkRelevantPeriodTiming(Timing schedule) {
-        assertEquals(createRelevantPeriod().getLow(), schedule.getEvent().get(0).getValue());
+        assertEquals(createRelevantPeriod().getLow(), schedule.getEvent().get(0));
     }
 
     @Test

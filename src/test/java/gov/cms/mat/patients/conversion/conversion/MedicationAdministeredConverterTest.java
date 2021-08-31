@@ -67,7 +67,7 @@ class MedicationAdministeredConverterTest extends BaseConversionTest implements 
         QdmToFhirConversionResult<MedicationAdministration> result =
                 medicationAdministeredConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);
-        checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType().getValue());
+        checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType());
     }
 
     @Test

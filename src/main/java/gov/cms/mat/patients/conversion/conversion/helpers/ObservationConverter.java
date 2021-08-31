@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
@@ -7,7 +8,7 @@ import gov.cms.mat.patients.conversion.dao.conversion.QdmComponent;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.InstantType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 
@@ -41,7 +42,8 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (!observation.hasEffectivePeriod() && qdmDataElement.getRelevantDatetime() != null) {
-            observation.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+            qdmDataElement.getRelevantDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            observation.setEffective(qdmDataElement.getRelevantDatetime());
         }
 
         if (!converterBase.processNegation(qdmDataElement, observation)) {
@@ -49,9 +51,11 @@ public interface ObservationConverter extends FhirCreator, DataElementFinder {
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {
-            observation.setIssued(qdmDataElement.getAuthorDatetime());
-        } else {
-            observation.setIssued(qdmDataElement.getResultDatetime());
+            qdmDataElement.getAuthorDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            observation.setIssuedElement(new InstantType(qdmDataElement.getAuthorDatetime()));
+        } else if (qdmDataElement.getResultDatetime() != null) {
+            qdmDataElement.getResultDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            observation.setIssuedElement(new InstantType(qdmDataElement.getResultDatetime()));
         }
 
         if (CollectionUtils.isNotEmpty(qdmDataElement.getComponents())) {

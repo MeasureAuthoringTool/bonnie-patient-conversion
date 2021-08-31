@@ -14,14 +14,7 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.Goal;
-import org.hl7.fhir.r4.model.IntegerType;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Ratio;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,10 +22,10 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class CareCoalConverter extends ConverterBase<Goal> {
+public class CareGoalConverter extends ConverterBase<Goal> {
     public static final String QDM_TYPE = "QDM::CareGoal";
 
-    public CareCoalConverter(CodeSystemEntriesService codeSystemEntriesService,
+    public CareGoalConverter(CodeSystemEntriesService codeSystemEntriesService,
                              FhirContext fhirContext,
                              ObjectMapper objectMapper,
                              ValidationService validationService) {
@@ -65,11 +58,12 @@ public class CareCoalConverter extends ConverterBase<Goal> {
             }
 
         }
-
-        if (qdmDataElement.getRelevantPeriod() != null) {
-            goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow()));
-            goal.getTargetFirstRep().setDue(new DateType(qdmDataElement.getRelevantPeriod().getHigh()));
-        }
+        // Need to accept RelevantPeriod (DateTimeType) and convert to a DateTime type which doesn't accept time
+        // Need to consider TimeZone when converting to just Date.
+//        if (qdmDataElement.getRelevantPeriod() != null) {
+//            goal.setStart(new DateType(qdmDataElement.getRelevantPeriod().getLow()));
+//            goal.getTargetFirstRep().setDue(new DateType(String.valueOf(qdmDataElement.getRelevantPeriod().getHigh())));
+//        }
 
         if (qdmDataElement.getStatusDate() != null) {
             goal.setStatusDate(qdmDataElement.getStatusDate());

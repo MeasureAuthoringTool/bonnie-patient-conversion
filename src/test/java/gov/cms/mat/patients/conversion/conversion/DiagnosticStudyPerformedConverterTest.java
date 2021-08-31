@@ -53,7 +53,7 @@ class DiagnosticStudyPerformedConverterTest extends BaseConversionTest implement
         QdmToFhirConversionResult<Observation> result =
                 diagnosticStudyPerformedConverter.convertToFhir(fhirPatient, qdmDataElement);
 
-        checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType().getValue());
+        checkRelevantDateTime(result.getFhirResource().getEffectiveDateTimeType());
     }
 
 

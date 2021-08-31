@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
@@ -8,7 +9,6 @@ import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.MedicationAdministration;
 import org.hl7.fhir.r4.model.Patient;
 import org.springframework.stereotype.Component;
@@ -70,7 +70,8 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (!havePeriod && qdmDataElement.getRelevantDatetime() != null) {
-            medicationAdministration.setEffective(new DateTimeType(qdmDataElement.getRelevantDatetime()));
+            qdmDataElement.getRelevantDatetime().setPrecision(TemporalPrecisionEnum.MILLI);
+            medicationAdministration.setEffective(qdmDataElement.getRelevantDatetime());
         }
 
         if (qdmDataElement.getPerformer() != null) {

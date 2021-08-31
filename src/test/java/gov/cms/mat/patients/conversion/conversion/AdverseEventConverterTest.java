@@ -14,7 +14,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -31,19 +30,19 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
     void convertToFhir() {
         qdmDataElement.setDataElementCodes(List.of(createDataElementCode()));
         qdmDataElement.setRelevantDatetime(createRelevantDatetime());
+        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         QdmToFhirConversionResult<AdverseEvent> result = adverseEventConverter.convertToFhir(fhirPatient, qdmDataElement);
 
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
 
         checkDataElementCodeableConcept(result.getFhirResource().getEvent());
-        checkRelevantDateTime(result.getFhirResource().getDate());
-
+        checkRelevantDateTime(result.getFhirResource().getDateElement());
+        checkAuthorDatetime(result.getFhirResource().getRecordedDateElement());
         /// ensure not mapped
         assertFalse(result.getFhirResource().hasCategory());
         assertFalse(result.getFhirResource().hasSeverity());
         assertFalse(result.getFhirResource().hasLocation());
-        assertNull(result.getFhirResource().getRecordedDate());
 
         assertEquals(AdverseEvent.AdverseEventActuality.ACTUAL, result.getFhirResource().getActuality());
     }
@@ -62,7 +61,6 @@ class AdverseEventConverterTest extends BaseConversionTest implements FhirConver
         qdmDataElement.setType(createType());
         qdmDataElement.setSeverity(createSeverity());
         qdmDataElement.setFacilityLocations(List.of(createFacilityLocation()));
-        qdmDataElement.setAuthorDatetime(createAuthorDatetime());
 
         QdmToFhirConversionResult<AdverseEvent> result = adverseEventConverter.convertToFhir(fhirPatient, qdmDataElement);
         assertNotNull(result);

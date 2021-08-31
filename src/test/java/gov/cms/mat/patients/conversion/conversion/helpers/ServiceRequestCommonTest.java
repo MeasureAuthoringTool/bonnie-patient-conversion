@@ -15,7 +15,7 @@ public interface ServiceRequestCommonTest extends FhirConversionTest {
     default void checkDataElement(QdmToFhirConversionResult<ServiceRequest> result) {
         checkBase(result.getFhirResource().getId(), result.getFhirResource().getSubject());
         checkDataElementCodeableConcept(result.getFhirResource().getCode());
-        checkAuthorDatetime(result.getFhirResource().getAuthoredOn());
+        checkAuthorDatetime(result.getFhirResource().getAuthoredOnElement());
         checkReason(result.getFhirResource().getReasonCodeFirstRep());
     }
 
