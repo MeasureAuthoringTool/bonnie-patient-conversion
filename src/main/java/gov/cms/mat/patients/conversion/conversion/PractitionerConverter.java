@@ -2,11 +2,9 @@ package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.madie.models.measure.TestCase;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionResult;
-import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
+import gov.cms.mat.patients.conversion.dao.conversion.*;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import gov.cms.mat.patients.conversion.service.ValidationService;
@@ -33,13 +31,13 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
     }
 
     @Override
-    public List<FhirDataElement> createDataElements(BonniePatient bonniePatient, Patient fhirPatient) {
-        if (bonniePatient.getQdmPatient() == null || CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
+    public List<FhirDataElement> createDataElements(QdmPatient qdmPatient, Patient fhirPatient) {
+        if (qdmPatient == null || CollectionUtils.isEmpty(qdmPatient.getDataElements())) {
             return Collections.emptyList();
         } else {
             var dataElements = Collections.synchronizedList(new ArrayList<FhirDataElement>());
 
-            bonniePatient.getQdmPatient().getDataElements()
+            qdmPatient.getDataElements()
                     .parallelStream()
                     .forEach(dataElement -> createPractitioners(dataElement, dataElements));
 
@@ -60,8 +58,8 @@ public class PractitionerConverter extends ConverterBase<Practitioner> {
             dataElements.add(convertToFhirPractitioner(dataElement.getDispenser(), dataElement));
         }
 
-        if (dataElement.getPerformer() != null) {
-            dataElements.add(convertToFhirPractitioner(dataElement.getPerformer(), dataElement));
+        if (CollectionUtils.isNotEmpty(dataElement.getPerformer())) {
+            dataElements.add(convertToFhirPractitioner(dataElement.getPerformer().get(0), dataElement));
         }
 
         if (dataElement.getPrescriber() != null) {

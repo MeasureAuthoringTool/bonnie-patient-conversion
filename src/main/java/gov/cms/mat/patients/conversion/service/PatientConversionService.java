@@ -2,11 +2,13 @@ package gov.cms.mat.patients.conversion.service;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.madie.models.measure.TestCase;
 import gov.cms.mat.patients.conversion.conversion.ConverterBase;
 import gov.cms.mat.patients.conversion.conversion.PatientConverter;
 import gov.cms.mat.patients.conversion.conversion.PractitionerConverter;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import gov.cms.mat.patients.conversion.dao.results.ConvertedPatient;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
@@ -57,32 +59,34 @@ public class PatientConversionService implements FhirCreator {
                 .collect(Collectors.toList());
     }
 
-    public List<ConversionResult> processMany(List<BonniePatient> bonniePatients) {
-        List<ConversionResult> results = bonniePatients.parallelStream()
+    public List<ConversionResult> processMany(List<TestCase> testCases) {
+        List<ConversionResult> results = testCases.parallelStream()
                 .map(this::processOne)
                 .collect(Collectors.toList());
 
         //  maintain the order from the input list
-        return bonniePatients.stream()
+        return testCases.stream()
                 .map(b -> findResultById(b.getId(), results))
                 .collect(Collectors.toList());
     }
 
-    public ConversionResult processOne(BonniePatient bonniePatient) {
+    public ConversionResult processOne(TestCase testCase) {
         try {
             List<CompletableFuture<List<FhirDataElement>>> futures = new ArrayList<>();
 
-            Set<String> qdmTypes = collectQdmTypes(bonniePatient);
+            ObjectMapper mapper = new ObjectMapper();
+            QdmPatient qdmPatient = mapper.readValue(testCase.getJson(), QdmPatient.class);
+            Set<String> qdmTypes = collectQdmTypes(qdmPatient);
 
-            var qdmToFhirPatientResult = patientConverter.convert(bonniePatient, qdmTypes);
+            var qdmToFhirPatientResult = patientConverter.convert(testCase, qdmPatient, qdmTypes);
             var fhirPatient = qdmToFhirPatientResult.getFhirPatient();
 
             // creates Practitioners, if they exist,  that wil be used later for references
-            processFuture(bonniePatient, fhirPatient, practitionerConverter, futures);
+            processFuture(qdmPatient, fhirPatient, practitionerConverter, futures);
 
             converters.forEach(converter -> {
                 if (qdmTypes.contains(converter.getQdmType())) {
-                    processFuture(bonniePatient, fhirPatient, converter, futures);
+                    processFuture(qdmPatient, fhirPatient, converter, futures);
                 }
             });
 
@@ -97,7 +101,7 @@ public class PatientConversionService implements FhirCreator {
                     .outcome(qdmToFhirPatientResult.getOutcome())
                     .build();
 
-            return buildResult(bonniePatient, fhirDataElements, convertedPatient);
+            return buildResult(testCase, fhirDataElements, convertedPatient);
 
         } catch (InterruptedException ie) {
             log.error("InterruptedException: ", ie);
@@ -109,15 +113,15 @@ public class PatientConversionService implements FhirCreator {
         }
     }
 
-    private ConversionResult buildResult(BonniePatient bonniePatient,
+    private ConversionResult buildResult(TestCase testCase,
                                          List<FhirDataElement> fhirDataElements,
                                          ConvertedPatient convertedPatient) {
         var timeStamp = Instant.now();
         return ConversionResult.builder()
-                .id(bonniePatient.getId())
-                .expectedValues(bonniePatient.getExpectedValues())
-                .measureIds(bonniePatient.getMeasureIds())
-                .notes(bonniePatient.getNotes())
+                .id(testCase.getId())
+//                .expectedValues(testCase.getExpectedValues())
+//                .measureIds(testCase.getMeasureIds())
+                .notes(testCase.getDescription())
                 .fhirPatient(convertedPatient.getFhirPatient())
                 .patientOutcome(convertedPatient.getOutcome())
                 .dataElements(fhirDataElements)
@@ -148,11 +152,11 @@ public class PatientConversionService implements FhirCreator {
     }
 
 
-    private void processFuture(BonniePatient bonniePatient,
+    private void processFuture(QdmPatient qdmPatient,
                                Patient fhirPatient,
                                ConverterBase<? extends IBaseResource> converter,
                                List<CompletableFuture<List<FhirDataElement>>> futures) {
-        CompletableFuture<List<FhirDataElement>> future = converter.convertToFhirDataElement(bonniePatient, fhirPatient);
+        CompletableFuture<List<FhirDataElement>> future = converter.convertToFhirDataElement(qdmPatient, fhirPatient);
         future.orTimeout(THREAD_POOL_TIMEOUT_MINUTES, TimeUnit.MINUTES);
         futures.add(future);
     }

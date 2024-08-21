@@ -84,7 +84,7 @@ public class ImmunizationAdministeredConverter extends ConverterBase<Immunizatio
 
         if (qdmDataElement.getPerformer() != null) {
             log.info(UNEXPECTED_DATA_LOG_MESSAGE, QDM_TYPE, "performer");
-            immunization.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+            immunization.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer().get(0)));
         }
 
         return QdmToFhirConversionResult.<Immunization>builder()

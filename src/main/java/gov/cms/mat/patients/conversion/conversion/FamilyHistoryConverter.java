@@ -34,7 +34,7 @@ public class FamilyHistoryConverter extends ConverterBase<FamilyMemberHistory> {
     }
 
     @Override
-    public QdmToFhirConversionResult<FamilyMemberHistory> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
+        public QdmToFhirConversionResult<FamilyMemberHistory> convertToFhir(Patient fhirPatient, QdmDataElement qdmDataElement) {
         List<String> conversionMessages = new ArrayList<>();
 
         var familyMemberHistory = new FamilyMemberHistory();

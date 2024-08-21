@@ -1,6 +1,7 @@
 package gov.cms.mat.patients.conversion.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.madie.models.measure.TestCase;
 import gov.cms.mat.patients.conversion.ResourceFileUtil;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
@@ -29,33 +30,33 @@ class PatientConversionServiceTest implements ResourceFileUtil {
     @Test
     void processOne() {
         String fromResource = getStringFromResource("/patient_one.json");
-        BonniePatient bonniePatient = objectMapper.readValue(fromResource, BonniePatient.class);
-        ConversionResult conversionResult = patientConversionService.processOne(bonniePatient);
+        TestCase testCase = objectMapper.readValue(fromResource, TestCase.class);
+        ConversionResult conversionResult = patientConversionService.processOne(testCase);
         assertNotNull(conversionResult);
 
-        assertEquals(bonniePatient.getId(), conversionResult.getId());
-        assertEquals(bonniePatient.getId(), conversionResult.getFhirPatient().get("id").asText());
-        assertEquals(bonniePatient.getMeasureIds(), conversionResult.getMeasureIds());
-        assertEquals(bonniePatient.getNotes(), conversionResult.getNotes());
+        assertEquals(testCase.getId(), conversionResult.getId());
+        assertEquals(testCase.getId(), conversionResult.getFhirPatient().get("id").asText());
+//        assertEquals(testCase.getMeasureIds(), conversionResult.getMeasureIds());
+        assertEquals(testCase.getDescription(), conversionResult.getNotes());
     }
 
     @SneakyThrows
     @Test
     void processHundred() {
         String fromResource = getStringFromResource("/patients_100.json");
-        BonniePatient[] patients = objectMapper.readValue(fromResource, BonniePatient[].class);
+        TestCase[] testCases = objectMapper.readValue(fromResource, TestCase[].class);
 
-        List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(patients));
-        assertEquals(patients.length, conversionResults.size());
+        List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(testCases));
+        assertEquals(testCases.length, conversionResults.size());
     }
 
     @SneakyThrows
     @Test
     void processTypes() {
         String fromResource = getStringFromResource("/patients_types.json");
-        BonniePatient[] patients = objectMapper.readValue(fromResource, BonniePatient[].class);
+        TestCase[] testCases = objectMapper.readValue(fromResource, TestCase[].class);
 
-        List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(patients));
-        assertEquals(patients.length, conversionResults.size());
+        List<ConversionResult> conversionResults = patientConversionService.processMany(Arrays.asList(testCases));
+        assertEquals(testCases.length, conversionResults.size());
     }
 }

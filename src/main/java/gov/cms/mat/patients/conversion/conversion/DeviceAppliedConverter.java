@@ -54,7 +54,7 @@ public class DeviceAppliedConverter extends ConverterBase<Procedure> {
         }
 
         if (qdmDataElement.getPerformer() != null) {
-            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer().get(0)));
         }
 
         if (!processNegation(qdmDataElement, procedure)) {

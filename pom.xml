@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.15</version>
+        <version>3.3.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>gov.cms.mat</groupId>
@@ -15,20 +15,31 @@
     <description>Convert Bonnie patients to FHIR</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <hapi.fhir.version>5.4.1</hapi.fhir.version>
+        <hapi.fhir.version>7.2.2</hapi.fhir.version>
         <swagger.version>1.5.9</swagger.version>
         <commons.collections.version>4.1</commons.collections.version>
         <cqframework.version>1.5.0-SNAPSHOT</cqframework.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>github</id>
+            <name>MADiE java models</name>
+            <url>https://maven.pkg.github.com/measureauthoringtool/madie-java-models</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
-             <groupId>org.apache.tomcat.embed</groupId>
-             <artifactId>tomcat-embed-core</artifactId>
-             <version>9.0.83</version>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -52,11 +63,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>3.1.2.RELEASE</version>
@@ -78,6 +84,11 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-caching-caffeine</artifactId>
+            <version>${hapi.fhir.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-validation-resources-r4</artifactId>
             <version>${hapi.fhir.version}</version>
         </dependency>
@@ -89,6 +100,11 @@
             <version>${hapi.fhir.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>gov.cms.madie</groupId>
+            <artifactId>madie-java-models</artifactId>
+            <version>0.6.58-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

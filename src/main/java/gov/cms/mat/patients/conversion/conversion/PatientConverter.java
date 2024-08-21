@@ -1,23 +1,18 @@
 package gov.cms.mat.patients.conversion.conversion;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import gov.cms.madie.models.measure.TestCase;
 import gov.cms.mat.patients.conversion.conversion.helpers.DataElementFinder;
 import gov.cms.mat.patients.conversion.conversion.helpers.FhirCreator;
 import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirPatientResult;
-import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.ValidationService;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.CodeType;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Enumerations;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.HumanName;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -44,21 +39,21 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         this.validationService = validationService;
     }
 
-    public QdmToFhirPatientResult convert(BonniePatient bonniePatient, Set<String> qdmTypes) {
-        if (bonniePatient == null) {
+    public QdmToFhirPatientResult convert(TestCase testCase, QdmPatient qdmPatient, Set<String> qdmTypes) {
+        if (testCase == null) {
             return buildError("Bonnie patient is null");
-        } else if (bonniePatient.getQdmPatient() == null) {
+        } else if (qdmPatient == null) {
             return buildError("QdmPatient is null");
-        } else if (CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
+        } else if (CollectionUtils.isEmpty(qdmPatient.getDataElements())) {
             return buildError("QdmPatient's data elements array is empty");
         } else {
-            return getQdmToFhirPatientResult(bonniePatient, qdmTypes);
+            return getQdmToFhirPatientResult(testCase, qdmPatient, qdmTypes);
         }
     }
 
-    public QdmToFhirPatientResult getQdmToFhirPatientResult(BonniePatient bonniePatient, Set<String> qdmTypes) {
-        List<String> conversionMessages = createNotMappedMessages(bonniePatient.getQdmPatient().getDataElements(), qdmTypes);
-        var patient = process(bonniePatient);
+    public QdmToFhirPatientResult getQdmToFhirPatientResult(TestCase testCase, QdmPatient qdmPatient, Set<String> qdmTypes) {
+        List<String> conversionMessages = createNotMappedMessages(qdmPatient.getDataElements(), qdmTypes);
+        var patient = process(testCase, qdmPatient);
 
         var validationResult = validationService.validate(patient);
 
@@ -98,38 +93,34 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         return String.format(NOT_MAPPED_MESSAGE, count, type);
     }
 
-    private Patient process(BonniePatient bonniePatient) {
+    private Patient process(TestCase testCase, QdmPatient qdmPatient) {
         var fhirPatient = new Patient();
-        fhirPatient.setId(bonniePatient.getId());
+        fhirPatient.setId(testCase.getPatientId().toString());
+        fhirPatient.setMeta(new Meta()
+                .addProfile("http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient"));
 
-        fhirPatient.getExtension().add(new Extension(US_CORE_RACE_URL));
-        fhirPatient.getExtension().add(new Extension(DETAILED_RACE_URL));
+        processRace(testCase, qdmPatient, fhirPatient);
+        processEthnicity(testCase, qdmPatient, fhirPatient);
 
+        // Identifier
         fhirPatient.setActive(true);
+        fhirPatient.getName().add(createName(testCase));
+        fhirPatient.setGender(processSex(testCase, qdmPatient));
+        fhirPatient.setDeceased(processExpired(testCase, qdmPatient));
+        fhirPatient.setBirthDate(qdmPatient.getBirthDatetime());
 
-        fhirPatient.getName().add(createName(bonniePatient));
-
-        fhirPatient.setBirthDate(bonniePatient.getQdmPatient().getBirthDatetime());
-
-        if (bonniePatient.getQdmPatient().getExtendedData() != null &&
-                StringUtils.isNotBlank(bonniePatient.getQdmPatient().getExtendedData().getMedicalRecordNumber())) {
-            String medicalRecordNumber = bonniePatient.getQdmPatient().getExtendedData().getMedicalRecordNumber();
+        if (qdmPatient.getExtendedData() != null &&
+                StringUtils.isNotBlank(qdmPatient.getExtendedData().getMedicalRecordNumber())) {
+            String medicalRecordNumber = qdmPatient.getExtendedData().getMedicalRecordNumber();
 
             fhirPatient.getIdentifierFirstRep().setType(createCodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0203", "MR", null));
             fhirPatient.getIdentifierFirstRep().setValue(medicalRecordNumber);
         }
-
-        fhirPatient.setGender(processSex(bonniePatient));
-        processRace(bonniePatient, fhirPatient);
-
-        processEthnicity(bonniePatient, fhirPatient);
-        fhirPatient.setDeceased(processExpired(bonniePatient));
-
         return fhirPatient;
     }
 
-    private DateTimeType processExpired(BonniePatient bonniePatient) {
-        var optional = findOptionalDataElementsByType(bonniePatient, "QDM::PatientCharacteristicExpired");
+    private DateTimeType processExpired(TestCase testCase, QdmPatient qdmPatient) {
+        var optional = findOptionalDataElementsByType(testCase, qdmPatient, "QDM::PatientCharacteristicExpired");
 
         if (optional.isPresent()) {
             QdmDataElement dataElement = optional.get();
@@ -143,48 +134,43 @@ public class PatientConverter implements DataElementFinder, FhirCreator {
         }
     }
 
-    private HumanName createName(BonniePatient bonniePatient) {
+    private HumanName createName(TestCase testCase) {
         var humanName = new HumanName();
         humanName.setUse(HumanName.NameUse.USUAL); // ??
-
-        humanName.setFamily(bonniePatient.getFamilyName());
-
-        if (!CollectionUtils.isEmpty(bonniePatient.getGivenNames())) {
-            List<StringType> fhirNames = bonniePatient.getGivenNames().stream()
-                    .map(StringType::new)
-                    .collect(Collectors.toList());
-
-            humanName.setGiven(fhirNames);
-        }
-
+        humanName.setFamily(testCase.getSeries());
+        humanName.setGiven(List.of(new StringType(testCase.getTitle())));
         return humanName;
     }
 
-    private void processRace(BonniePatient bonniePatient, Patient fhirPatient) {
+    private void processRace(TestCase testCase, QdmPatient qdmPatient, Patient fhirPatient) {
         try {
-            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicRace");
-            var extension = fhirPatient.getExtensionByUrl(US_CORE_RACE_URL);
-
-            extension.setValue(new CodeType(qdmCodeSystem.getCode()));
+            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(testCase, qdmPatient,"QDM::PatientCharacteristicRace");
+            var extension = new Extension(US_CORE_RACE_URL);
+            var subExtension = new Extension("ombCategory");
+            subExtension.setValue(createCodeableConcept(qdmCodeSystem.getSystem(), qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay()));
+            extension.setExtension(List.of(subExtension));
+            fhirPatient.getExtension().add(extension);
         } catch (PatientConversionException e) {
             log.info(e.getMessage());
         }
     }
 
-    private void processEthnicity(BonniePatient bonniePatient, Patient fhirPatient) {
+    private void processEthnicity(TestCase testCase, QdmPatient qdmPatient, Patient fhirPatient) {
         try {
-            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicEthnicity");
-            var extension = fhirPatient.getExtensionByUrl(DETAILED_RACE_URL);
-
-            extension.setValue(new CodeType(qdmCodeSystem.getCode()));
+            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(testCase, qdmPatient,"QDM::PatientCharacteristicEthnicity");
+            var extension = new Extension(DETAILED_RACE_URL);
+            var subExtension = new Extension("ombCategory");
+            subExtension.setValue(createCodeableConcept(qdmCodeSystem.getSystem(), qdmCodeSystem.getCode(), qdmCodeSystem.getDisplay()));
+            extension.setExtension(List.of(subExtension));
+            fhirPatient.getExtension().add(extension);
         } catch (PatientConversionException e) {
             log.info(e.getMessage());
         }
     }
 
-    private Enumerations.AdministrativeGender processSex(BonniePatient bonniePatient) {
+    private Enumerations.AdministrativeGender processSex(TestCase testCase, QdmPatient qdmPatient) {
         try {
-            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(bonniePatient, "QDM::PatientCharacteristicSex");
+            var qdmCodeSystem = findOneCodeSystemWithRequiredDisplay(testCase, qdmPatient, "QDM::PatientCharacteristicSex");
 
             var administrativeGender = Enumerations.AdministrativeGender.UNKNOWN;
             if (qdmCodeSystem.getDisplay().toLowerCase().startsWith("m")) { // sometimes Male and M

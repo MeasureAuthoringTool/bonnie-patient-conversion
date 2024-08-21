@@ -1,339 +1,53 @@
 {
-  "_id": "5d65454d1c76ba7ea62d9880",
-  "givenNames": [
-    "Test"
-  ],
-  "familyName": "Patient",
-  "bundleId": "56337f036c5d1c6930000963",
-  "expectedValues": [
+  "id": "6616e3b7cda565105e1bca07",
+  "name": null,
+  "title": "OrderHospCareAmbInMP",
+  "series": "DENEXPass",
+  "description": "Meets IPP, Denominator - correct age with Diagnosis: Essential Hypertension and Denominator Exclusion (testing Intervention Ordered for Hospice criteria)",
+  "createdAt": "2024-04-10T19:08:39.777Z",
+  "createdBy": "dlee38",
+  "lastModifiedAt": "2024-04-10T19:08:39.777Z",
+  "lastModifiedBy": "dlee38",
+  "validResource": true,
+  "json": "{\n  \"qdmVersion\": \"5.6\",\n  \"dataElements\": [\n    {\n      \"dataElementCodes\": [\n        {\n          \"code\": \"45755-6\",\n          \"system\": \"2.16.840.1.113883.6.1\",\n          \"version\": \"urn:hl7:version:N/A\",\n          \"display\": \"Hospice care [Minimum Data Set]\"\n        }\n      ],\n      \"_id\": \"66a27e82cadb1300009f326e\",\n      \"relatedTo\": [],\n      \"performer\": [],\n      \"qdmTitle\": \"Assessment, Performed\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.117\",\n      \"qdmCategory\": \"assessment\",\n      \"qdmStatus\": \"performed\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::AssessmentPerformed\",\n      \"description\": \"Assessment, Performed: Hospice care [Minimum Data Set]\",\n      \"codeListId\": \"drc-729d51d6bc1d400374d7b1f132f7b74e\",\n      \"id\": \"66a27e82cadb1300009f326d\",\n      \"relevantPeriod\": {\n        \"low\": \"2024-07-11T00:00:00.000+00:00\",\n        \"high\": \"2024-07-26T00:00:00.000+00:00\",\n        \"lowClosed\": true,\n        \"highClosed\": true\n      },\n      \"components\": []\n    },\n    {\n      \"dataElementCodes\": [\n        {\n          \"code\": \"185460008\",\n          \"system\": \"2.16.840.1.113883.6.96\",\n          \"version\": null,\n          \"display\": null\n        }\n      ],\n      \"_id\": \"667dd361a559a600000e8651\",\n      \"participant\": [],\n      \"relatedTo\": [],\n      \"qdmTitle\": \"Encounter, Performed\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.5\",\n      \"qdmCategory\": \"encounter\",\n      \"qdmStatus\": \"performed\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::EncounterPerformed\",\n      \"admissionSource\": null,\n      \"authorDatetime\": null,\n      \"codeListId\": \"2.16.840.1.113883.3.464.1003.101.12.1016\",\n      \"description\": \"Encounter, Performed: Home Healthcare Services\",\n      \"diagnoses\": [],\n      \"dischargeDisposition\": null,\n      \"facilityLocations\": [],\n      \"id\": \"5c9523bdb84846162cb6de2a\",\n      \"lengthOfStay\": {\n        \"value\": 0,\n        \"unit\": \"days\"\n      },\n      \"priority\": null,\n      \"relevantPeriod\": {\n        \"low\": \"2026-12-31T08:45:00.000+00:00\",\n        \"high\": \"2026-12-31T08:45:00.000+00:00\",\n        \"lowClosed\": true,\n        \"highClosed\": true\n      }\n    },\n    {\n      \"dataElementCodes\": [\n        {\n          \"code\": \"10738891000119107\",\n          \"system\": \"2.16.840.1.113883.6.96\",\n          \"version\": null,\n          \"display\": null\n        }\n      ],\n      \"_id\": \"667dd361a559a600000e8653\",\n      \"recorder\": [],\n      \"qdmTitle\": \"Diagnosis\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.110\",\n      \"qrdaOid\": \"2.16.840.1.113883.10.20.24.3.135\",\n      \"qdmCategory\": \"condition\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::Diagnosis\",\n      \"anatomicalLocationSite\": null,\n      \"authorDatetime\": null,\n      \"codeListId\": \"2.16.840.1.113883.3.464.1003.111.12.1016\",\n      \"description\": \"Diagnosis: Congenital or Acquired Absence of Cervix\",\n      \"id\": \"601b5570db29e70000c12dbe\",\n      \"prevalencePeriod\": {\n        \"low\": \"2026-12-31T23:59:00.000+00:00\",\n        \"high\": null,\n        \"lowClosed\": true,\n        \"highClosed\": true\n      },\n      \"severity\": null\n    },\n    {\n      \"dataElementCodes\": [\n        {\n          \"code\": \"F\",\n          \"system\": \"2.16.840.1.113883.5.1\",\n          \"version\": null,\n          \"display\": \"Female\"\n        }\n      ],\n      \"_id\": \"667dd361a559a600000e8655\",\n      \"qdmTitle\": \"Patient Characteristic Sex\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.55\",\n      \"qdmCategory\": \"patient_characteristic\",\n      \"qdmStatus\": \"gender\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::PatientCharacteristicSex\",\n      \"codeListId\": \"2.16.840.1.113762.1.4.1\",\n      \"description\": \"Patient Characteristic Sex: ONCAdministrativeSex\",\n      \"id\": \"656e239702c62a0122ec20ec\"\n    },\n    {\n      \"dataElementCodes\": [],\n      \"_id\": \"667dd361a559a600000e8657\",\n      \"qdmTitle\": \"Patient Characteristic Birthdate\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.54\",\n      \"qdmCategory\": \"patient_characteristic\",\n      \"qdmStatus\": \"birthdate\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::PatientCharacteristicBirthdate\",\n      \"birthDatetime\": \"1966-09-09T08:00:00.000+00:00\",\n      \"codeListId\": null,\n      \"description\": null,\n      \"id\": \"656e24cffcb2460000a53319\"\n    },\n    {\n      \"dataElementCodes\": [\n        {\n          \"code\": \"1002-5\",\n          \"system\": \"2.16.840.1.113883.6.238\",\n          \"version\": null,\n          \"display\": \"American Indian or Alaska Native\"\n        }\n      ],\n      \"_id\": \"667dd361a559a600000e8659\",\n      \"qdmTitle\": \"Patient Characteristic Race\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.59\",\n      \"qdmCategory\": \"patient_characteristic\",\n      \"qdmStatus\": \"race\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::PatientCharacteristicRace\",\n      \"codeListId\": \"2.16.840.1.114222.4.11.836\",\n      \"description\": \"Patient Characteristic Race: Race\",\n      \"id\": \"656e239702c62a0122ec20fa\"\n    },\n    {\n      \"dataElementCodes\": [\n        {\n          \"code\": \"2186-5\",\n          \"system\": \"2.16.840.1.113883.6.238\",\n          \"version\": null,\n          \"display\": \"Not Hispanic or Latino\"\n        }\n      ],\n      \"_id\": \"667dd361a559a600000e865b\",\n      \"qdmTitle\": \"Patient Characteristic Ethnicity\",\n      \"hqmfOid\": \"2.16.840.1.113883.10.20.28.4.56\",\n      \"qdmCategory\": \"patient_characteristic\",\n      \"qdmStatus\": \"ethnicity\",\n      \"qdmVersion\": \"5.6\",\n      \"_type\": \"QDM::PatientCharacteristicEthnicity\",\n      \"codeListId\": \"2.16.840.1.114222.4.11.837\",\n      \"description\": \"Patient Characteristic Ethnicity: Ethnicity\",\n      \"id\": \"656e239702c62a0122ec20f2\"\n    }\n  ],\n  \"_id\": \"667dd361a559a600000e864f\",\n  \"birthDatetime\": \"1966-09-09T08:00:00.000+00:00\",\n  \"extendedData\": {\n    \"type\": null,\n    \"is_shared\": false,\n    \"origin_data\": [],\n    \"test_id\": null,\n    \"medical_record_number\": \"4a13441511be668712d6a4feb784064c36e3d580ef5646cb0c5d1c6397312c10\",\n    \"medical_record_assigner\": \"Bonnie\",\n    \"description\": null,\n    \"description_category\": null,\n    \"insurance_providers\": \"[]\"\n  }\n}",
+  "patientId": "a13b3f21-dfda-4f69-94f4-ee0fc1521743",
+  "hapiOperationOutcome": null,
+  "groupPopulations": [
     {
-      "measure_id": "AD62692E-6FD0-41CC-83E2-3DB569A45977",
-      "population_index": 0,
-      "IPP": 1,
-      "DENOM": 1,
-      "NUMER": 0
+      "groupId": "6603045180319060e1fd8c03",
+      "scoring": "Proportion",
+      "populationBasis": "true",
+      "populationValues": [
+        {
+          "id": "A35D89C5-C903-4D4C-BDBC-EA70D1254BEF",
+          "criteriaReference": null,
+          "name": "initialPopulation",
+          "expected": 1,
+          "actual": null
+        },
+        {
+          "id": "FECE5EB1-842C-42B6-B2BC-7035C79222E4",
+          "criteriaReference": null,
+          "name": "denominator",
+          "expected": 1,
+          "actual": null
+        },
+        {
+          "id": "8D42520C-8C19-47AF-B3E7-A66EAECA0DBD",
+          "criteriaReference": null,
+          "name": "denominatorExclusion",
+          "expected": 1,
+          "actual": null
+        },
+        {
+          "id": "73661F57-1A94-4982-8136-EDCE51A9AEA8",
+          "criteriaReference": null,
+          "name": "numerator",
+          "expected": 0,
+          "actual": null
+        }
+      ],
+      "stratificationValues": []
     }
-  ],
-  "notes": "some test description about test patient",
-  "measure_ids": [
-    "AD62692E-6FD0-41CC-83E2-3DB569A45977"
-  ],
-  "user_id": "56337f026c5d1c6930000962",
-  "qdmPatient": {
-    "_id": "5d65454d1c76ba7ea62d9881",
-    "qdmVersion": "5.5",
-    "birthDatetime": "2010-06-11T08:00:00.000Z",
-    "extendedData": {
-      "type": null,
-      "is_shared": false,
-      "origin_data": [],
-      "test_id": null,
-      "medical_record_number": "a4390cb604467f429fdacec0ec0a3487",
-      "medical_record_assigner": "Bonnie",
-      "description": null,
-      "description_category": null,
-      "insurance_providers": "[]"
-    },
-    "dataElements": [
-      {
-        "_id": "5aeb772bb848463d625b1bd8",
-        "dataElementCodes": [
-          {
-            "code": "179005",
-            "system": "2.16.840.1.113883.6.96"
-          }
-        ],
-        "_type": "QDM::Symptom",
-        "qdmTitle": "Symptom",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.116",
-        "qrdaOid": "2.16.840.1.113883.10.20.24.3.136",
-        "qdmCategory": "symptom",
-        "qdmVersion": "5.5",
-        "prevalencePeriod": {
-          "low": "2012-10-29T08:00:00.000Z",
-          "high": "2012-10-30T08:15:00.000Z",
-          "lowClosed": true,
-          "highClosed": true,
-          "_type": "QDM::Interval"
-        },
-        "severity": null,
-        "description": "Symptom: Neurologic Symptoms of Stroke",
-        "codeListId": "2.16.840.1.113883.3.117.1.7.1.399"
-      },
-      {
-        "_id": "5aeb772bb848463d625b1bd9",
-        "dataElementCodes": [
-          {
-            "code": "1201005",
-            "system": "2.16.840.1.113883.6.96"
-          },
-          {
-            "code": "401.1",
-            "system": "2.16.840.1.113883.6.103"
-          },
-          {
-            "code": "H35.039",
-            "system": "2.16.840.1.113883.6.90"
-          }
-        ],
-        "_type": "QDM::Diagnosis",
-        "qdmTitle": "Diagnosis",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.110",
-        "qrdaOid": "2.16.840.1.113883.10.20.24.3.135",
-        "qdmCategory": "condition",
-        "qdmVersion": "5.5",
-        "authorDatetime": null,
-        "prevalencePeriod": {
-          "low": "2012-10-30T08:00:00.000Z",
-          "high": "2012-10-30T08:15:00.000Z",
-          "lowClosed": true,
-          "highClosed": true,
-          "_type": "QDM::Interval"
-        },
-        "anatomicalLocationSite": {
-          "code": "431321000124109",
-          "system": "2.16.840.1.113883.6.96",
-          "display": "Body Site Value Set",
-          "version": null,
-          "_type": "QDM::Code"
-        },
-        "severity": {
-          "code": "24484000",
-          "system": "2.16.840.1.113883.6.96",
-          "display": "Severe",
-          "version": null,
-          "_type": "QDM::Code"
-        },
-        "description": "Diagnosis: Diagnosis of hypertension",
-        "codeListId": "2.16.840.1.113883.3.600.263"
-      },
-      {
-        "_id": "5aeb772bb848463d625b1bda",
-        "dataElementCodes": [
-          {
-            "code": "432621000124105",
-            "system": "2.16.840.1.113883.6.96"
-          }
-        ],
-        "_type": "QDM::EncounterPerformed",
-        "facilityLocations": [],
-        "qdmTitle": "Encounter, Performed",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.5",
-        "qdmCategory": "encounter",
-        "qdmStatus": "performed",
-        "qdmVersion": "5.5",
-        "authorDatetime": null,
-        "admissionSource": null,
-        "relevantPeriod": {
-          "low": "2012-10-30T08:00:00.000Z",
-          "high": "2012-10-30T08:15:00.000Z",
-          "lowClosed": true,
-          "highClosed": true,
-          "_type": "QDM::Interval"
-        },
-        "dischargeDisposition": null,
-        "diagnoses": [
-          {
-            "_id": "5d655bf41c76ba651c850911",
-            "_type": "QDM::DiagnosisComponent",
-            "code": {
-              "code": "402.01",
-              "system": "2.16.840.1.113883.6.103",
-              "display": "Heart Failure",
-              "version": null,
-              "_type": "QDM::Code"
-            },
-            "presentOnAdmissionIndicator": null,
-            "rank": 1,
-            "qdmVersion": "5.5"
-          },
-          {
-            "_id": "5d655bf41c76ba651c850912",
-            "_type": "QDM::DiagnosisComponent",
-            "code": {
-              "code": "402.01",
-              "system": "2.16.840.1.113883.6.103",
-              "display": "Heart Failure",
-              "version": null,
-              "_type": "QDM::Code"
-            },
-            "presentOnAdmissionIndicator": null,
-            "rank": null,
-            "qdmVersion": "5.5"
-          }
-        ],
-        "negationRationale": null,
-        "lengthOfStay": {
-          "value": 0,
-          "unit": "days",
-          "_type": "QDM::Quantity"
-        },
-        "description": "Encounter, Performed: Inpatient Encounter",
-        "codeListId": "2.16.840.1.113883.3.464.1003.101.12.1060"
-      },
-      {
-        "_id": "5aeb772bb848463d625b1bde",
-        "dataElementCodes": [
-          {
-            "code": "134439009",
-            "system": "2.16.840.1.113883.6.96"
-          }
-        ],
-        "_type": "QDM::FamilyHistory",
-        "qdmTitle": "Family History",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.111",
-        "qrdaOid": "2.16.840.1.113883.10.20.24.3.12",
-        "qdmCategory": "family_history",
-        "qdmVersion": "5.5",
-        "authorDatetime": "2012-10-29T08:00:00.000Z",
-        "relationship": {
-          "code": "AUNT",
-          "system": null,
-          "display": "Family Member Value",
-          "version": null,
-          "_type": "QDM::Code"
-        },
-        "description": "Family History: Family History CHD",
-        "codeListId": "2.16.840.1.113883.3.600.1557"
-      },
-      {
-        "_id": "5aeb772bb848463d625b1bdc",
-        "dataElementCodes": [
-          {
-            "code": "20",
-            "system": "2.16.840.1.113883.12.292"
-          }
-        ],
-        "_type": "QDM::ImmunizationAdministered",
-        "qdmTitle": "Immunization, Administered",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.112",
-        "qrdaOid": "2.16.840.1.113883.10.20.24.3.140",
-        "qdmCategory": "immunization",
-        "qdmStatus": "administered",
-        "qdmVersion": "5.5",
-        "authorDatetime": "2012-10-29T08:00:00.000Z",
-        "reason": null,
-        "dosage": null,
-        "route": null,
-        "negationRationale": null,
-        "description": "Immunization, Administered: DTaP Vaccine",
-        "codeListId": "2.16.840.1.113883.3.464.1003.196.12.1214"
-      },
-      {
-        "_id": "5aeb772bb848463d625b1bdd",
-        "dataElementCodes": [
-          {
-            "code": "20",
-            "system": "2.16.840.1.113883.12.292"
-          }
-        ],
-        "_type": "QDM::ImmunizationOrder",
-        "qdmTitle": "Immunization, Order",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.113",
-        "qdmCategory": "immunization",
-        "qdmStatus": "order",
-        "qdmVersion": "5.5",
-        "activeDatetime": "2012-10-29T08:00:00.000Z",
-        "authorDatetime": "2012-10-29T08:00:00.000Z",
-        "dosage": {
-          "value": null,
-          "unit": "nm",
-          "_type": "QDM::Quantity"
-        },
-        "supply": null,
-        "reason": null,
-        "route": null,
-        "negationRationale": null,
-        "description": "Immunization, Order: DTaP Vaccine",
-        "codeListId": "2.16.840.1.113883.3.464.1003.196.12.1214"
-      },
-      {
-        "_id": "5aeb772bb848463d625b1bdf",
-        "dataElementCodes": [
-          {
-            "code": "2093-3",
-            "system": "2.16.840.1.113883.6.1"
-          }
-        ],
-        "_type": "QDM::LaboratoryTestPerformed",
-        "qdmTitle": "Laboratory Test, Performed",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.42",
-        "qdmCategory": "laboratory_test",
-        "qdmStatus": "performed",
-        "qdmVersion": "5.5",
-        "authorDatetime": null,
-        "relevantPeriod": {
-          "low": "2012-10-29T08:00:00.000Z",
-          "high": "2012-10-30T08:15:00.000Z",
-          "lowClosed": true,
-          "highClosed": true,
-          "_type": "QDM::Interval"
-        },
-        "status": null,
-        "method": null,
-        "result": null,
-        "resultDatetime": null,
-        "reason": null,
-        "referenceRange": null,
-        "negationRationale": null,
-        "components": [],
-        "description": "Laboratory Test, Performed: Total Cholesterol Laboratory Test",
-        "codeListId": "2.16.840.1.113883.3.464.1003.104.12.1013"
-      },
-      {
-        "_id": "5d65454d1c76ba7ea62d987d",
-        "dataElementCodes": [
-          {
-            "code": "2186-5",
-            "system": "2.16.840.1.113883.6.238",
-            "display": "Not Hispanic or Latino",
-            "version": null,
-            "_type": "QDM::Code"
-          }
-        ],
-        "_type": "QDM::PatientCharacteristicEthnicity",
-        "qdmTitle": "Patient Characteristic Ethnicity",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.56",
-        "qdmCategory": "patient_characteristic",
-        "qdmStatus": "ethnicity",
-        "qdmVersion": "5.5"
-      },
-      {
-        "_id": "5d65454d1c76ba7ea62d987e",
-        "dataElementCodes": [
-          {
-            "code": "1002-5",
-            "system": "2.16.840.1.113883.6.238",
-            "display": "American Indian or Alaska Native",
-            "version": null,
-            "_type": "QDM::Code"
-          }
-        ],
-        "_type": "QDM::PatientCharacteristicRace",
-        "qdmTitle": "Patient Characteristic Race",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.59",
-        "qdmCategory": "patient_characteristic",
-        "qdmStatus": "race",
-        "qdmVersion": "5.5"
-      },
-      {
-        "_id": "5d65454d1c76ba7ea62d987f",
-        "dataElementCodes": [
-          {
-            "code": "M",
-            "system": "2.16.840.1.113883.5.1",
-            "display": "M",
-            "version": null,
-            "_type": "QDM::Code"
-          }
-        ],
-        "_type": "QDM::PatientCharacteristicSex",
-        "qdmTitle": "Patient Characteristic Sex",
-        "hqmfOid": "2.16.840.1.113883.10.20.28.4.55",
-        "qdmCategory": "patient_characteristic",
-        "qdmStatus": "gender",
-        "qdmVersion": "5.5"
-      }
-    ]
-  }
+  ]
 }

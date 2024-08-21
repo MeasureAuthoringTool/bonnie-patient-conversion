@@ -74,7 +74,7 @@ public class CareGoalConverter extends ConverterBase<Goal> {
         }
 
         if (qdmDataElement.getPerformer() != null) {
-            goal.setExpressedBy(createPractitionerReference(qdmDataElement.getPerformer()));
+            goal.setExpressedBy(createPractitionerReference(qdmDataElement.getPerformer().get(0)));
         }
 
         processNegation(qdmDataElement, goal); // no negations expected

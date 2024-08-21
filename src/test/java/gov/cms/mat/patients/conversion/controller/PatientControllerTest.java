@@ -1,5 +1,6 @@
 package gov.cms.mat.patients.conversion.controller;
 
+import gov.cms.madie.models.measure.TestCase;
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.results.ConversionResult;
 import gov.cms.mat.patients.conversion.service.PatientConversionService;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PatientControllerTest {
-    BonniePatient bonniePatient;
+    TestCase testCase;
     ConversionResult conversionResult;
     @Mock
     private PatientConversionService patientConversionService;
@@ -26,22 +27,22 @@ class PatientControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        bonniePatient = new BonniePatient();
+        testCase = TestCase.builder().build();
         conversionResult = ConversionResult.builder().build();
     }
 
     @Test
     void convertOne() {
-        when(patientConversionService.processOne(bonniePatient)).thenReturn(conversionResult);
+        when(patientConversionService.processOne(testCase)).thenReturn(conversionResult);
 
-        assertEquals(conversionResult, patientController.convertOne(bonniePatient));
+        assertEquals(conversionResult, patientController.convertOne(testCase));
     }
 
     @Test
     void convertMany() {
-        var bonniePatientList = List.of(bonniePatient);
-        when(patientConversionService.processMany(bonniePatientList)).thenReturn(List.of(conversionResult));
-        List<ConversionResult> results = patientController.convertMany(bonniePatientList);
+        var testCaseList = List.of(testCase);
+        when(patientConversionService.processMany(testCaseList)).thenReturn(List.of(conversionResult));
+        List<ConversionResult> results = patientController.convertMany(testCaseList);
 
         assertEquals(1, results.size());
         assertEquals(conversionResult, results.get(0));

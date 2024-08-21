@@ -75,7 +75,7 @@ public class MedicationAdministeredConverter extends ConverterBase<MedicationAdm
         }
 
         if (qdmDataElement.getPerformer() != null) {
-            medicationAdministration.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+            medicationAdministration.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer().get(0)));
         }
 
         if (!processNegation(qdmDataElement, medicationAdministration)) {

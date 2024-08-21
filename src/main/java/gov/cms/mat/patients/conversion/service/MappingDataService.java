@@ -10,7 +10,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,12 +41,16 @@ public class MappingDataService implements GoogleDataService {
     @Cacheable("codeSystemEntries")
     @Override
     public List<CodeSystemEntry> getCodeSystemEntries() {
-        GoogleConversionDataCodeSystemEntry data = objectMapper.readValue(new URL(codeSystemEntryUrl), GoogleConversionDataCodeSystemEntry.class);
-        if (data != null && data.getFeed() != null && data.getFeed().getEntry() != null) {
-            log.info(LOG_MESSAGE, data.getFeed().getEntry().size(), codeSystemEntryUrl);
-            return convertGoogleDataToDao(data.getFeed().getEntry());
-        } else {
-            return Collections.emptyList();
+        try {
+            CodeSystemEntry[] data =
+                    objectMapper.readValue(new URL(codeSystemEntryUrl), CodeSystemEntry[].class);
+            if (data != null) {
+                return Arrays.asList(data);
+            }
+        } catch (IOException ioException) {
+            throw new RuntimeException(
+                    "Error while accessing code system entry mapping document", ioException);
         }
+        return Collections.emptyList();
     }
 }

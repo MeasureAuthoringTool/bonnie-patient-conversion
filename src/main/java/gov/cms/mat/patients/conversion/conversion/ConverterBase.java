@@ -11,6 +11,7 @@ import gov.cms.mat.patients.conversion.conversion.results.QdmToFhirConversionRes
 import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import gov.cms.mat.patients.conversion.dao.results.ConversionOutcome;
 import gov.cms.mat.patients.conversion.dao.results.FhirDataElement;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
@@ -74,13 +75,13 @@ public abstract class ConverterBase<T extends IBaseResource> implements FhirCrea
     }
 
     @Async("threadPoolConversion")
-    public CompletableFuture<List<FhirDataElement>> convertToFhirDataElement(BonniePatient bonniePatient, Patient fhirPatient) {
-        List<FhirDataElement> dataElements = createDataElements(bonniePatient, fhirPatient);
+    public CompletableFuture<List<FhirDataElement>> convertToFhirDataElement(QdmPatient qdmPatient, Patient fhirPatient) {
+        List<FhirDataElement> dataElements = createDataElements(qdmPatient, fhirPatient);
         return CompletableFuture.completedFuture(dataElements);
     }
 
-    public List<FhirDataElement> createDataElements(BonniePatient bonniePatient, Patient fhirPatient) {
-        List<QdmDataElement> dataElements = findDataElementsByType(bonniePatient, getQdmType());
+    public List<FhirDataElement> createDataElements(QdmPatient qdmPatient, Patient fhirPatient) {
+        List<QdmDataElement> dataElements = findDataElementsByType(qdmPatient, getQdmType());
 
         if (dataElements.isEmpty()) {
             return Collections.emptyList();

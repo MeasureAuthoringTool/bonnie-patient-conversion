@@ -78,7 +78,7 @@ public class QdmDataElement {
 
     private QdmCodeSystem priority;
 
-    private Participant participant;
+    private List<Participant> participant;
 
     private LengthOfStay lengthOfStay;
     private QdmCodeSystem anatomicalLocationSite;
@@ -108,7 +108,8 @@ public class QdmDataElement {
     private QdmPractitioner recipient;
     private QdmPractitioner prescriber;
     private QdmPractitioner dispenser;
-    private QdmPractitioner performer;
+    private List<QdmPractitioner> performer;
+    private List<JsonNode> recorder;
 
     private Date statusDate;
 

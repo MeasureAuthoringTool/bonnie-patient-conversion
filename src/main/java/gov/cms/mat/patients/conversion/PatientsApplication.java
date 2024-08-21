@@ -1,11 +1,8 @@
 package gov.cms.mat.patients.conversion;
 
-import gov.cms.mat.patients.conversion.config.SecurityFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -28,14 +25,5 @@ public class PatientsApplication {
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         log.info("Set timezone to UTC.");
-    }
-
-    @Bean(name = "FilterRegistrationBeanSecurityFilter")
-    public FilterRegistrationBean<SecurityFilter> securityFilter(SecurityFilter securityFilter) {
-        FilterRegistrationBean<SecurityFilter> registrationBean
-                = new FilterRegistrationBean<>(securityFilter);
-        registrationBean.setFilter(securityFilter);
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
     }
 }

@@ -1,21 +1,31 @@
 package gov.cms.mat.patients.conversion.dao.spreadsheet;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
-@EqualsAndHashCode
-public class CodeSystemEntry implements Comparable<CodeSystemEntry> {
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CodeSystemEntry {
     private String oid;
     private String url;
     private String name;
+    private List<Version> versions;
 
-    @Override
-    public int compareTo(CodeSystemEntry rhs) {
-        return this.name.compareToIgnoreCase(rhs.name);
+    @Data
+    @Builder(toBuilder = true)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Version {
+        String vsac;
+        String fhir;
     }
 }

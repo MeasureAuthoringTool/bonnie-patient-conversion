@@ -83,9 +83,9 @@ public interface ProcedureConverter extends DataElementFinder, FhirCreator {
             conversionMessages.add("Cannot convert QDM attribute components");
         }
 
-        if (qdmDataElement.getPerformer() != null) {
+        if (CollectionUtils.isNotEmpty(qdmDataElement.getPerformer())) {
             converterBase.getLog().info(UNEXPECTED_DATA_LOG_MESSAGE, converterBase.getQdmType(), "performer");
-            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer()));
+            procedure.getPerformerFirstRep().setActor(createPractitionerReference(qdmDataElement.getPerformer().get(0)));
         }
 
         if (qdmDataElement.getAuthorDatetime() != null) {

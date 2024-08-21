@@ -1,8 +1,9 @@
 package gov.cms.mat.patients.conversion.conversion.helpers;
 
-import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
+import gov.cms.madie.models.measure.TestCase;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
 import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
+import gov.cms.mat.patients.conversion.dao.conversion.QdmPatient;
 import gov.cms.mat.patients.conversion.exceptions.PatientConversionException;
 import gov.cms.mat.patients.conversion.service.CodeSystemEntriesService;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -64,40 +65,38 @@ public interface DataElementFinder {
         }
     }
 
-    default Optional<QdmDataElement> findOptionalDataElementsByType(BonniePatient bonniePatient, String type) {
-        List<QdmDataElement> dataElements = findDataElementsByType(bonniePatient, type);
+    default Optional<QdmDataElement> findOptionalDataElementsByType(TestCase testCase, QdmPatient qdmPatient, String type) {
+        List<QdmDataElement> dataElements = findDataElementsByType(qdmPatient, type);
 
         if (dataElements.isEmpty()) {
             return Optional.empty();
         } else {
             if (dataElements.size() > 1) {
                 throw new PatientConversionException(String.format("Patient %s has %s %s elements. Should be one.",
-                        bonniePatient.identifier(), dataElements.size(), type));
+                        testCase.getPatientId(), dataElements.size(), type));
             } else {
                 return Optional.of(dataElements.get(0));
             }
         }
     }
 
-    default QdmDataElement findOneDataElementsByType(BonniePatient bonniePatient, String type) {
-        List<QdmDataElement> dataElements = findDataElementsByType(bonniePatient, type);
+    default QdmDataElement findOneDataElementsByType(TestCase testCase, QdmPatient qdmPatient, String type) {
+        List<QdmDataElement> dataElements = findDataElementsByType(qdmPatient, type);
 
         if (dataElements.isEmpty()) {
             throw new PatientConversionException(String.format("Patient %s has no %s",
-                    bonniePatient.identifier(), type));
+                    testCase.getPatientId(), type));
         } else {
             if (dataElements.size() > 1) {
                 throw new PatientConversionException(String.format("Patient %s has %s %s elements. Should be one.",
-                        bonniePatient.identifier(), dataElements.size(), type));
+                        testCase.getPatientId(), dataElements.size(), type));
             } else {
                 return dataElements.get(0);
             }
         }
     }
 
-    default List<QdmDataElement> findDataElementsByType(BonniePatient bonniePatient, String type) {
-        var qdmPatient = bonniePatient.getQdmPatient();
-
+    default List<QdmDataElement> findDataElementsByType(QdmPatient qdmPatient, String type) {
         if (CollectionUtils.isEmpty(qdmPatient.getDataElements())) {
             return Collections.emptyList();
         } else {
@@ -107,8 +106,8 @@ public interface DataElementFinder {
         }
     }
 
-    default QdmCodeSystem findOneCodeSystemWithRequiredDisplay(BonniePatient bonniePatient, String type) {
-        var qdmDataElement = findOneDataElementsByType(bonniePatient, type);
+    default QdmCodeSystem findOneCodeSystemWithRequiredDisplay(TestCase testCase, QdmPatient qdmPatient, String type) {
+        var qdmDataElement = findOneDataElementsByType(testCase,qdmPatient, type);
 
         var qdmCodeSystem = getOneCodeSystem(qdmDataElement);
 

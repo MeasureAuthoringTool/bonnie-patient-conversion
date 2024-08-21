@@ -2,12 +2,7 @@ package gov.cms.mat.patients.conversion.conversion.helpers;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import gov.cms.mat.patients.conversion.dao.conversion.BonniePatient;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmCodeSystem;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmDataElement;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmPeriod;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmPractitioner;
-import gov.cms.mat.patients.conversion.dao.conversion.QdmQuantity;
+import gov.cms.mat.patients.conversion.dao.conversion.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.BooleanType;
@@ -35,7 +30,7 @@ import static gov.cms.mat.patients.conversion.conversion.ConverterBase.UCUM_SYST
 public interface FhirCreator {
     default Reference createPatientReference(Patient fhirPatient) {
         var reference = new Reference("Patient/" + fhirPatient.getId());
-        return reference.setDisplay(convertHumanNamesToString(fhirPatient.getName()));
+        return reference.setDisplay(fhirPatient.getId());
     }
 
     default Reference createPractitionerReference(QdmPractitioner qdmPractitioner) {
@@ -127,11 +122,11 @@ public interface FhirCreator {
                 .setValue(date);
     }
 
-    default Set<String> collectQdmTypes(BonniePatient bonniePatient) {
-        if (bonniePatient.getQdmPatient() == null || org.apache.commons.collections4.CollectionUtils.isEmpty(bonniePatient.getQdmPatient().getDataElements())) {
+    default Set<String> collectQdmTypes(QdmPatient qdmPatient) {
+        if (qdmPatient == null || org.apache.commons.collections4.CollectionUtils.isEmpty(qdmPatient.getDataElements())) {
             return Collections.emptySet();
         } else {
-            return bonniePatient.getQdmPatient().getDataElements().stream()
+            return qdmPatient.getDataElements().stream()
                     .map(QdmDataElement::getQdmType)
                     .collect(Collectors.toSet());
         }

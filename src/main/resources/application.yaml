@@ -10,15 +10,9 @@ management:
       exposure:
         include: "*"
 
-springdoc:
-  swagger-ui:
-    path: /swagger
-
 json:
   data:
-    code-system-entry-url: ${CODE_SYSTEM_ENTRY_URL}
-
-swagger-server:
+    code-system-entry-url: file:///Users/43093/Documents/git/madie-ms/support-data/madie/code-system-entry.json
 
 bonnie-thread-pools:
   thread-pool-configurations:
@@ -31,7 +25,7 @@ mat-api-key: DISABLED
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
     gov.cms.mat: INFO
     org.hl7.fhir.r4.hapi.ctx: WARN
     org.hl7.fhir.r4.hapi.validation: WARN
